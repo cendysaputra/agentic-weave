@@ -12,27 +12,11 @@
 //   npm i -D playwright && npx playwright install chromium
 
 import { mkdir, writeFile } from 'node:fs/promises';
-import { createRequire } from 'node:module';
 import path from 'node:path';
+import {
+  DESKTOP, MOBILE, USER_AGENT, isDisallowed, loadChromium, loadRobots, normalizeUrl, safeName, scrollThrough, sleep,
+} from './lib.mjs';
 
-// Find Playwright next to this script, in the current project, or on NODE_PATH,
-// so the skill folder itself never needs its own node_modules.
-async function loadChromium() {
-  try {
-    return (await import('playwright')).chromium;
-  } catch {}
-  for (const base of [path.join(process.cwd(), 'noop.js'), import.meta.url]) {
-    try {
-      return createRequire(base)('playwright').chromium;
-    } catch {}
-  }
-  console.error('Playwright not found. Install it in your project:\n  npm i -D playwright && npx playwright install chromium');
-  process.exit(1);
-}
-
-const USER_AGENT = 'antiai-reference-crawler/1.0 (+https://github.com/cendysaputra/anti-ai)';
-const DESKTOP = { width: 1440, height: 900 };
-const MOBILE = { width: 390, height: 844 };
 const SKIP_EXT = /\.(pdf|zip|jpe?g|png|gif|webp|avif|svg|mp4|webm|mp3|woff2?|ttf|otf|css|js|json|xml|txt)$/i;
 
 function parseArgs(argv) {
@@ -51,30 +35,6 @@ function parseArgs(argv) {
   args.url = rest[0];
   return args;
 }
-
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
-// Minimal robots.txt reader: Disallow rules under "User-agent: *".
-async function loadRobots(context, origin) {
-  try {
-    const res = await context.request.get(`${origin}/robots.txt`, { timeout: 10000 });
-    if (!res.ok()) return [];
-    const rules = [];
-    let applies = false;
-    for (const raw of (await res.text()).split('\n')) {
-      const line = raw.split('#')[0].trim();
-      const [key, ...v] = line.split(':');
-      const value = v.join(':').trim();
-      if (/^user-agent$/i.test(key)) applies = value === '*';
-      else if (applies && /^disallow$/i.test(key) && value) rules.push(value);
-    }
-    return rules;
-  } catch {
-    return [];
-  }
-}
-
-const isDisallowed = (url, rules) => rules.some((r) => new URL(url).pathname.startsWith(r));
 
 // Runs before any page script so LCP and CLS are observed from the start.
 function vitalsInitScript() {
@@ -426,13 +386,7 @@ async function crawlPage(context, url, dir, index, screenshots) {
     shots.desktopFold = `${base}-desktop-fold.png`;
     await page.screenshot({ path: path.join(dir, shots.desktopFold) });
     // Scroll through once so lazy and scroll-triggered content renders.
-    await page.evaluate(async () => {
-      for (let y = 0; y < document.documentElement.scrollHeight; y += window.innerHeight * 0.8) {
-        window.scrollTo(0, y);
-        await new Promise((r) => setTimeout(r, 250));
-      }
-      window.scrollTo(0, 0);
-    });
+    await scrollThrough(page);
     await page.waitForTimeout(800);
     shots.desktopFull = `${base}-desktop-full.png`;
     await page.screenshot({ path: path.join(dir, shots.desktopFull), fullPage: true }).catch(() => {});
@@ -539,9 +493,9 @@ async function main() {
     console.log('Usage: node crawl-reference.mjs <url> [--pages 5] [--out reference-crawl] [--delay 1000] [--no-screenshots] [--ignore-robots]');
     process.exit(args.help ? 0 : 1);
   }
-  const start = new URL(/^https?:\/\//.test(args.url) ? args.url : `https://${args.url}`);
+  const start = normalizeUrl(args.url);
   const origin = start.origin;
-  const dir = path.resolve(args.out, start.host.replace(/[^a-z0-9.-]/gi, '_'));
+  const dir = path.resolve(args.out, safeName(start.host));
   await mkdir(dir, { recursive: true });
 
   const chromium = await loadChromium();
