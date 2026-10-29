@@ -1,10 +1,11 @@
 {
-  "name": "antiai",
+  "name": "anti-ai-skills",
   "version": "1.0.0",
   "description": "Skills that keep AI coding agents from writing and designing slop: copy, docs, commits, PRs, errors, and award-grade UI.",
   "type": "module",
   "bin": {
-    "antiai": "bin/antiai.mjs"
+    "anti-ai-skills": "bin/anti-ai.mjs",
+    "anti-ai": "bin/anti-ai.mjs"
   },
   "files": [
     "bin",

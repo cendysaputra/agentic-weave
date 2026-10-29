@@ -34,7 +34,7 @@ Bahasa Indonesia:
 ## Install
 
 ```bash
-npx antiai
+npx anti-ai-skills
 ```
 
 The installer asks where to install (Claude Code, the shared `.agents/skills` folder that Codex, Cursor, Gemini CLI, GitHub Copilot, and others read, or both), whether to install globally or into the current project, and which skills to add. Each skill's dependencies, such as `antiai-core`, are added automatically.
@@ -42,13 +42,13 @@ The installer asks where to install (Claude Code, the shared `.agents/skills` fo
 Without prompts:
 
 ```bash
-npx antiai install ui ui-id -t claude -y
-npx antiai install -t both -p -y
-npx antiai list
-npx antiai remove -y
+npx anti-ai-skills install ui ui-id -t claude -y
+npx anti-ai-skills install -t both -p -y
+npx anti-ai-skills list
+npx anti-ai-skills remove -y
 ```
 
-Update with `npx antiai@latest`. The same skills also install through the skills CLI (`npx skills add cendysaputra/anti-ai`), or by copying `antiai-core` plus the folders you need into `~/.claude/skills/` or `~/.agents/skills/`.
+After a global install (`npm i -g anti-ai-skills`) the command is also available as `anti-ai`. Update with `npx anti-ai-skills@latest`. The same skills also install through the skills CLI (`npx skills add cendysaputra/anti-ai`), or by copying `antiai-core` plus the folders you need into `~/.claude/skills/` or `~/.agents/skills/`.
 
 ## Publishing
 
