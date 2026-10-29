@@ -90,6 +90,10 @@ Motion explains (where something came from, what changed) or carries the one sig
 
 Text meets WCAG AA contrast, focus is visible, everything works by keyboard, markup is semantic, and non-essential motion respects `prefers-reduced-motion`.
 
+### R-43: Ship your own work
+
+Studying, snapshotting, or rebuilding someone else's page to learn from it is fine in private. What ships contains no other party's text, images, code, fonts, or brand without a license, and it does not read as their page with new colors.
+
 ## Structure and Checks (C)
 
 ### C-1: One change per summary line
@@ -130,4 +134,5 @@ Run this on every piece of text before handing it over, then run the checklist o
 - [ ] Errors and edge states say what happened and what to do next (R-26, R-27)
 - [ ] Formats and layout checked for the real locale and longest strings (R-03, C-2, C-4)
 - [ ] For UI: visual choices are decided, motion has a purpose, and the page is accessible, measured in a real browser (R-40, R-41, R-42, C-6)
+- [ ] Nothing shipped is another party's text, images, code, fonts, or brand (R-43)
 - [ ] The text still sounds like a person wrote it (R-37)
