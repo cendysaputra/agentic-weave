@@ -1,0 +1,30 @@
+{
+  "name": "antiai",
+  "version": "1.0.0",
+  "description": "Skills that keep AI coding agents from writing and designing slop: copy, docs, commits, PRs, errors, and award-grade UI.",
+  "type": "module",
+  "bin": {
+    "antiai": "bin/antiai.mjs"
+  },
+  "files": [
+    "bin",
+    "skills"
+  ],
+  "engines": {
+    "node": ">=18.17"
+  },
+  "keywords": [
+    "claude-code",
+    "agent-skills",
+    "skills",
+    "ai-slop",
+    "codex",
+    "cursor"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cendysaputra/anti-ai.git"
+  },
+  "homepage": "https://github.com/cendysaputra/anti-ai#readme",
+  "bugs": "https://github.com/cendysaputra/anti-ai/issues"
+}

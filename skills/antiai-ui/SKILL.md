@@ -1,6 +1,6 @@
 ---
 name: antiai-ui
-description: "Filters web UI that looks AI-generated and raises it to award-jury craft: default typefaces, purple-blue gradients, the stock hero-plus-three-cards landing page, default radius/shadow/blur, glassmorphism, fade-up-everything motion, and the second wave of 'tasteful' defaults (cream and terracotta, mono eyebrows, one italic accent word). Also covers the Awwwards rubric (Design 40, Usability 30, Creativity 20, Content 10), a crawler that extracts design decisions from reference websites, a concept and signature-moment workflow, Core Web Vitals, accessibility, and reduced motion. Use when designing, building, or reviewing a website, landing page, portfolio, or app UI. Load with antiai-core."
+description: "Filters web UI that looks AI-generated and raises it to award-jury craft: default typefaces, purple-blue gradients, the stock hero-plus-three-cards landing page, default radius/shadow/blur, glassmorphism, fade-up-everything motion, and the second wave of 'tasteful' defaults (cream and terracotta, mono eyebrows, one italic accent word). Also covers the Awwwards rubric (Design 40, Usability 30, Creativity 20, Content 10), a crawler that extracts design decisions from reference websites, an ATM workflow (Amati, Tiru, Modifikasi: snapshot a page, rebuild it to a similarity score, then pass an originality gate), a vetted library shortlist (GSAP, Lenis, Swup, Barba, Three.js, Rive, and more), a concept and signature-moment workflow, Core Web Vitals, accessibility, and reduced motion. Use when designing, building, or reviewing a website, landing page, portfolio, or app UI. Load with antiai-core."
 ---
 
 # antiai-ui
@@ -12,7 +12,7 @@ description: "Filters web UI that looks AI-generated and raises it to award-jury
 ## How to use this skill
 
 - Load together with `antiai-core` whenever the task produces or reviews a web page or app screen. Add `antiai-ui-id` for an Indonesian product and `antiai-copywriting-id` for Indonesian copy.
-- Work in order: **Reference sites** (when the user has them), then **Concept**, then **Art direction**, then build, then the tells below, then **Usability**, then the rubric self-score.
+- Work in order: **Reference sites** (when the user has them, optionally through **ATM**), then **Concept**, then **Art direction**, then build, then the tells below, then **Usability**, then the rubric self-score.
 - Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
 - A tell marks an unchosen default, not proof that AI wrote the code. A default you chose on purpose, can justify in one sentence, and apply consistently is not slop (R-37). The test is always: could this page belong to anyone?
 - The Delivery Gate in `antiai-core` remains the gate. The checklist at the end supplements it.
@@ -39,10 +39,10 @@ Options: `--pages N` (default 5, same origin, nav links first), `--out DIR` (def
 
 ### Copying the Surface
 
-- **Tell:** the new design reuses the reference's fonts, palette, layout, and signature interaction, so it reads as a clone.
-- **Why:** a derivative site loses the creativity score, and copying markup, copy, images, logos, or licensed fonts is infringement.
-- **Fix:** read the report and the screenshots, then write each finding as a decision and its reason ("display serif at 12vw so the type carries the brand"). Keep the reason, and make a new decision that fits this project's concept. Never copy markup, text, images, or the signature moment, and check a font's license before using the same face.
-- **Rule:** R-40.
+- **Tell:** the shipped design reuses the reference's fonts, palette, layout, and signature interaction, so it reads as a clone.
+- **Why:** a derivative site loses the creativity score, and shipping someone else's markup, copy, images, logos, or licensed fonts is infringement.
+- **Fix:** read the report and the screenshots, then write each finding as a decision and its reason ("display serif at 12vw so the type carries the brand"). Keep the reason, and make a new decision that fits this project's concept. Copying is allowed only as a private exercise inside the ATM workflow below, and nothing ships until its Modifikasi gate passes. Check a font's license before using the same face.
+- **Rule:** R-40, R-43.
 
 ### Importing the Reference's Defaults
 
@@ -57,6 +57,59 @@ Options: `--pages N` (default 5, same origin, nav links first), `--out DIR` (def
 - **Why:** the numbers are lab values from one unthrottled run. If the report warns that stylesheets or fonts failed, the type and color data show browser defaults.
 - **Fix:** use the numbers to compare, not as field data. When the report carries a load warning, check the screenshots and rerun from an unrestricted network before drawing conclusions.
 - **Rule:** C-6.
+
+## ATM: Amati, Tiru, Modifikasi
+
+Observe, imitate, modify: the way designers learn from a site they admire. Copy the page raw, rebuild it as closely as you can to learn how it works, then change it until it is your own. Each step has a script, so "close" and "your own" are measured, not guessed.
+
+| Step | Goal | Script | Output |
+| --- | --- | --- | --- |
+| Amati | Save a raw local copy and study it | `snapshot-site.mjs` and `crawl-reference.mjs` | `atm/<host>/<page>/original/` and `reference-crawl/<host>/` |
+| Tiru | Rebuild it in your own project until it matches | `compare-build.mjs --mode tiru` | similarity scores and red diff images |
+| Modifikasi | Turn the rebuild into your site | `compare-build.mjs --mode modifikasi` | PASS, or exit code 2 with what still belongs to the original |
+
+```bash
+node <skill-dir>/scripts/snapshot-site.mjs https://reference.example/work
+node <skill-dir>/scripts/crawl-reference.mjs https://reference.example --pages 3
+node <skill-dir>/scripts/compare-build.mjs --original atm/reference.example/work --build build/index.html --mode tiru
+node <skill-dir>/scripts/compare-build.mjs --original atm/reference.example/work --build http://localhost:4321 --mode modifikasi
+```
+
+**Amati.** `snapshot-site.mjs` loads the page in Chromium, scrolls it so lazy content loads, and saves:
+
+- `index.html`: the rendered DOM with scripts removed, so it opens offline as a stable static copy.
+- `index.live.html`: the server HTML with scripts kept, for studying behavior. It may not run offline.
+- `assets/`, holding every CSS, JS, image, font, and media file it loaded. Image and font URLs referenced only in CSS (other breakpoints, hover states) are fetched too, and every URL is rewritten to the local copy.
+- `manifest.json`, mapping each URL to its local path, type, and hash.
+- Desktop and mobile screenshots.
+
+Options: `--out DIR` (default `atm/`), `--max-mb N` total asset budget (default 150), `--ignore-robots` (only for a site the user owns). Read the copy in DevTools: the grid, the type scale, how the signature moment is built. Run the crawler on the same site for the measured report.
+
+**Tiru.** Rebuild the page in the project's own stack and code, not by editing the snapshot. Writing it yourself is where the learning happens, and it keeps the original's code out of the project. Use the snapshot as the visual target and run `--mode tiru` after each pass. It renders both pages at desktop and mobile and reports:
+
+- **Layout similarity:** 16px blocks compared, so it measures composition.
+- **Pixel similarity:** exact rendering.
+- **Height drift** between the two pages.
+- **Diff images:** `diff-*.png` marks every differing region in red.
+
+Aim for 90% layout similarity on the desktop fold before moving on; the remaining red is usually font rendering and image crops.
+
+**Modifikasi.** Change the rebuild into this project's site: its concept, content, brand, imagery, and type, keeping the structural lessons. `--mode modifikasi` fails (exit code 2) while any of these remain:
+
+- More than 5% of the original's phrases (20+ characters) reappear in the build's text (`--max-text-reuse`).
+- Any image, font, media file, or stylesheet is byte-identical to the original or to its snapshot copy.
+- Any request still goes to the original host.
+- The original brand name, taken from its title and domain, appears in the build.
+- The desktop fold is still 90% or more similar in layout (`--max-similarity`). From 75%, it warns that the page still reads as the original.
+
+Sharing a font family with the original raises a warning to check the license. Treat passing the gate as the minimum: the page still has to pass the silhouette test and the rest of this skill.
+
+### Shipping the Copy
+
+- **Tell:** deploying the snapshot or the Tiru rebuild, committing `atm/` to the repo, or "modifying" only the colors and the logo.
+- **Why:** the copy is someone else's work, and a recolor is still their page. It is infringement, Awwwards rejects it as derivative, and it is the most generic outcome possible.
+- **Fix:** add `atm/` and `reference-crawl/` to `.gitignore`. Ship only a build that passes `--mode modifikasi` and the UI checklist. Never snapshot pages behind a login or a paywall.
+- **Rule:** R-43, R-40.
 
 ## Concept
 
@@ -231,6 +284,17 @@ Options: `--pages N` (default 5, same origin, nav links first), `--out DIR` (def
 - **Fix:** gate non-essential motion behind `prefers-reduced-motion: no-preference`, and give the signature moment a still or crossfade equivalent.
 - **Rule:** R-41, R-42.
 
+## Libraries
+
+Choose tools after the concept, from the shortlist in `references/libraries.md`: animation (GSAP, Motion, anime.js), scroll (Lenis, Locomotive Scroll, CSS scroll-driven animations), page transitions (View Transitions, Swup, Taxi.js, Barba.js), text splitting (GSAP SplitText), 3D and canvas (Three.js, React Three Fiber, TresJS, OGL, PixiJS, Spline), and vector animation (Rive, dotLottie). It lists versions, when each fits, starting stacks per site type, and a Lenis + GSAP + reduced-motion setup.
+
+### Library Soup
+
+- **Tell:** GSAP and Motion in one bundle, Barba next to Swup, AOS fade-ups on top of ScrollTrigger, a Spline scene for a spinning logo.
+- **Why:** overlapping libraries fight over the same frames and bloat the bundle, and preset packs produce the stock-effect tells.
+- **Fix:** native CSS and browser APIs first, then one library per job, each with a reduced-motion path and cleanup on navigation.
+- **Rule:** R-41, C-6.
+
 ## Content and Imagery
 
 ### Placeholder Content
@@ -293,6 +357,8 @@ Write the score for each, the three changes that would raise it most, and whethe
 Run these alongside the Delivery Gate in `antiai-core`. Every line below must be true:
 
 - [ ] Reference sites, if any, were crawled and studied for decisions, not copied (R-40)
+- [ ] If ATM was used: `compare-build.mjs --mode modifikasi` passes, and `atm/` is not committed or deployed (R-43)
+- [ ] One library per job from `references/libraries.md`, native first, each with a reduced-motion path (R-41)
 - [ ] A one-sentence concept exists, and type, color, layout, and motion trace back to it (R-40)
 - [ ] The page passes the silhouette test; it could not belong to anyone else (R-40)
 - [ ] One signature moment, with mobile and reduced-motion versions; other effects stay quiet (R-40, R-41)

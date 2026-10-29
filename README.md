@@ -8,7 +8,10 @@ Start with [`antiai-core`](skills/antiai-core/SKILL.md). It defines the numbered
 
 Interfaces:
 
-- [`antiai-ui`](skills/antiai-ui/SKILL.md): web and app UI that looks generated (default fonts, purple gradients, stock landing-page layout, preset motion), raised to Awwwards jury craft: concept, signature moment, Core Web Vitals, accessibility, and a rubric self-score. Includes a reference-site crawler (`scripts/crawl-reference.mjs`, needs Playwright) that reports a site's type, palette, motion stack, performance, and accessibility, with screenshots.
+- [`antiai-ui`](skills/antiai-ui/SKILL.md): web and app UI that looks generated (default fonts, purple gradients, stock landing-page layout, preset motion), raised to Awwwards jury craft: concept, signature moment, Core Web Vitals, accessibility, and a rubric self-score. Its scripts need Playwright (`npm i -D playwright && npx playwright install chromium`):
+  - `crawl-reference.mjs` reports a reference site's type, palette, motion stack, performance, and accessibility, with screenshots.
+  - `snapshot-site.mjs` and `compare-build.mjs` run ATM (Amati, Tiru, Modifikasi). They save a raw local copy of a page, score a rebuild's similarity, then gate the modified version on originality: no reused text, assets, or brand.
+  - `references/libraries.md` is a vetted shortlist of animation, scroll, transition, 3D, and vector libraries (GSAP, Lenis, Swup, Barba.js, Three.js, Rive, and more).
 
 Writing for people:
 
@@ -31,7 +34,29 @@ Bahasa Indonesia:
 ## Install
 
 ```bash
-npx skills add cendysaputra/anti-ai
+npx antiai
 ```
 
-Or copy `antiai-core` plus the skill folders you need into your skills directory, for example `~/.claude/skills/<name>/` or `~/.agents/skills/<name>/`.
+The installer asks where to install (Claude Code, the shared `.agents/skills` folder that Codex, Cursor, Gemini CLI, GitHub Copilot, and others read, or both), whether to install globally or into the current project, and which skills to add. Each skill's dependencies, such as `antiai-core`, are added automatically.
+
+Without prompts:
+
+```bash
+npx antiai install ui ui-id -t claude -y
+npx antiai install -t both -p -y
+npx antiai list
+npx antiai remove -y
+```
+
+Update with `npx antiai@latest`. The same skills also install through the skills CLI (`npx skills add cendysaputra/anti-ai`), or by copying `antiai-core` plus the folders you need into `~/.claude/skills/` or `~/.agents/skills/`.
+
+## Publishing
+
+```bash
+npm login
+npm version patch
+npm publish
+git push --follow-tags
+```
+
+`npm version` bumps `package.json` and creates a git tag. Publishing needs npm two-factor authentication.
