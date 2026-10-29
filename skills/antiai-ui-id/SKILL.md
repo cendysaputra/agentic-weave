@@ -1,14 +1,19 @@
+---
+name: antiai-ui-id
+description: "Catches Indonesian UI localization slop: dollar or US-format prices instead of Rupiah, US number/date/time formats, foreign phone and address masks, translation overflow, half-translated strings, and non-localized placeholder data. Use when building or editing an Indonesian interface. Load with antiai-core."
+---
+
 # antiai-ui-id
 
 > Anti Slop: Rules for AI Coding Agents. Indonesian UI localization skill
 
-> Part of the antiai system. Read together with `antiai.md` (the core) and `antiai-ui`. This skill deep-dives Indonesian UI localization: currency, numbers, dates, time, phone, address, and the overflow that translation causes. It references core rules by number and never duplicates or renumbers them. Load it when the task builds or edits an Indonesian interface.
+> Part of the antiai system. Read together with `antiai-core`. This skill deep-dives Indonesian UI localization: currency, numbers, dates, time, phone, address, and the overflow that translation causes. It references core rules by number and never duplicates or renumbers them. Load it when the task builds or edits an Indonesian interface.
 
 ## How to use this skill
 
-- Load together with `antiai.md` and `antiai-ui` whenever the task is an Indonesian product or interface.
+- Load together with `antiai-core` whenever the task is an Indonesian product or interface.
 - Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
-- The Delivery Gate in the core remains the gate. The checklist at the end supplements it.
+- The Delivery Gate in `antiai-core` remains the gate. The checklist at the end supplements it.
 
 ## Localization: Indonesia
 
@@ -54,16 +59,18 @@ Indonesian products follow local conventions for currency, numbers, dates, and t
 - **Tell:** a mix of Indonesian and English in the interface: "Kirim Sekarang" next to "Submit", "Keluar" next to "Log out", error messages split between the two languages.
 - **Why:** a half-translated screen is the visible trace of a template that was never finished. It reads as generated and confuses the user about what each control does.
 - **Fix:** pick one language per screen and hold it. If the product is bilingual by design, that is a deliberate language toggle, not a mix (R-31). Translate the whole string set, including empty, loading, and error states (R-27).
+- **Rule:** R-27, R-31.
 
 ### Localized Placeholder Data
 
 - **Tell:** mock data that still uses `John Doe`, `johndoe@example.com`, `$1,234.56`, or US dates in an Indonesian product.
 - **Why:** the filler belongs to nobody, and a foreign name or currency inside an Indonesian screen makes the fabrication twice as visible.
 - **Fix:** placeholders follow the same localization as real content: `Budi Santoso`, `nama@email.com`, `Rp1.234.000`, `17/08/2025`, or an honest `[REAL DATA]` (R-23, R-38).
+- **Rule:** R-23, R-38.
 
 ## UI-ID Skill Checklist
 
-Run these alongside the core Delivery Gate. Every line below must be true:
+Run these alongside the Delivery Gate in `antiai-core`. Every line below must be true:
 
 - [ ] Currency formatted as Rupiah (`Rp1.500.000`), never `$` or `USD` (R-31, C-2)
 - [ ] Numbers use dot thousands and comma decimals; percent has no space before the sign (R-31)
