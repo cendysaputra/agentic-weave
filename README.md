@@ -8,7 +8,7 @@ Start with [`antiai-core`](skills/antiai-core/SKILL.md). It defines the numbered
 
 Interfaces:
 
-- [`antiai-ui`](skills/antiai-ui/SKILL.md): web and app UI that looks generated (default fonts, purple gradients, stock landing-page layout, preset motion), raised to Awwwards jury craft: concept, signature moment, Core Web Vitals, accessibility, and a rubric self-score.
+- [`antiai-ui`](skills/antiai-ui/SKILL.md): web and app UI that looks generated (default fonts, purple gradients, stock landing-page layout, preset motion), raised to Awwwards jury craft: concept, signature moment, Core Web Vitals, accessibility, and a rubric self-score. Includes a reference-site crawler (`scripts/crawl-reference.mjs`, needs Playwright) that reports a site's type, palette, motion stack, performance, and accessibility, with screenshots.
 
 Writing for people:
 
