@@ -1,12 +1,12 @@
-# antislop-copywriting-id
+# antiai-copywriting-id
 
 > Anti Slop: Rules for AI Coding Agents. Bahasa Indonesia copy skill
 
-> Part of the antislop system. Read together with `antislop.md` (the core) and `antislop-copywriting`. This skill deep-dives the Bahasa Indonesia copy concern: the AI tells that only appear in Indonesian text. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits Indonesian copy.
+> Part of the antiai system. Read together with `antiai.md` (the core) and `antiai-copywriting`. This skill deep-dives the Bahasa Indonesia copy concern: the AI tells that only appear in Indonesian text. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits Indonesian copy.
 
 ## How to use this skill
 
-- Load together with `antislop.md` and `antislop-copywriting` whenever the task is Indonesian copy or text work.
+- Load together with `antiai.md` and `antiai-copywriting` whenever the task is Indonesian copy or text work.
 - Every entry has the same shape: **The pattern** / **Why it reads as AI** / **Before** / **After**, with the governing core rule cited as R-XX.
 - Two rules apply to everything below: never invent facts (R-17, R-36, R-38), and do not over-sterilize (R-37). Indonesian reads about 20-30% longer than English, so wordiness is the default enemy.
 - The Delivery Gate in the core remains the gate. The checklist at the end supplements it.

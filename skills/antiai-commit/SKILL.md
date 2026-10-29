@@ -1,12 +1,12 @@
-# antislop-commit
+# antiai-commit
 
 > Anti Slop: Rules for AI Coding Agents. Commit message skill
 
-> Part of the antislop system. Read together with `antislop.md` (the core). This skill filters commit messages that read as generically AI, and preserves a history you can actually read and bisect. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or reviews commit messages.
+> Part of the antiai system. Read together with `antiai.md` (the core). This skill filters commit messages that read as generically AI, and preserves a history you can actually read and bisect. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or reviews commit messages.
 
 ## How to use this skill
 
-- Load together with `antislop.md` whenever the task touches commit messages.
+- Load together with `antiai.md` whenever the task touches commit messages.
 - Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
 - Scope guardrail: this skill governs the message, never the diff.
 - The Delivery Gate in the core remains the gate. The checklist at the end supplements it.
