@@ -1,17 +1,17 @@
 ---
 name: antiai-ui-id
-description: "Catches Indonesian UI localization slop: dollar or US-format prices instead of Rupiah, US number/date/time formats, foreign phone and address masks, translation overflow, half-translated strings, and non-localized placeholder data. Use when building or editing an Indonesian interface. Load with antiai-core."
+description: "Catches Indonesian UI localization slop: dollar or US-format prices instead of Rupiah, US number/date/time formats, foreign phone and address masks, translation overflow, half-translated strings, and non-localized placeholder data. Use when building or editing an Indonesian interface. Load with antiai-core and antiai-ui."
 ---
 
 # antiai-ui-id
 
 > Anti Slop: Rules for AI Coding Agents. Indonesian UI localization skill
 
-> Part of the antiai system. Read together with `antiai-core`. This skill deep-dives Indonesian UI localization: currency, numbers, dates, time, phone, address, and the overflow that translation causes. It references core rules by number and never duplicates or renumbers them. Load it when the task builds or edits an Indonesian interface.
+> Part of the antiai system. Read together with `antiai-core` and `antiai-ui`. This skill deep-dives Indonesian UI localization: currency, numbers, dates, time, phone, address, and the overflow that translation causes. It references core rules by number and never duplicates or renumbers them. Load it when the task builds or edits an Indonesian interface.
 
 ## How to use this skill
 
-- Load together with `antiai-core` whenever the task is an Indonesian product or interface.
+- Load together with `antiai-core` and `antiai-ui` whenever the task is an Indonesian product or interface.
 - Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
 - The Delivery Gate in `antiai-core` remains the gate. The checklist at the end supplements it.
 
