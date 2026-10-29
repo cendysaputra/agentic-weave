@@ -1,19 +1,19 @@
 ---
 name: antiai-docs
-description: "Filters READMEs, wikis, and documentation that read as AI-generated: chat-leak openers, knowledge-cutoff disclaimers, sycophantic tone, template skeletons, emoji headings, buzzword feature lists, and actorless passive. Use when writing or editing documentation. Load with the antiai core (antiai.md)."
+description: "Filters READMEs, wikis, and documentation that read as AI-generated: chat-leak openers, knowledge-cutoff disclaimers, sycophantic tone, template skeletons, emoji headings, buzzword feature lists, and actorless passive. Use when writing or editing documentation. Load with antiai-core."
 ---
 
 # antiai-docs
 
 > Anti Slop: Rules for AI Coding Agents. Documentation skill
 
-> Part of the antiai system. Read together with `antiai.md` (the core). This skill filters READMEs, wikis, and docs that read as generically AI: chat leaks, cutoff disclaimers, sycophantic tone, emoji, and template structure. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits documentation.
+> Part of the antiai system. Read together with `antiai-core`. This skill filters READMEs, wikis, and docs that read as generically AI: chat leaks, cutoff disclaimers, sycophantic tone, emoji, and template structure. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits documentation.
 
 ## How to use this skill
 
-- Load together with `antiai.md` whenever the task touches a README, docs page, or wiki.
+- Load together with `antiai-core` whenever the task touches a README, docs page, or wiki.
 - Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
-- The Delivery Gate in the core remains the gate. The checklist at the end supplements it.
+- The Delivery Gate in `antiai-core` remains the gate. The checklist at the end supplements it.
 
 ## Chat Leaks
 
@@ -79,7 +79,7 @@ description: "Filters READMEs, wikis, and documentation that read as AI-generate
 
 ## Docs Skill Checklist
 
-Run these alongside the core Delivery Gate. Every line below must be true:
+Run these alongside the Delivery Gate in `antiai-core`. Every line below must be true:
 
 - [ ] No conversational openers ("Certainly!", "Great question!", "Here's how") in the doc (R-02)
 - [ ] No cutoff disclaimers or knowledge hedges; facts are versioned instead (R-36, C-5)

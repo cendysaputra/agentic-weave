@@ -4,6 +4,8 @@ Skills that catch AI slop in text an agent writes. One skill per concern, in `sk
 
 ## Skills
 
+Start with [`antiai-core`](skills/antiai-core/SKILL.md). It defines the numbered rules (R-XX for wording, C-X for structure and checks) and the Delivery Gate that every other skill cites. Load it alongside whichever skill fits the task.
+
 Writing for people:
 
 - [`antiai-chat`](skills/antiai-chat/SKILL.md): assistant and agent replies (canned openers and closers, sycophancy, over-apologizing, hedging).
@@ -19,12 +21,8 @@ Version control:
 
 Bahasa Indonesia:
 
-- [`antiai-copywriting-id`](skills/antiai-copywriting-id/SKILL.md): Indonesian copywriting tells. Load with `antiai-copywriting`.
-- [`antiai-ui-id`](skills/antiai-ui-id/SKILL.md): Indonesian UI localization (Rupiah, numbers, dates, time, phone, address, translation overflow). Load with `antiai-ui`.
-
-## Dependencies
-
-Every skill depends on the antiai core (`antiai.md`), which defines the numbered rules (R-XX, C-X) and the Delivery Gate. The skills cite those rules by number and do not bundle the core. `antiai-copywriting` and `antiai-ui` are also part of the core set and are not in this repository.
+- [`antiai-copywriting-id`](skills/antiai-copywriting-id/SKILL.md): Indonesian copywriting tells.
+- [`antiai-ui-id`](skills/antiai-ui-id/SKILL.md): Indonesian UI localization (Rupiah, numbers, dates, time, phone, address, translation overflow).
 
 ## Install
 
@@ -32,4 +30,4 @@ Every skill depends on the antiai core (`antiai.md`), which defines the numbered
 npx skills add cendysaputra/anti-ai
 ```
 
-Or copy a skill folder into your skills directory, for example `~/.claude/skills/<name>/` or `~/.agents/skills/<name>/`.
+Or copy `antiai-core` plus the skill folders you need into your skills directory, for example `~/.claude/skills/<name>/` or `~/.agents/skills/<name>/`.

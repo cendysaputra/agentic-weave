@@ -1,19 +1,19 @@
 ---
 name: antiai-email
-description: "Filters email and notification copy that reads as AI-generated: generic or clickbait subjects, signposting openers, buzzword bodies, empty CTAs, canned closers, and emoji. Use when writing or editing emails, in-app notifications, or transactional messages. Load with the antiai core (antiai.md)."
+description: "Filters email and notification copy that reads as AI-generated: generic or clickbait subjects, signposting openers, buzzword bodies, empty CTAs, canned closers, and emoji. Use when writing or editing emails, in-app notifications, or transactional messages. Load with antiai-core."
 ---
 
 # antiai-email
 
 > Anti Slop: Rules for AI Coding Agents. Email and notification skill
 
-> Part of the antiai system. Read together with `antiai.md` (the core). This skill filters email and notification copy that reads as generically AI. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits emails or in-app notifications.
+> Part of the antiai system. Read together with `antiai-core`. This skill filters email and notification copy that reads as generically AI. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits emails or in-app notifications.
 
 ## How to use this skill
 
-- Load together with `antiai.md` whenever the task is an email, notification, or transactional message.
+- Load together with `antiai-core` whenever the task is an email, notification, or transactional message.
 - Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
-- The Delivery Gate in the core remains the gate. The checklist at the end supplements it.
+- The Delivery Gate in `antiai-core` remains the gate. The checklist at the end supplements it.
 
 ## Subject Lines
 
@@ -72,7 +72,7 @@ description: "Filters email and notification copy that reads as AI-generated: ge
 
 ## Email Skill Checklist
 
-Run these alongside the core Delivery Gate. Every line below must be true:
+Run these alongside the Delivery Gate in `antiai-core`. Every line below must be true:
 
 - [ ] The subject names the specific event or value, not a generic label (R-15)
 - [ ] No clickbait or drama subjects (R-36)

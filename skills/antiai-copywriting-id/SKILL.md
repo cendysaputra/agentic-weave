@@ -1,20 +1,20 @@
 ---
 name: antiai-copywriting-id
-description: "Filters Bahasa Indonesia copy that reads as AI-generated: empty vocabulary (dapat, secara, solusi, optimal), nominalisasi, \"tak hanya... tetapi juga\", signposting, chatbot closers, English buzzword mixing, and em dashes, while keeping natural particles and local detail. Use when writing or editing Indonesian copy. Load with the antiai core (antiai.md) and antiai-copywriting."
+description: "Filters Bahasa Indonesia copy that reads as AI-generated: empty vocabulary (dapat, secara, solusi, optimal), nominalisasi, \"tak hanya... tetapi juga\", signposting, chatbot closers, English buzzword mixing, and em dashes, while keeping natural particles and local detail. Use when writing or editing Indonesian copy. Load with antiai-core."
 ---
 
 # antiai-copywriting-id
 
 > Anti Slop: Rules for AI Coding Agents. Bahasa Indonesia copy skill
 
-> Part of the antiai system. Read together with `antiai.md` (the core) and `antiai-copywriting`. This skill deep-dives the Bahasa Indonesia copy concern: the AI tells that only appear in Indonesian text. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits Indonesian copy.
+> Part of the antiai system. Read together with `antiai-core`. This skill deep-dives the Bahasa Indonesia copy concern: the AI tells that only appear in Indonesian text. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits Indonesian copy.
 
 ## How to use this skill
 
-- Load together with `antiai.md` and `antiai-copywriting` whenever the task is Indonesian copy or text work.
+- Load together with `antiai-core` whenever the task is Indonesian copy or text work.
 - Every entry has the same shape: **The pattern** / **Why it reads as AI** / **Before** / **After**, with the governing core rule cited as R-XX.
 - Two rules apply to everything below: never invent facts (R-17, R-36, R-38), and do not over-sterilize (R-37). Indonesian reads about 20-30% longer than English, so wordiness is the default enemy.
-- The Delivery Gate in the core remains the gate. The checklist at the end supplements it.
+- The Delivery Gate in `antiai-core` remains the gate. The checklist at the end supplements it.
 
 ## Tone & Voice
 
@@ -130,7 +130,7 @@ description: "Filters Bahasa Indonesia copy that reads as AI-generated: empty vo
 
 ## Copywriting-ID Skill Checklist
 
-Run these alongside the core Delivery Gate. Every line below must be true:
+Run these alongside the Delivery Gate in `antiai-core`. Every line below must be true:
 
 - [ ] No fabricated numbers, names, dates, or claims in the Indonesian copy (R-17, R-18, R-36, R-38)
 - [ ] Empty Indonesian AI vocabulary (dapat/secara/serta, dengan mudah, solusi, optimal) replaced with specific language (R-16)

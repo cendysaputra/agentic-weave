@@ -1,19 +1,19 @@
 ---
 name: antiai-error
-description: "Filters error messages, validation text, and log lines that read as AI-generated: apologetic or vague errors, errors with no next action, chat leaks in logs, and narrative log lines. Use when writing or editing error handling, exceptions, validation feedback, or log output. Load with the antiai core (antiai.md)."
+description: "Filters error messages, validation text, and log lines that read as AI-generated: apologetic or vague errors, errors with no next action, chat leaks in logs, and narrative log lines. Use when writing or editing error handling, exceptions, validation feedback, or log output. Load with antiai-core."
 ---
 
 # antiai-error
 
 > Anti Slop: Rules for AI Coding Agents. Error message and log skill
 
-> Part of the antiai system. Read together with `antiai.md` (the core). This skill filters error messages, log lines, and validation text that read as generically AI: apologetic, vague, or theatrical. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits error handling.
+> Part of the antiai system. Read together with `antiai-core`. This skill filters error messages, log lines, and validation text that read as generically AI: apologetic, vague, or theatrical. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits error handling.
 
 ## How to use this skill
 
-- Load together with `antiai.md` whenever the task touches error messages, exceptions, log output, or validation feedback.
+- Load together with `antiai-core` whenever the task touches error messages, exceptions, log output, or validation feedback.
 - Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
-- The Delivery Gate in the core remains the gate. The checklist at the end supplements it.
+- The Delivery Gate in `antiai-core` remains the gate. The checklist at the end supplements it.
 
 ## Error Messages
 
@@ -56,7 +56,7 @@ description: "Filters error messages, validation text, and log lines that read a
 
 ## Error Skill Checklist
 
-Run these alongside the core Delivery Gate. Every line below must be true:
+Run these alongside the Delivery Gate in `antiai-core`. Every line below must be true:
 
 - [ ] No apologetic or theatrical error messages (R-02)
 - [ ] Every error names what failed and the next action, with no "Something went wrong" (R-26, R-27)

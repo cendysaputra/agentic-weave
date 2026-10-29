@@ -1,19 +1,19 @@
 ---
 name: antiai-chat
-description: "Filters assistant and agent replies that read as AI-generated: canned openers and closers, sycophancy, over-apologizing, stacked hedges, signposting, forced lists, and decorative emoji. Use when writing or editing a chat reply, support answer, or any conversational output for a person. Load with the antiai core (antiai.md)."
+description: "Filters assistant and agent replies that read as AI-generated: canned openers and closers, sycophancy, over-apologizing, stacked hedges, signposting, forced lists, and decorative emoji. Use when writing or editing a chat reply, support answer, or any conversational output for a person. Load with antiai-core."
 ---
 
 # antiai-chat
 
 > Anti Slop: Rules for AI Coding Agents. Chat response skill
 
-> Part of the antiai system. Read together with `antiai.md` (the core). This skill filters agent and assistant responses that read as generically AI: canned openers, closers, and the praise-and-apology loop. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits an assistant's reply.
+> Part of the antiai system. Read together with `antiai-core`. This skill filters agent and assistant responses that read as generically AI: canned openers, closers, and the praise-and-apology loop. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits an assistant's reply.
 
 ## How to use this skill
 
-- Load together with `antiai.md` whenever the task is an assistant or agent reply, a support answer, or any conversational output meant for a person.
+- Load together with `antiai-core` whenever the task is an assistant or agent reply, a support answer, or any conversational output meant for a person.
 - Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
-- The Delivery Gate in the core remains the gate. The checklist at the end supplements it.
+- The Delivery Gate in `antiai-core` remains the gate. The checklist at the end supplements it.
 
 ## Openers
 
@@ -88,7 +88,7 @@ description: "Filters assistant and agent replies that read as AI-generated: can
 
 ## Chat Skill Checklist
 
-Run these alongside the core Delivery Gate. Every line below must be true:
+Run these alongside the Delivery Gate in `antiai-core`. Every line below must be true:
 
 - [ ] No canned openers ("Certainly!", "Great question!") or fake-candid openers ("Honestly?") (R-36)
 - [ ] No canned closers ("I hope this helps!", "Let me know if you have questions") (R-36)

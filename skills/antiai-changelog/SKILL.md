@@ -1,19 +1,19 @@
 ---
 name: antiai-changelog
-description: "Filters changelogs and release notes that read as AI-generated: generic entries, emoji category markers, marketing-speak, missing version/date, and empty template sections. Use when writing or editing a CHANGELOG, release notes, or version history. Load with the antiai core (antiai.md)."
+description: "Filters changelogs and release notes that read as AI-generated: generic entries, emoji category markers, marketing-speak, missing version/date, and empty template sections. Use when writing or editing a CHANGELOG, release notes, or version history. Load with antiai-core."
 ---
 
 # antiai-changelog
 
 > Anti Slop: Rules for AI Coding Agents. Changelog skill
 
-> Part of the antiai system. Read together with `antiai.md` (the core). This skill filters changelogs and release notes that read as generically AI. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits a changelog or release notes.
+> Part of the antiai system. Read together with `antiai-core`. This skill filters changelogs and release notes that read as generically AI. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits a changelog or release notes.
 
 ## How to use this skill
 
-- Load together with `antiai.md` whenever the task is a changelog, release notes, or version history.
+- Load together with `antiai-core` whenever the task is a changelog, release notes, or version history.
 - Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
-- The Delivery Gate in the core remains the gate. The checklist at the end supplements it.
+- The Delivery Gate in `antiai-core` remains the gate. The checklist at the end supplements it.
 
 ## Entries
 
@@ -56,7 +56,7 @@ description: "Filters changelogs and release notes that read as AI-generated: ge
 
 ## Changelog Skill Checklist
 
-Run these alongside the core Delivery Gate. Every line below must be true:
+Run these alongside the Delivery Gate in `antiai-core`. Every line below must be true:
 
 - [ ] Every entry names a specific change, with no "bug fixes and improvements" (R-31)
 - [ ] No emoji category markers (R-04)

@@ -1,20 +1,20 @@
 ---
 name: antiai-pr
-description: "Filters pull request descriptions and code review comments that read as AI-generated: generic subjects, template body skeletons, chat leaks, self-congratulation, sycophantic or vague review comments, and over-apologizing. Use when writing or reviewing a PR. Load with the antiai core (antiai.md) and antiai-commit."
+description: "Filters pull request descriptions and code review comments that read as AI-generated: generic subjects, template body skeletons, chat leaks, self-congratulation, sycophantic or vague review comments, and over-apologizing. Use when writing or reviewing a PR. Load with antiai-core and antiai-commit."
 ---
 
 # antiai-pr
 
 > Anti Slop: Rules for AI Coding Agents. PR and code review skill
 
-> Part of the antiai system. Read together with `antiai.md` (the core) and `antiai-commit`. This skill filters PR descriptions and code review comments that read as generically AI. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or reviews a pull request.
+> Part of the antiai system. Read together with `antiai-core` and `antiai-commit`. This skill filters PR descriptions and code review comments that read as generically AI. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or reviews a pull request.
 
 ## How to use this skill
 
-- Load together with `antiai.md` whenever the task touches a PR description or review comment.
+- Load together with `antiai-core` and `antiai-commit` whenever the task touches a PR description or review comment.
 - Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
 - Scope guardrail: this skill governs the description and the review words, never the diff.
-- The Delivery Gate in the core remains the gate. The checklist at the end supplements it.
+- The Delivery Gate in `antiai-core` remains the gate. The checklist at the end supplements it.
 
 ## PR Descriptions
 
@@ -71,7 +71,7 @@ description: "Filters pull request descriptions and code review comments that re
 
 ## PR Skill Checklist
 
-Run these alongside the core Delivery Gate. Every line below must be true:
+Run these alongside the Delivery Gate in `antiai-core`. Every line below must be true:
 
 - [ ] The PR subject names a specific change, not a generic verb (R-31)
 - [ ] The body describes what changed, why, and what to test, with no empty template sections (R-05, C-3)
