@@ -59,12 +59,14 @@ Indonesian products follow local conventions for currency, numbers, dates, and t
 - **Tell:** a mix of Indonesian and English in the interface: "Kirim Sekarang" next to "Submit", "Keluar" next to "Log out", error messages split between the two languages.
 - **Why:** a half-translated screen is the visible trace of a template that was never finished. It reads as generated and confuses the user about what each control does.
 - **Fix:** pick one language per screen and hold it. If the product is bilingual by design, that is a deliberate language toggle, not a mix (R-31). Translate the whole string set, including empty, loading, and error states (R-27).
+- **Rule:** R-27, R-31.
 
 ### Localized Placeholder Data
 
 - **Tell:** mock data that still uses `John Doe`, `johndoe@example.com`, `$1,234.56`, or US dates in an Indonesian product.
 - **Why:** the filler belongs to nobody, and a foreign name or currency inside an Indonesian screen makes the fabrication twice as visible.
 - **Fix:** placeholders follow the same localization as real content: `Budi Santoso`, `nama@email.com`, `Rp1.234.000`, `17/08/2025`, or an honest `[REAL DATA]` (R-23, R-38).
+- **Rule:** R-23, R-38.
 
 ## UI-ID Skill Checklist
 

@@ -32,24 +32,28 @@ Commit messages are user-facing text the same way copy is. A commit that reads l
 - **Tell:** `✨ feat: ...`, `🐛 fix: ...`, `🔥 ...`, `🚀 ...` leading every commit.
 - **Why:** emoji is the same decorative noise in commits as it is in code comments and UI text; it carries no information the type line already carries.
 - **Fix:** drop the emoji. If a type prefix helps, use a plain conventional-commit type (`fix:`, `feat:`, `docs:`, `test:`, `chore:`) and put the meaning in the words, not the glyph.
+- **Rule:** R-04.
 
 ### Buzzword Subjects
 
 - **Tell:** `optimize`, `enhance`, `streamline`, `refactor code for better performance`, `improve UX`, `make it more robust`, with no detail.
 - **Why:** these are the commit-message form of AI buzzwords: a claim with no named change, so the reader cannot tell what happened.
 - **Fix:** name the concrete change and, when it matters, why: `fix: cache the report query so the dashboard loads under 1s`.
+- **Rule:** R-16, R-31.
 
 ### Vague and Over-Explained Bodies
 
 - **Tell:** on one end, a body that only repeats the subject ("This commit updates the code."); on the other, a multi-paragraph body narrating every edit with reasons, history, and issue numbers.
 - **Why:** both are filler. A body earns its place when it carries information the subject does not: the non-obvious why, a migration note, a breaking change.
 - **Fix:** keep the body to one or two lines only when they add a real fact. Drop the rest. If the subject already says it, no body.
+- **Rule:** R-31.
 
 ## Commit Skill Checklist
 
 Run these alongside the core Delivery Gate. Every line below must be true:
 
 - [ ] Every subject names a specific change, not a generic verb (R-31)
-- [ ] No emoji or decorative prefixes (R-31)
+- [ ] No emoji or decorative prefixes (R-04)
+- [ ] No buzzword subjects (optimize, enhance, streamline) without the named change (R-16)
 - [ ] The subject is a short imperative (or conventional `type: subject`), not a sentence (C-1)
 - [ ] The body adds a fact the subject does not already carry, in one or two lines at most (R-31)
