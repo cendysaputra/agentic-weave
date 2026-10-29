@@ -3,10 +3,10 @@
 // directory of Claude Code and/or the shared .agents/skills directory that
 // Codex, Cursor, Gemini CLI, GitHub Copilot, and other agents read.
 //
-//   npx antiai                      interactive install
-//   npx antiai install [skills...]  install, with -t, -p, -y for no prompts
-//   npx antiai list                 list skills in this package
-//   npx antiai remove [skills...]   remove installed anti-ai skills
+//   npx anti-ai-skills                      interactive install
+//   npx anti-ai-skills install [skills...]  install, with -t, -p, -y for no prompts
+//   npx anti-ai-skills list                 list skills in this package
+//   npx anti-ai-skills remove [skills...]   remove installed anti-ai skills
 
 import { cp, mkdir, readdir, readFile, rm, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
@@ -103,10 +103,10 @@ function parseArgs(argv) {
 
 function help() {
   console.log(`${c.bold('Usage')}
-  npx antiai                         interactive install
-  npx antiai install [skills...]     install the named skills (default: all)
-  npx antiai list                    list the skills in this package
-  npx antiai remove [skills...]      remove installed anti-ai skills (default: all)
+  npx anti-ai-skills                         interactive install
+  npx anti-ai-skills install [skills...]     install the named skills (default: all)
+  npx anti-ai-skills list                    list the skills in this package
+  npx anti-ai-skills remove [skills...]      remove installed anti-ai skills (default: all)
 
 ${c.bold('Options')}
   -t, --target claude|agents|both    where to install (default: claude)
@@ -136,7 +136,7 @@ function pickByInput(input, skills) {
   return input.split(/[\s,]+/).filter(Boolean).map((token) => {
     const n = Number(token);
     const skill = Number.isInteger(n) ? skills[n - 1] : skills.find((s) => s.name === token || s.name === `antiai-${token}`);
-    if (!skill) throw new Error(`Unknown skill "${token}". Run "npx antiai list" to see the names.`);
+    if (!skill) throw new Error(`Unknown skill "${token}". Run "npx anti-ai-skills list" to see the names.`);
     return skill.name;
   });
 }
@@ -188,7 +188,7 @@ async function install(args, skills) {
     console.log(`\n${c.bold('antiai-ui scripts')} (crawl, snapshot, compare) need Playwright in your project:`);
     console.log(c.cyan('  npm i -D playwright && npx playwright install chromium'));
   }
-  console.log(`\nRestart your agent so it picks up the new skills. Update later with ${c.cyan('npx antiai@latest')}.`);
+  console.log(`\nRestart your agent so it picks up the new skills. Update later with ${c.cyan('npx anti-ai-skills@latest')}.`);
 }
 
 async function remove(args, skills) {
