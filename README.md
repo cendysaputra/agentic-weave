@@ -6,6 +6,10 @@ Skills that catch AI slop in text an agent writes. One skill per concern, in `sk
 
 Start with [`antiai-core`](skills/antiai-core/SKILL.md). It defines the numbered rules (R-XX for wording, C-X for structure and checks) and the Delivery Gate that every other skill cites. Load it alongside whichever skill fits the task.
 
+Interfaces:
+
+- [`antiai-ui`](skills/antiai-ui/SKILL.md): web and app UI that looks generated (default fonts, purple gradients, stock landing-page layout, preset motion), raised to Awwwards jury craft: concept, signature moment, Core Web Vitals, accessibility, and a rubric self-score. Includes a reference-site crawler (`scripts/crawl-reference.mjs`, needs Playwright) that reports a site's type, palette, motion stack, performance, and accessibility, with screenshots.
+
 Writing for people:
 
 - [`antiai-chat`](skills/antiai-chat/SKILL.md): assistant and agent replies (canned openers and closers, sycophancy, over-apologizing, hedging).
@@ -22,7 +26,7 @@ Version control:
 Bahasa Indonesia:
 
 - [`antiai-copywriting-id`](skills/antiai-copywriting-id/SKILL.md): Indonesian copywriting tells.
-- [`antiai-ui-id`](skills/antiai-ui-id/SKILL.md): Indonesian UI localization (Rupiah, numbers, dates, time, phone, address, translation overflow).
+- [`antiai-ui-id`](skills/antiai-ui-id/SKILL.md): Indonesian UI localization (Rupiah, numbers, dates, time, phone, address, translation overflow). Load with `antiai-ui`.
 
 ## Install
 
