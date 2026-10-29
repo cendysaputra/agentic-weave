@@ -78,6 +78,18 @@ Removing slop is not removing voice. Keep natural particles (*kok, sih, dong*), 
 
 When a fact, number, or name is missing, leave a visible gap (`[REAL DATA]`, `[TBD: owner]`) and say so. A marked gap is better than a plausible invention.
 
+### R-40: Decide, do not default
+
+Every visual choice (typeface, palette, radius, shadow, layout, icon set) traces back to the project's concept and can be justified in one sentence. A framework or model default, or the next most common choice used to escape it, is not a decision.
+
+### R-41: Motion has a purpose
+
+Motion explains (where something came from, what changed) or carries the one signature moment. It uses defined easing and durations, follows the user's input instead of hijacking it, and has a reduced-motion equivalent.
+
+### R-42: Accessible by default
+
+Text meets WCAG AA contrast, focus is visible, everything works by keyboard, markup is semantic, and non-essential motion respects `prefers-reduced-motion`.
+
 ## Structure and Checks (C)
 
 ### C-1: One change per summary line
@@ -100,6 +112,10 @@ Before delivery, check against the real target: the actual locale, the longest s
 
 A fact that can change carries its version or source ("cursor pagination, v2.3+"). Never hedge with knowledge-cutoff phrasing ("as of my last update").
 
+### C-6: Measure, do not estimate
+
+Performance, contrast, and layout claims are checked in a real browser (Lighthouse, DevTools, a throttled mid-range phone), not inferred from the code.
+
 ## Delivery Gate
 
 Run this on every piece of text before handing it over, then run the checklist of each skill that was loaded. Every line below must be true:
@@ -113,4 +129,5 @@ Run this on every piece of text before handing it over, then run the checklist o
 - [ ] Actions, CTAs, and subjects name the specific action or value (R-15)
 - [ ] Errors and edge states say what happened and what to do next (R-26, R-27)
 - [ ] Formats and layout checked for the real locale and longest strings (R-03, C-2, C-4)
+- [ ] For UI: visual choices are decided, motion has a purpose, and the page is accessible, measured in a real browser (R-40, R-41, R-42, C-6)
 - [ ] The text still sounds like a person wrote it (R-37)
