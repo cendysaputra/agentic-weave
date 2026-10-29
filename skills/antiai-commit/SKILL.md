@@ -1,3 +1,8 @@
+---
+name: antiai-commit
+description: "Filters commit messages that read as AI-generated: generic subjects, emoji prefixes, buzzword subjects, and vague or over-explained bodies. Use when writing or reviewing git commit messages. Load with the antiai core (antiai.md)."
+---
+
 # antiai-commit
 
 > Anti Slop: Rules for AI Coding Agents. Commit message skill

@@ -1,3 +1,8 @@
+---
+name: antiai-ui-id
+description: "Catches Indonesian UI localization slop: dollar or US-format prices instead of Rupiah, US number/date/time formats, foreign phone and address masks, translation overflow, half-translated strings, and non-localized placeholder data. Use when building or editing an Indonesian interface. Load with the antiai core (antiai.md) and antiai-ui."
+---
+
 # antiai-ui-id
 
 > Anti Slop: Rules for AI Coding Agents. Indonesian UI localization skill

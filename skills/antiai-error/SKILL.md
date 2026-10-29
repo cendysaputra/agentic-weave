@@ -1,3 +1,8 @@
+---
+name: antiai-error
+description: "Filters error messages, validation text, and log lines that read as AI-generated: apologetic or vague errors, errors with no next action, chat leaks in logs, and narrative log lines. Use when writing or editing error handling, exceptions, validation feedback, or log output. Load with the antiai core (antiai.md)."
+---
+
 # antiai-error
 
 > Anti Slop: Rules for AI Coding Agents. Error message and log skill

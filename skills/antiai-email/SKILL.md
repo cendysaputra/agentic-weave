@@ -1,3 +1,8 @@
+---
+name: antiai-email
+description: "Filters email and notification copy that reads as AI-generated: generic or clickbait subjects, signposting openers, buzzword bodies, empty CTAs, canned closers, and emoji. Use when writing or editing emails, in-app notifications, or transactional messages. Load with the antiai core (antiai.md)."
+---
+
 # antiai-email
 
 > Anti Slop: Rules for AI Coding Agents. Email and notification skill

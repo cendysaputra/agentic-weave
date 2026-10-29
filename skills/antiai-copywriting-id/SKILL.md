@@ -1,3 +1,8 @@
+---
+name: antiai-copywriting-id
+description: "Filters Bahasa Indonesia copy that reads as AI-generated: empty vocabulary (dapat, secara, solusi, optimal), nominalisasi, \"tak hanya... tetapi juga\", signposting, chatbot closers, English buzzword mixing, and em dashes, while keeping natural particles and local detail. Use when writing or editing Indonesian copy. Load with the antiai core (antiai.md) and antiai-copywriting."
+---
+
 # antiai-copywriting-id
 
 > Anti Slop: Rules for AI Coding Agents. Bahasa Indonesia copy skill

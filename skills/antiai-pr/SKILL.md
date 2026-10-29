@@ -1,3 +1,8 @@
+---
+name: antiai-pr
+description: "Filters pull request descriptions and code review comments that read as AI-generated: generic subjects, template body skeletons, chat leaks, self-congratulation, sycophantic or vague review comments, and over-apologizing. Use when writing or reviewing a PR. Load with the antiai core (antiai.md) and antiai-commit."
+---
+
 # antiai-pr
 
 > Anti Slop: Rules for AI Coding Agents. PR and code review skill

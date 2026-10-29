@@ -1,3 +1,8 @@
+---
+name: antiai-docs
+description: "Filters READMEs, wikis, and documentation that read as AI-generated: chat-leak openers, knowledge-cutoff disclaimers, sycophantic tone, template skeletons, emoji headings, buzzword feature lists, and actorless passive. Use when writing or editing documentation. Load with the antiai core (antiai.md)."
+---
+
 # antiai-docs
 
 > Anti Slop: Rules for AI Coding Agents. Documentation skill

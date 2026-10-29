@@ -1,3 +1,8 @@
+---
+name: antiai-chat
+description: "Filters assistant and agent replies that read as AI-generated: canned openers and closers, sycophancy, over-apologizing, stacked hedges, signposting, forced lists, and decorative emoji. Use when writing or editing a chat reply, support answer, or any conversational output for a person. Load with the antiai core (antiai.md)."
+---
+
 # antiai-chat
 
 > Anti Slop: Rules for AI Coding Agents. Chat response skill

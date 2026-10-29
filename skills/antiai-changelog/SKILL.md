@@ -1,3 +1,8 @@
+---
+name: antiai-changelog
+description: "Filters changelogs and release notes that read as AI-generated: generic entries, emoji category markers, marketing-speak, missing version/date, and empty template sections. Use when writing or editing a CHANGELOG, release notes, or version history. Load with the antiai core (antiai.md)."
+---
+
 # antiai-changelog
 
 > Anti Slop: Rules for AI Coding Agents. Changelog skill
