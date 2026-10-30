@@ -55,6 +55,8 @@ function proseLines(text) {
 }
 
 
+const LABELS = new Set(['introduction', 'overview', 'key benefits', 'our solution', 'conclusion', 'q&a', 'thank you', 'any questions']);
+
 export function lintMarkdown(text, { sapaan = null } = {}) {
   const issues = [];
   const add = (n, level, rule, msg) => issues.push({ n, level, rule, msg });
@@ -84,6 +86,13 @@ export function lintMarkdown(text, { sapaan = null } = {}) {
   if (!sapaan && anda && kamu) add(1, 'warning', 'sapaan', `mixes "Anda" (${anda}) and "kamu" (${kamu}); pick one per document`);
   if (silakan > 1) add(1, 'warning', 'silakan', `"silakan" appears ${silakan} times; write the instruction directly ("Klik Simpan.")`);
   if (badges > 5) add(1, 'warning', 'badge-wall', `${badges} badges; keep only those showing live status (R-05)`);
+
+  // Label titles (weave-slides): a heading that is only a section label names
+  // the section, not its point.
+  for (const { n, text } of lines) {
+    const h = text.match(/^#{1,6}\s+(.+?)\s*#*\s*$/);
+    if (h && LABELS.has(h[1].replace(/[.!?]+$/, '').trim().toLowerCase())) add(n, 'warning', 'label-title', `"${h[1].trim()}" is a label; title the section with its point (R-31)`);
+  }
 
   // Empty sections: a heading followed only by blank lines before the next
   // heading of the same or higher level, or the end of the file.

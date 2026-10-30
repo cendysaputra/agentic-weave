@@ -7,7 +7,7 @@ branding:
 
 inputs:
   paths:
-    description: Markdown files or folders to check, separated by spaces or new lines. Empty checks the Markdown files a pull request changes.
+    description: Markdown files or folders to check, separated by spaces or new lines. Empty on a pull request checks the Markdown files it changes; empty on a push checks the Markdown files that push changed.
     default: ''
   pr-title:
     description: Check the pull request title like a commit subject.

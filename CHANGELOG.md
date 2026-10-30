@@ -1,15 +1,16 @@
 # Changelog
 
-Each release lists only the categories that have entries. Versions match the `anti-ai-skills` package on npm.
+Each release lists only the categories that have entries. Version numbers are those of the `agentic-weave` package on npm. Release 1.0.0 shipped as `anti-ai-skills`, which was unpublished on 2026-10-30.
 
-## Unreleased
+## 1.1.0 (2026-10-30)
 
 Added:
 
-- `npx agentic-weave check`: scores Markdown files and commit messages out of 100 and names the three rules to fix first.
-- `npx agentic-weave hook`: a commit-msg hook that rejects generic, emoji, or buzzword commit subjects.
-- A GitHub Action (`action.yml`) that checks the PR title, its commits, and changed Markdown files.
-- `examples/`: before/after pairs for every lint rule, run by `npm test`.
+- `npx agentic-weave check`: lints Markdown files (`.md`, `.markdown`, `.mdx`) and commit messages, prints each finding, and names the three rules to fix first. Each file or message scores out of 100, the run shows their average, and any error exits with 1. A missing path is reported by name.
+- `npx agentic-weave hook`: a commit-msg hook that rejects commit subjects with errors (generic subjects, emoji) and prints warnings. It runs the installed package without network access and falls back to a copy in `.git/hooks/agentic-weave/` when the package is missing.
+- A GitHub Action (`action.yml`) that checks the PR title, its commits, and the Markdown files a PR or push changed, with line annotations and the score in the job summary.
+- `label-title` warning in the Markdown linter for headings that are only labels (Introduction, Overview, Conclusion, Q&A, and similar).
+- `examples/`: before/after pairs for every lint rule, including a `weave-slides` outline, run by `npm test`.
 - `weave-slides`: tells for presentations and pitch decks, and rule R-49 (one slide, one point) in `weave-core`.
 - `demo/index.html`: a page that runs the linters in the browser.
 

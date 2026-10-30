@@ -135,5 +135,14 @@
     "expect": [
       "echo-body"
     ]
+  },
+  {
+    "id": "slides-label-title",
+    "kind": "docs",
+    "before": "slides/slides-label-title.before.md",
+    "after": "slides/slides-label-title.after.md",
+    "expect": [
+      "label-title"
+    ]
   }
 ]

@@ -449,21 +449,25 @@ async function remove(args, skills) {
 
 // `check`: lint Markdown files and commit messages with the same rules the
 // skills use, and print a score plus the three most useful fixes.
+const missing = (p) => (err) => {
+  throw err.code === 'ENOENT' ? new Error(`No such file or directory: ${p}`) : err;
+};
+
 async function check(args) {
   const { lintMarkdown } = await import(pathToFileURL(path.join(SKILLS_DIR, 'weave-docs', 'scripts', 'lint-core.mjs')).href);
   const { lintCommit } = await import(pathToFileURL(path.join(SKILLS_DIR, 'weave-commit', 'scripts', 'lint-commit-core.mjs')).href);
   if (args.sapaan && !['kamu', 'anda'].includes(args.sapaan)) throw new Error('--sapaan must be kamu or anda');
   const results = [];
   if (args.commit !== null || args.commitFile) {
-    const msg = args.commitFile ? await readFile(args.commitFile, 'utf8') : args.commit;
+    const msg = args.commitFile ? await readFile(args.commitFile, 'utf8').catch(missing(args.commitFile)) : args.commit;
     results.push({ target: args.commitFile || 'commit message', issues: lintCommit(msg) });
   }
   const files = [];
   const collect = async (p) => {
-    const st = await stat(p);
+    const st = await stat(p).catch(missing(p));
     if (st.isDirectory()) {
       for (const e of await readdir(p)) if (!['node_modules', '.git', 'vendor'].includes(e)) await collect(path.join(p, e));
-    } else if (/\.(md|markdown|mdx|txt)$/i.test(p)) files.push(p);
+    } else if (/\.(md|markdown|mdx)$/i.test(p)) files.push(p);
   };
   for (const p of args.names) await collect(p);
   for (const f of files) results.push({ target: f, issues: lintMarkdown(await readFile(f, 'utf8'), { sapaan: args.sapaan }) });
@@ -472,7 +476,11 @@ async function check(args) {
   const all = results.flatMap((r) => r.issues);
   const errors = all.filter((i) => i.level === 'error').length;
   const warnings = all.length - errors;
-  const score = Math.max(0, 100 - errors * 10 - warnings * 3);
+  // Each item (a file or a commit message) scores 100 minus 10 per error and
+  // 3 per warning; the score shown is their average, so one bad file in a
+  // large folder does not zero the whole run.
+  const itemScore = (issues) => Math.max(0, 100 - issues.filter((i) => i.level === 'error').length * 10 - issues.filter((i) => i.level !== 'error').length * 3);
+  const score = Math.round(results.reduce((n, r) => n + itemScore(r.issues), 0) / results.length);
   const byRule = new Map();
   for (const i of all) byRule.set(i.rule, [...(byRule.get(i.rule) || []), i]);
   const top = [...byRule.values()].sort((a, b) => (b[0].level === 'error') - (a[0].level === 'error') || b.length - a.length).slice(0, 3)
@@ -492,8 +500,8 @@ async function check(args) {
   process.exitCode = errors ? 1 : 0;
 }
 
-// `hook`: install a commit-msg hook that runs weave-commit's checker. The
-// checker is copied next to the hook, so commits work offline and without npx.
+// `hook`: install a commit-msg hook that runs weave-commit's checker through
+// the installed package, with a copy next to the hook for when it is missing.
 const HOOK_MARK = '# agentic-weave commit-msg hook';
 async function hook(args) {
   const { execFileSync } = await import('node:child_process');
@@ -528,7 +536,21 @@ async function hook(args) {
   const dir = path.join(hooksDir, 'agentic-weave');
   await mkdir(dir, { recursive: true });
   for (const f of ['lint-commit.mjs', 'lint-commit-core.mjs']) await cp(path.join(SKILLS_DIR, 'weave-commit', 'scripts', f), path.join(dir, f));
-  await writeFile(file, `#!/bin/sh\n${HOOK_MARK} (v${await version()}). Remove with: npx agentic-weave hook remove\nexec node "$(dirname "$0")/agentic-weave/lint-commit.mjs" "$1"\n`, { mode: 0o755 });
+  // Prefer the installed package, so an upgrade takes effect without
+  // rerunning `hook`. --offline --no-install never waits on the registry; the
+  // probe tells "package missing" apart from "commit rejected", and only the
+  // former falls back to the copy.
+  const npx = 'npx --offline --no-install agentic-weave';
+  await writeFile(file, [
+    '#!/bin/sh',
+    `${HOOK_MARK} (v${await version()}). Remove with: npx agentic-weave hook remove`,
+    `if command -v npx >/dev/null 2>&1 && ${npx} version >/dev/null 2>&1; then`,
+    `  exec ${npx} check --commit-file "$1"`,
+    'fi',
+    'echo "agentic-weave: package not found; using the copy in .git/hooks/agentic-weave. Run npx agentic-weave hook to update it." >&2',
+    'exec node "$(dirname "$0")/agentic-weave/lint-commit.mjs" "$1"',
+    '',
+  ].join('\n'), { mode: 0o755 });
   console.log(`${c.green('✓')} commit-msg hook ${c.gray(file)}`);
   console.log(c.gray('  Commits with generic subjects or emoji are rejected; warnings are printed but allowed.'));
 }

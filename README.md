@@ -129,7 +129,7 @@ npx agentic-weave check --commit "Update code"
 npx agentic-weave check docs --sapaan kamu --json
 ```
 
-`check` prints each finding, a score out of 100 (minus 10 per error, minus 3 per warning), and the three rules to fix first. It exits with 1 when there is an error.
+`check` prints each finding, a score out of 100, and the three rules to fix first. Each file or commit message scores 100 minus 10 per error and 3 per warning, and the score shown is the average over all of them. It exits with 1 when there is any error, whatever the average.
 
 To check every commit message in a repository before it is saved:
 
@@ -137,7 +137,7 @@ To check every commit message in a repository before it is saved:
 npx agentic-weave hook
 ```
 
-The hook copies the checker into `.git/hooks/`, so it works offline. `npx agentic-weave hook remove` takes it out. With husky or another `core.hooksPath`, the command prints the line to add to your own commit-msg hook instead of writing one.
+The hook runs the installed `agentic-weave` package without touching the network, so an upgrade applies to it right away. When the package is not installed, it falls back to a copy of the checker in `.git/hooks/agentic-weave/` and says so; rerun `npx agentic-weave hook` to refresh that copy. `npx agentic-weave hook remove` takes it out. With husky or another `core.hooksPath`, the command prints the line to add to your own commit-msg hook instead of writing one.
 
 On GitHub, the Action checks the PR title, every commit in the PR, and the Markdown files the PR changes, with annotations on the lines and the score in the job summary:
 
@@ -152,13 +152,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: cendysaputra/agentic-weave@main
+      - uses: cendysaputra/agentic-weave@v1
         with:
           sapaan: kamu # optional: kamu or anda
           fail-on: error # error, warning, or never
 ```
 
-Pin `@main` to a commit SHA for stable runs. Set `paths` to check fixed files instead of the changed ones, and `pr-title: false` or `commits: false` to skip either check. Every input is in [`action.yml`](action.yml).
+`@v1` follows the 1.x releases; pin a full commit SHA instead to stay on one exact version. Set `paths` to check fixed files instead of the changed ones, and `pr-title: false` or `commits: false` to skip either check. Every input is in [`action.yml`](action.yml).
 
 [`examples/`](examples/) holds a before/after pair for every rule, and `npm test` fails if a linter stops catching one. [`demo/index.html`](demo/index.html) runs the same linters in the browser: serve the repo root (`python3 -m http.server`) and open `/demo/`.
 
