@@ -5,16 +5,9 @@ description: "Filters slide decks that read as AI-generated: slides that are doc
 
 # weave-slides
 
-> Agentic Weave: Rules for AI Coding Agents. Slides and presentation skill
-
-> Part of the Agentic Weave system. Read together with `weave-core`. This skill filters decks that look generated: every slide the same template, every point a bullet, every image a stock photo under a dark overlay. It cites core rules by number and never renumbers them.
-
 ## How to use this skill
 
-- Load together with `weave-core` for any deck: a pitch, a talk, a client report, a lecture, or a deck built in HTML, Google Slides, PowerPoint, or Keynote.
 - Write the outline before the design. Decide the one point of each slide (R-49), then the layout that carries it.
-- Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
-- The Delivery Gate in `weave-core` remains the gate. The checklist at the end supplements it.
 - Indonesian decks: load `weave-copywriting-id` for the wording, and keep one form of address (kamu or Anda) through the deck.
 
 ## Structure

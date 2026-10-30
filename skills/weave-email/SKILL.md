@@ -5,16 +5,6 @@ description: "Filters email and notification copy that reads as AI-generated: ge
 
 # weave-email
 
-> Agentic Weave: Rules for AI Coding Agents. Email and notification skill
-
-> Part of the Agentic Weave system. Read together with `weave-core`. This skill filters email and notification copy that reads as generically AI. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits emails or in-app notifications.
-
-## How to use this skill
-
-- Load together with `weave-core` whenever the task is an email, notification, or transactional message.
-- Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
-- The Delivery Gate in `weave-core` remains the gate. The checklist at the end supplements it.
-
 ## Subject Lines
 
 ### Generic Subjects

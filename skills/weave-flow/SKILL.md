@@ -5,16 +5,13 @@ description: "Run a web project from brief to client handoff in fixed stages, ea
 
 # weave-flow
 
-> Agentic Weave: Rules for AI Coding Agents. Project flow skill
-
-> Part of the Agentic Weave system. Read together with `weave-core` and `weave-ui`. This skill orders the work on a website so that decisions are made before code and every stage leaves evidence on disk. It references core rules by number and never duplicates or renumbers them.
+This skill orders the work on a website so that decisions are made before code and every stage leaves evidence on disk.
 
 ## How to use this skill
 
 - State lives in files, not in the conversation. Any agent, in any session, continues from `.weave/state.json`.
 - Every stage writes an artifact; every gate is checked by `scripts/flow.mjs`, not by your judgment. Run it from the project root.
 - Never start a stage before the earlier gates pass. The script refuses, and so do you. Only the user can skip a gate, with `override`.
-- The Delivery Gate in `weave-core` remains the gate for every piece of text. The checklist at the end supplements it.
 
 ## Modes
 

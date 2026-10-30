@@ -5,17 +5,12 @@ description: "Write and review documentation that reads as authored, not generat
 
 # weave-docs
 
-> Agentic Weave: Rules for AI Coding Agents. Documentation skill
-
-> Part of the Agentic Weave system. Read together with `weave-core`. The worst documentation slop is not its tone but what nobody checked: samples that were never run, packages that do not exist, versions that are missing. This skill covers both. It references core rules by number and never duplicates or renumbers them.
+The worst documentation slop is not its tone but what nobody checked: samples that were never run, packages that do not exist, versions that are missing. This skill covers both.
 
 ## How to use this skill
 
-- Load together with `weave-core` whenever the task writes or edits a README, guide, reference page, docblock, decision record, runbook, client guide, or a file for agents. Commits, PRs, changelogs, errors, and emails have their own skills.
 - Decide the document type first (below), then write only what that type needs.
-- Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
 - Run `scripts/lint-docs.mjs` on the files you wrote (`--sapaan kamu` or `--sapaan anda` for Indonesian docs). It catches the mechanical tells; the checklist catches the rest.
-- The Delivery Gate in `weave-core` remains the gate. The checklist at the end supplements it.
 
 ## Pick the Document Type First
 
@@ -74,33 +69,12 @@ Indonesian documentation: read `references/docs-id.md`. Linters and sample testi
 
 ## Chat Leaks
 
-### Conversational Openers
+Docs are authored text, not one side of a chat (R-02). `scripts/lint-docs.mjs` flags most of these:
 
-- **Tell:** docs that open like one side of a chat: "Certainly! Here's how to configure the database.", "Great question! The middleware processes requests in order.", "I'd be happy to explain the flow."
-- **Why:** a README is authored text, not a reply. The opener is a leftover from the chat session it was generated in, and it signals the doc was pasted, not written.
-- **Fix:** delete the opener and start at the fact: "Configure the database with these environment variables.", "The middleware processes requests in order."
-- **Rule:** R-02, R-36.
-
-### Cutoff Disclaimers
-
-- **Tell:** "As of my last update, the API supports cursor pagination.", "Based on current knowledge, PostgreSQL 16 introduced merge joins.", "I cannot guarantee this behavior will stay consistent."
-- **Why:** the disclaimer exposes the model's training cutoff and erodes confidence in the doc. A reader wants the version, not the hedge.
-- **Fix:** replace the hedge with a versioned fact: "The API supports cursor pagination (v2.3+).", "PostgreSQL 16 introduced merge joins (see release notes)." Pin versions instead of apologizing for knowledge.
-- **Rule:** R-36, C-5.
-
-### Sycophantic Tone
-
-- **Tell:** docs that praise the product or the reader: "This elegant architecture is truly impressive.", "Our powerful, world-class platform."
-- **Why:** praise in docs reads as marketing, not information. It inflates without adding a fact.
-- **Fix:** state what it does, not how great it is: "The cache sits in front of the database.", "The platform stores and queries invoices."
-- **Rule:** R-16, R-36.
-
-### Walkthrough Preamble
-
-- **Tell:** "This guide will walk you through...", "Dalam panduan ini kita akan belajar...".
-- **Why:** a how-to reader arrives with a goal; the preamble delays step one.
-- **Fix:** open with the end result and the prerequisites, then step 1: "Hasil akhir: field `hero_title` tampil di beranda. Kamu butuh ACF Pro dan akses admin."
-- **Rule:** R-36.
+- Openers ("Certainly! Here's how...", "Great question!"): delete and start at the fact (R-36).
+- Cutoff disclaimers ("As of my last update..."): replace with a versioned fact, "cursor pagination (v2.3+)" (C-5).
+- Praise ("This elegant architecture...", "world-class platform"): state what it does (R-16).
+- Walkthrough preambles ("This guide will walk you through...", "Dalam panduan ini kita akan..."): open with the end result and prerequisites, then step 1 (R-36).
 
 ## Structure
 

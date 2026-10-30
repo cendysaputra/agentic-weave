@@ -5,9 +5,7 @@ description: "Convert a static build or ATM rebuild into a real stack: WordPress
 
 # weave-convert
 
-> Agentic Weave: Rules for AI Coding Agents. Conversion skill
-
-> Part of the Agentic Weave system. Read together with `weave-core` and `weave-ui`. This skill turns a finished static page into a maintainable site on the client's stack without losing the design or inventing platform details. It references core rules by number and never duplicates or renumbers them.
+This skill turns a finished static page into a maintainable site on the client's stack without losing the design or inventing platform details.
 
 ## How to use this skill
 
@@ -24,7 +22,6 @@ description: "Convert a static build or ATM rebuild into a real stack: WordPress
 | Motion on any target | `references/gsap-lifecycle.md` |
 
 - Write what you did into `.weave/05-build-log.md` when weave-flow is in use.
-- The Delivery Gate in `weave-core` remains the gate. The checklist at the end supplements it.
 
 ## The method
 

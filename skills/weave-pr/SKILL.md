@@ -5,16 +5,9 @@ description: "Filters pull request descriptions and code review comments that re
 
 # weave-pr
 
-> Agentic Weave: Rules for AI Coding Agents. PR and code review skill
-
-> Part of the Agentic Weave system. Read together with `weave-core` and `weave-commit`. This skill filters PR descriptions and code review comments that read as generically AI. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or reviews a pull request.
-
 ## How to use this skill
 
-- Load together with `weave-core` and `weave-commit` whenever the task touches a PR description or review comment.
-- Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
 - Scope guardrail: this skill governs the description and the review words, never the diff.
-- The Delivery Gate in `weave-core` remains the gate. The checklist at the end supplements it.
 
 ## PR Descriptions
 

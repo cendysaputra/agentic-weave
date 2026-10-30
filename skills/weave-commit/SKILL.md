@@ -5,17 +5,10 @@ description: "Filters commit messages that read as AI-generated: generic subject
 
 # weave-commit
 
-> Agentic Weave: Rules for AI Coding Agents. Commit message skill
-
-> Part of the Agentic Weave system. Read together with `weave-core`. This skill filters commit messages that read as generically AI, and preserves a history you can actually read and bisect. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or reviews commit messages.
-
 ## How to use this skill
 
-- Load together with `weave-core` whenever the task touches commit messages.
-- Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
 - Scope guardrail: this skill governs the message, never the diff.
 - Check a message with `scripts/lint-commit.mjs -m "<message>"` or `scripts/lint-commit.mjs <file>`. It exits 1 on generic subjects and emoji, so it can run as a commit-msg hook (`npx agentic-weave hook` installs one).
-- The Delivery Gate in `weave-core` remains the gate. The checklist at the end supplements it.
 
 ## Commit Messages
 
