@@ -19,7 +19,7 @@ Awwwards scores Design 40%, Usability 30%, Creativity 20%, Content 10%. Effects 
 
 ## Reference Sites and ATM
 
-Crawl reference sites with `scripts/crawl-reference.mjs`; learn by rebuilding through ATM (`scripts/snapshot-site.mjs`, `scripts/compare-build.mjs`). Read `references/reference-sites.md` and `references/atm.md` first. Always:
+Crawl reference sites with `scripts/crawl-reference.mjs`; learn by rebuilding through ATM (`scripts/snapshot-site.mjs`, `scripts/compare-build.mjs`). Read `references/reference-sites.md` (it also lists galleries for finding references) and `references/atm.md` first. Always:
 
 - Study the reference's decisions and reasons, then decide anew from this project's concept; never inherit its fonts, palette, layout, signature moment, or slop flags (R-40).
 - Crawler numbers are lab values; rerun when a report warns that stylesheets or fonts failed (C-6).
