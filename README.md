@@ -9,6 +9,7 @@ Start with [`antiai-core`](skills/antiai-core/SKILL.md). It defines the numbered
 Projects:
 
 - [`antiai-flow`](skills/antiai-flow/SKILL.md): a web project from brief to client handoff in nine stages. Each stage writes a file in `.antiai/` and passes a gate that `scripts/flow.mjs` checks, so any agent can pick up where another stopped. Modes: build, atm, rewrite, audit.
+- [`antiai-convert`](skills/antiai-convert/SKILL.md): turn a static build or ATM rebuild into WordPress with ACF, Elementor V4 JSON (checked by `validate-elementor.mjs` against a real export), WooCommerce, Statamic, Laravel Blade, Astro, or React, with tokens from one file, motion that cleans up on page transitions, and a similarity check against the static build.
 
 Interfaces:
 

@@ -37,6 +37,7 @@ Load `antiai-core` first, then the skill for the task:
 | --- | --- |
 | A web project from brief to handoff | `antiai-flow` (stages and gates in `.antiai/`) |
 | Web or app UI, reference sites, ATM, design tokens | `antiai-ui` (`antiai-ui-id` for Indonesian products) |
+| Converting a static build to WordPress, Elementor, WooCommerce, Statamic, Laravel, Astro, or React | `antiai-convert` |
 | Indonesian copy | `antiai-copywriting-id` |
 | README or docs | `antiai-docs` |
 | Commit messages | `antiai-commit` |
