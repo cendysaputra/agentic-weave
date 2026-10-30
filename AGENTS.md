@@ -16,6 +16,7 @@ Instructions for AI agents working on this repository: the Agentic Weave skills,
 - `bin/agentic-weave.mjs`: the installer behind `npx agentic-weave`, plus its `check` and `hook` commands.
 - `action.yml` and `action/run.mjs`: the GitHub Action. It imports the linters from `skills/weave-docs/scripts/` and `skills/weave-commit/scripts/`, so keep those free of Node-only APIs in their `*-core.mjs` files.
 - `examples/`: before/after pairs that `npm test` runs through the linters.
+- `demo/index.html`: a static page that runs the same linters in the browser. It imports them from `skills/` by relative path, so serve the repo root (`python3 -m http.server`) and open `/demo/`.
 - `scripts/`: repo tooling (linter, version sync). Not shipped to npm.
 - `.claude-plugin/`: Claude Code marketplace and plugin manifests.
 - `research/`: research notes behind the skills. Read `research/README.md` first; the newest file is the reference.
