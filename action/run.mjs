@@ -60,6 +60,33 @@ let paths = input('paths').split(/\s+/).filter(Boolean);
 if (!paths.length && pr && repo) {
   paths = (await getAll(`/repos/${repo}/pulls/${pr.number}/files`)).filter((f) => f.status !== 'removed').map((f) => f.filename);
 }
+// A push without `paths` checks the Markdown files that push changed. The
+// webhook payload lists added, modified, and removed files per commit; when a
+// payload lacks them, the Compare API fills in. Webhook payloads cap
+// push.commits at 2048 and Compare caps files at 300, so hitting either cap
+// is reported in the summary instead of passing silently.
+const notes = [];
+if (!paths.length && !pr && Array.isArray(event.commits) && !event.deleted) {
+  if (event.commits.every((c) => Array.isArray(c.added) && Array.isArray(c.modified) && Array.isArray(c.removed))) {
+    const changed = new Set();
+    for (const c of event.commits) {
+      for (const f of [...c.added, ...c.modified]) changed.add(f);
+      for (const f of c.removed) changed.delete(f);
+    }
+    paths = [...changed];
+    if (event.commits.length >= 2048) notes.push('This push lists 2048 commits, the webhook maximum, so files from later commits may be missing.');
+  } else if (repo && event.before && event.after && !/^0+$/.test(event.before)) {
+    const res = await fetch(`${api}/repos/${repo}/compare/${event.before}...${event.after}`, {
+      headers: { accept: 'application/vnd.github+json', ...(token ? { authorization: `Bearer ${token}` } : {}) },
+    });
+    if (!res.ok) throw new Error(`GitHub API ${res.status} on compare: ${(await res.text()).slice(0, 200)}`);
+    const files = (await res.json()).files || [];
+    paths = files.filter((f) => f.status !== 'removed').map((f) => f.filename);
+    if (files.length >= 300) notes.push('The Compare API returned 300 files, its maximum, so some changed files were not checked.');
+  } else {
+    notes.push('The push payload did not list changed files, so no Markdown was checked. Set `paths` to check files on push.');
+  }
+}
 const files = [...new Set(paths.flatMap((p) => collect(p, [])))];
 for (const f of files) results.push({ target: f, file: f, issues: lintMarkdown(readFileSync(f, 'utf8'), { sapaan }) });
 
@@ -77,6 +104,7 @@ const errors = all.filter((i) => i.level === 'error').length;
 const warnings = all.length - errors;
 const itemScore = (issues) => Math.max(0, 100 - issues.filter((i) => i.level === 'error').length * 10 - issues.filter((i) => i.level !== 'error').length * 3);
 const score = results.length ? Math.round(results.reduce((n, r) => n + itemScore(r.issues), 0) / results.length) : 100;
+for (const n of notes) console.log(`::warning::${esc(n)}`);
 console.log(`Score ${score}/100: ${errors} error(s), ${warnings} warning(s) in ${results.length} item(s).`);
 
 const cell = (s) => String(s).replace(/\|/g, '\\|').replace(/\n/g, ' ');
@@ -85,6 +113,7 @@ const summary = [
   `### Agentic Weave check: ${score}/100`,
   '',
   `${errors} error(s), ${warnings} warning(s) in ${results.length} item(s).`,
+  ...notes.map((n) => `\n> ${n}`),
   ...(rows.length ? ['', '| Where | Level | Rule | Fix |', '| --- | --- | --- | --- |', ...rows.slice(0, 200)] : []),
   ...(rows.length > 200 ? ['', `${rows.length - 200} more not shown.`] : []),
   '',

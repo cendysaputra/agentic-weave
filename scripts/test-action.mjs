@@ -18,15 +18,16 @@ const server = http.createServer((req, res) => {
   res.setHeader('content-type', 'application/json');
   if (req.url.startsWith('/repos/o/r/pulls/7/commits')) return res.end(JSON.stringify(commits));
   if (req.url.startsWith('/repos/o/r/pulls/7/files')) return res.end(JSON.stringify(prFiles));
+  if (req.url === `/repos/o/r/compare/${'c'.repeat(40)}...${'d'.repeat(40)}`) return res.end(JSON.stringify({ files: [{ filename: 'docs/guide.md', status: 'modified' }, { filename: 'gone.md', status: 'removed' }] }));
   res.statusCode = 404;
   res.end('{}');
 });
 await new Promise((r) => server.listen(0, '127.0.0.1', r));
 const api = `http://127.0.0.1:${server.address().port}`;
 
-function run(dir, title, inputs = {}) {
+function run(dir, title, inputs = {}, payload = { pull_request: { number: 7, title } }) {
   const event = path.join(dir, 'event.json');
-  writeFileSync(event, JSON.stringify({ pull_request: { number: 7, title } }));
+  writeFileSync(event, JSON.stringify(payload));
   writeFileSync(path.join(dir, 'summary.md'), '');
   writeFileSync(path.join(dir, 'output.txt'), '');
   const envInputs = Object.fromEntries(Object.entries(inputs).map(([k, v]) => [`INPUT_${k.toUpperCase().replace(/-/g, '_')}`, v]));
@@ -103,6 +104,34 @@ await test('paths read .mdx but not .txt', async (dir) => {
   writeFileSync(path.join(dir, 'docs', 'page.mdx'), '# Page\n\nIt works — mostly.\n');
   const r = await run(dir, 'docs: explain the retry policy', { commits: 'false', paths: 'docs' });
   assert(/file=docs\/page\.mdx/.test(r.stdout) && !/notes\.txt/.test(r.stdout), r.stdout);
+});
+
+await test('a push without paths checks the Markdown it changed', async (dir) => {
+  writeFileSync(path.join(dir, 'docs', 'guide.md'), '# Guide\n\nIt works — mostly.\n');
+  writeFileSync(path.join(dir, 'docs', 'notes.txt'), 'It works — mostly.\n');
+  writeFileSync(path.join(dir, 'docs', 'old.md'), '# Old\n\nIt works — mostly.\n');
+  const push = {
+    before: 'c'.repeat(40),
+    after: 'd'.repeat(40),
+    commits: [
+      { id: 'e'.repeat(40), message: 'Update code', added: ['docs/notes.txt'], modified: ['docs/guide.md'], removed: [] },
+      { id: 'f'.repeat(40), message: 'docs: drop the old page', added: [], modified: [], removed: ['docs/old.md'] },
+    ],
+  };
+  const r = await run(dir, '', {}, push);
+  assert(r.status === 1, r.stdout);
+  assert(/commit eeeeeee%3A generic-subject/.test(r.stdout), r.stdout);
+  assert(/file=docs\/guide\.md,line=3,title=em-dash/.test(r.stdout), r.stdout);
+  assert(!/notes\.txt|old\.md/.test(r.stdout), r.stdout);
+  const del = await run(dir, '', { commits: 'false' }, { ...push, deleted: true, commits: [] });
+  assert(del.status === 0 && !/guide\.md/.test(del.stdout), del.stdout);
+});
+
+await test('a push payload without file lists falls back to the Compare API', async (dir) => {
+  writeFileSync(path.join(dir, 'docs', 'guide.md'), '# Guide\n\nIt works — mostly.\n');
+  const push = { before: 'c'.repeat(40), after: 'd'.repeat(40), commits: [{ id: 'e'.repeat(40), message: 'docs: explain the retry policy' }] };
+  const r = await run(dir, '', {}, push);
+  assert(r.status === 1 && /file=docs\/guide\.md,line=3,title=em-dash/.test(r.stdout), r.stdout);
 });
 
 server.close();
