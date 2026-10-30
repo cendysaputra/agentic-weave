@@ -1,20 +1,11 @@
 ---
 name: weave-core
-description: "Core rules for the Agentic Weave skills: the numbered R-XX and C-X rules every Agentic Weave skill cites, plus the Delivery Gate run before handing over any text. Use whenever another Agentic Weave skill is loaded, or on its own when writing or reviewing any text a person will read (copy, docs, replies, commits, errors, UI strings)."
+description: "The numbered R-XX and C-X rules every Agentic Weave skill cites, plus the Delivery Gate run before handing over work. Load whenever another weave-* skill is loaded, or alone when writing any text a person will read: copy, docs, replies, commits, errors, UI strings."
 ---
 
 # weave-core
 
-> Agentic Weave: Rules for AI Coding Agents. Core rules
-
-> The base of the Agentic Weave system. Every other Agentic Weave skill cites the rules below by number and never redefines them. Load this skill whenever another Agentic Weave skill is loaded.
-
-## How to use this skill
-
-- Load it first, then the skill for the task at hand (`weave-chat`, `weave-commit`, `weave-docs`, and so on).
-- **R-XX** rules govern the words. **C-X** rules govern structure and checks.
-- Rule numbers are stable IDs, not a sequence. Gaps are intentional; never renumber, because the skills cite these numbers.
-- Before delivering, run the Delivery Gate at the end, then the checklist of every skill that was loaded.
+Load this first, then the skill for the task. Other skills cite these rules by ID and never redefine them. **R-XX** rules govern the words, **C-X** rules govern structure and checks. IDs are stable and gaps are intentional: never renumber. Before delivering, run the Delivery Gate at the end, then the checklist of each loaded skill.
 
 ## Writing Rules (R)
 

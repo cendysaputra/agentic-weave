@@ -5,16 +5,6 @@ description: "Filters error messages, validation text, and log lines that read a
 
 # weave-error
 
-> Agentic Weave: Rules for AI Coding Agents. Error message and log skill
-
-> Part of the Agentic Weave system. Read together with `weave-core`. This skill filters error messages, log lines, and validation text that read as generically AI: apologetic, vague, or theatrical. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits error handling.
-
-## How to use this skill
-
-- Load together with `weave-core` whenever the task touches error messages, exceptions, log output, or validation feedback.
-- Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
-- The Delivery Gate in `weave-core` remains the gate. The checklist at the end supplements it.
-
 ## Error Messages
 
 ### Apologetic Errors

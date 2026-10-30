@@ -5,16 +5,6 @@ description: "Filters changelogs and release notes that read as AI-generated: ge
 
 # weave-changelog
 
-> Agentic Weave: Rules for AI Coding Agents. Changelog skill
-
-> Part of the Agentic Weave system. Read together with `weave-core`. This skill filters changelogs and release notes that read as generically AI. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits a changelog or release notes.
-
-## How to use this skill
-
-- Load together with `weave-core` whenever the task is a changelog, release notes, or version history.
-- Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
-- The Delivery Gate in `weave-core` remains the gate. The checklist at the end supplements it.
-
 ## Entries
 
 ### Generic Entries

@@ -24,6 +24,7 @@ Instructions for AI agents working on this repository: the Agentic Weave skills,
 ## Writing a skill
 
 - Frontmatter has `name` and `description` only. `name` matches the folder. `description` stays under 350 characters, says what the skill does and when to use it, and ends with `Load with weave-core.` plus any other skill it needs. The installer reads that sentence to add dependencies.
+- Start the body with what is specific to the skill. No tagline, no "Part of the Agentic Weave system" note, no "load together with weave-core" or "run the Delivery Gate" bullets: the description and `weave-core` already say that, and every repeated line costs tokens on each load.
 - Keep the body under 500 lines and about 5,000 tokens. Move long procedures and tables into `references/`, one level below `SKILL.md`, and name the file in the body.
 - Entries use **Tell** / **Why** / **Fix** / **Rule**. The Indonesian copy skill uses **The pattern** / **Why it reads as AI** / **Before** / **After** instead.
 - Cite rules by ID (R-02, C-3). Never renumber or reuse an ID. A new rule gets the next free number in `weave-core`.

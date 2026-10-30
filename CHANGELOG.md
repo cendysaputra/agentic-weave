@@ -14,6 +14,10 @@ Added:
 - `weave-slides`: tells for presentations and pitch decks, and rule R-49 (one slide, one point) in `weave-core`.
 - `demo/index.html`: a page that runs the linters in the browser.
 
+Changed:
+
+- Skill bodies are about 10,000 characters shorter in total: the repeated intro in every skill is gone, so each load costs fewer tokens.
+
 ## 1.0.0 (2026-10-29)
 
 Added:

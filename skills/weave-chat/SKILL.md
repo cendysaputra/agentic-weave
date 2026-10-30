@@ -5,16 +5,6 @@ description: "Filters assistant and agent replies that read as AI-generated: can
 
 # weave-chat
 
-> Agentic Weave: Rules for AI Coding Agents. Chat response skill
-
-> Part of the Agentic Weave system. Read together with `weave-core`. This skill filters agent and assistant responses that read as generically AI: canned openers, closers, and the praise-and-apology loop. It references core rules by number and never duplicates or renumbers them. Load it when the task writes or edits an assistant's reply.
-
-## How to use this skill
-
-- Load together with `weave-core` whenever the task is an assistant or agent reply, a support answer, or any conversational output meant for a person.
-- Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
-- The Delivery Gate in `weave-core` remains the gate. The checklist at the end supplements it.
-
 ## Openers
 
 ### Canned Openers

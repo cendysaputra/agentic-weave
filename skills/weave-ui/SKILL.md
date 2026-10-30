@@ -5,18 +5,13 @@ description: "Design and review web UI that does not look AI-generated and meets
 
 # weave-ui
 
-> Agentic Weave: Rules for AI Coding Agents. Visual UI skill
-
-> Part of the Agentic Weave system. Read together with `weave-core`. Filters interfaces that look generated and sets the bar at what an Awwwards jury rewards.
+Filters interfaces that look generated and sets the bar at what an Awwwards jury rewards.
 
 ## How to use this skill
 
-- Load together with `weave-core` whenever the task produces or reviews a web page or app screen. Add `weave-ui-id` for an Indonesian product and `weave-copywriting-id` for Indonesian copy.
 - Work in order: reference sites (optionally ATM), concept, art direction, build, the tells below, build quality, then the self-score.
 - Pick tools after the concept from `references/libraries.md`: one per job, native first, with reduced-motion paths and cleanup on navigation.
-- Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
 - A tell marks an unchosen default, not proof of AI. A default chosen on purpose, justified in one sentence, and applied consistently is not slop (R-37). The test: could this page belong to anyone?
-- The Delivery Gate in `weave-core` remains the gate. The checklist at the end supplements it.
 
 ## The Bar and How It Is Scored
 
