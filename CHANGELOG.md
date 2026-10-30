@@ -12,6 +12,7 @@ Added:
 - `label-title` warning in the Markdown linter for headings that are only labels (Introduction, Overview, Conclusion, Q&A, and similar).
 - `examples/`: before/after pairs for every lint rule, including a `weave-slides` outline, run by `npm test`.
 - `weave-slides`: tells for presentations and pitch decks, and rule R-49 (one slide, one point) in `weave-core`.
+- `weave-core` rules R-50 (report only what was checked) and R-51 (one name per thing). The Delivery Gate now also covers placeholders, versioned facts, summary lines, and docs that change with the code, and points at `npx agentic-weave check`.
 - `demo/index.html`: a page that runs the linters in the browser.
 
 Changed:

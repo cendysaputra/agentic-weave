@@ -87,3 +87,4 @@ Run these alongside the Delivery Gate in `weave-core`. Every line below must be 
 - [ ] No signposting or forced lists where a plain answer fits (R-31)
 - [ ] No decorative emoji (R-04)
 - [ ] The reply starts and ends on substance, not ceremony (R-02)
+- [ ] Reports of done, fixed, or tested name what was run, and say what was skipped (R-50)

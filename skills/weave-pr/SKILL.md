@@ -68,6 +68,7 @@ Run these alongside the Delivery Gate in `weave-core`. Every line below must be 
 
 - [ ] The PR subject names a specific change, not a generic verb (R-31)
 - [ ] The body describes what changed, why, and what to test, with no empty template sections (R-05, C-3)
+- [ ] Testing notes name the commands or checks that ran, and say what was not tested (R-50)
 - [ ] No chat leaks ("Here's what I did", "As requested") in the description (R-02)
 - [ ] No self-congratulation or vague praise in the description or review (R-36)
 - [ ] Review comments name a concrete change and why, with no "LGTM"-style filler (R-31)

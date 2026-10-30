@@ -5,7 +5,7 @@ description: "The numbered R-XX and C-X rules every Agentic Weave skill cites, p
 
 # weave-core
 
-Load this first, then the skill for the task. Other skills cite these rules by ID and never redefine them. **R-XX** rules govern the words, **C-X** rules govern structure and checks. IDs are stable and gaps are intentional: never renumber. Before delivering, run the Delivery Gate at the end, then the checklist of each loaded skill.
+Load this first, then the skill for the task. Other skills cite these rules by ID and never redefine them. **R-XX** rules govern the words, **C-X** rules govern structure and checks. IDs are stable and gaps are intentional: never renumber. Before delivering, run the Delivery Gate at the end, then the checklist of each loaded skill. For Markdown and commit messages, `npx agentic-weave check <file>` or `--commit "<message>"` catches the mechanical tells (em dashes, stock phrases, stacked hedges, generic subjects) before the Gate.
 
 ## Writing Rules (R)
 
@@ -109,6 +109,14 @@ A document that records a decision names the alternatives that were rejected and
 
 A slide carries one point, stated in its title, and only what the audience must see to accept it. The argument lives in the speaker notes or a separate document, not in bullets on the slide.
 
+### R-50: Report only what was checked
+
+A summary, reply, PR, or handoff says what was actually run or checked and what was not. Never write "tested", "verified", "works", or "fixed" for something that was not run; name the command or the check, and say plainly when a step was skipped or failed.
+
+### R-51: One name per thing
+
+Call each thing by one name throughout a text: the same term for the same concept, the same form of address (*kamu* or *Anda*), the same label as the UI or code. Rotating synonyms to avoid repetition ("the tool", "the utility", "the solution") makes the reader wonder whether they are different things.
+
 ## Structure and Checks (C)
 
 ### C-1: One change per summary line
@@ -137,18 +145,21 @@ Performance, contrast, and layout claims are checked in a real browser (Lighthou
 
 ## Delivery Gate
 
-Run this on every piece of text before handing it over, then run the checklist of each skill that was loaded. Every line below must be true:
+Run this on every piece of work before handing it over (text, UI, commit, PR), then the checklist of each loaded skill. Every line below must be true; fix any that is not and run the Gate again. Lines that start with "For UI" or "For docs" apply only to that kind of work.
 
-- [ ] No invented facts, numbers, names, or quotes; missing data is marked, not filled (R-17, R-18, R-38)
+- [ ] No invented facts, numbers, names, or quotes; missing data and placeholders are marked, not filled (R-17, R-18, R-23, R-38)
+- [ ] Facts that can change carry a version or source (C-5)
+- [ ] Claims of tested, verified, or fixed name the check that ran; skipped steps are stated (R-50)
 - [ ] No chat leaks, em dashes, or apology around facts (R-02)
 - [ ] No stock AI phrasing: openers, closers, sycophancy, hedging, signposting, false emphasis (R-36)
 - [ ] No buzzwords or unearned praise (R-16)
 - [ ] No decorative emoji (R-04)
 - [ ] Every sentence and section carries information; no template skeletons or empty sections (R-05, R-31, C-3)
-- [ ] Actions, CTAs, and subjects name the specific action or value (R-15)
+- [ ] One name per concept and one form of address throughout (R-51)
+- [ ] Actions, CTAs, and subjects name the specific action or value; summary lines name one change (R-15, C-1)
 - [ ] Errors and edge states say what happened and what to do next (R-26, R-27)
 - [ ] Formats and layout checked for the real locale and longest strings (R-03, C-2, C-4)
 - [ ] For UI: visual choices are decided, motion has a purpose, and the page is accessible, measured in a real browser (R-40, R-41, R-42, C-6)
 - [ ] Nothing shipped is another party's text, images, code, fonts, or brand (R-43)
-- [ ] For docs: commands and samples were run, and every named package, function, and flag exists (R-44)
+- [ ] For docs: commands and samples were run, every named package, function, and flag exists, and the docs change with the code (R-44, R-46)
 - [ ] The text still sounds like a person wrote it (R-37)
