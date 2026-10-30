@@ -162,6 +162,10 @@ Pin `@main` to a commit SHA for stable runs. Set `paths` to check fixed files in
 
 [`examples/`](examples/) holds a before/after pair for every rule, and `npm test` fails if a linter stops catching one. [`demo/index.html`](demo/index.html) runs the same linters in the browser: serve the repo root (`python3 -m http.server`) and open `/demo/`.
 
+## Credits
+
+Agentic Weave started from [antislop](https://github.com/miqdadbadjuber/anti-slop) by Miqdad Badjuber, released under the MIT License. The numbered rules (R-XX), the Delivery Gate, the Tell / Why / Fix entry shape, and the idea of one skill per concern come from that project. The text has since been rewritten and extended, and both copyright notices are kept in [`LICENSE`](LICENSE).
+
 ## Upgrading from anti-ai-skills
 
 Version 1.0.0 shipped as the npm package `anti-ai-skills` with skills named `antiai-*`. The project is now Agentic Weave: the package is `agentic-weave`, the skills are `weave-*` (for example `antiai-ui` became `weave-ui`), the Claude Code plugin is `agentic-weave`, and the flow keeps its state in `.weave/` instead of `.antiai/`. Rule IDs (R-XX, C-X) are unchanged. Running `npx agentic-weave` moves the old `antiai-*` folders it replaces to `~/.agentic-weave/backups/`.
