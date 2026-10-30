@@ -1,8 +1,3 @@
-Coding agent untuk push file `saran.md` gagal dua kali, jadi isinya ditaruh di sini dulu. Silakan copy ke root repo sebagai `saran.md` atau merge via PR.
-
----
-
-```markdown
 # Saran & Masukan
 
 Kumpulan saran dari review repo [agentic-weave](https://github.com/cendysaputra/agentic-weave).
@@ -22,4 +17,3 @@ Kumpulan saran dari review repo [agentic-weave](https://github.com/cendysaputra/
   ```
 - Nama marketplace plugin Claude Code tidak konsisten: perintah pertama memakai `cendysaputra/agentic-weave`, sedangkan cara untuk versi lama memakai `agentic-weave@imajiner-agentic-weave`. Periksa `.claude-plugin` untuk memastikan mana yang benar.
 - Typo kecil di bagian Install: "After a global install (...) Update with" seharusnya huruf kecil, menjadi "update with".
-```
