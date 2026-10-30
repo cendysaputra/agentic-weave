@@ -37,13 +37,28 @@ Bahasa Indonesia:
 npx anti-ai-skills
 ```
 
-The installer asks where to install (Claude Code, the shared `.agents/skills` folder that Codex, Cursor, Gemini CLI, GitHub Copilot, and others read, or both), whether to install globally or into the current project, and which skills to add. Each skill's dependencies, such as `antiai-core`, are added automatically.
+The installer asks which agents to install for, whether to install globally or into the current project, and which skills to add. Each skill's dependencies, such as `antiai-core`, are added automatically. For a project install it can also add a short agentic-weave block to `./AGENTS.md`, between markers it updates on later installs.
+
+| Target (`-t`) | Global folder | Project folder | Also read by |
+| --- | --- | --- | --- |
+| `claude` | `~/.claude/skills` | `.claude/skills` | OpenCode, Amp, Grok; Cline per project |
+| `agents` | `~/.agents/skills` | `.agents/skills` | Codex, Cursor, GitHub Copilot, OpenCode, Amp, Grok; Antigravity per project |
+| `antigravity` | `~/.gemini/antigravity-cli/skills`, `~/.gemini/config/skills` | `.agents/skills` | |
+| `hermes` | `~/.hermes/skills` | none documented | |
+| `cline` | `~/.cline/skills` | `.cline/skills` | |
+| `kiro` | `~/.kiro/skills` | `.kiro/skills` | |
+| `windsurf` | `~/.codeium/windsurf/skills` | `.devin/skills` | |
+| `junie` | none documented | `.junie/skills` | |
+| `grok`, `opencode` | `~/.grok/skills`, `~/.config/opencode/skills` | `.grok/skills`, `.opencode/skills` | Only needed without `claude` or `agents`; both agents already read those folders |
+
+Paths come from each agent's documentation as of 2026-10-29 (`research/2026-10-29-04-tahap-1-deep.md`).
 
 Without prompts:
 
 ```bash
 npx anti-ai-skills install ui ui-id -t claude -y
-npx anti-ai-skills install -t both -p -y
+npx anti-ai-skills install -t claude,agents,antigravity -y
+npx anti-ai-skills install -t both -p --with-agents-md -y
 npx anti-ai-skills list
 npx anti-ai-skills remove -y
 ```
