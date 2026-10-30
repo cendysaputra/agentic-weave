@@ -500,8 +500,8 @@ async function check(args) {
   process.exitCode = errors ? 1 : 0;
 }
 
-// `hook`: install a commit-msg hook that runs weave-commit's checker. The
-// checker is copied next to the hook, so commits work offline and without npx.
+// `hook`: install a commit-msg hook that runs weave-commit's checker through
+// the installed package, with a copy next to the hook for when it is missing.
 const HOOK_MARK = '# agentic-weave commit-msg hook';
 async function hook(args) {
   const { execFileSync } = await import('node:child_process');
@@ -536,7 +536,21 @@ async function hook(args) {
   const dir = path.join(hooksDir, 'agentic-weave');
   await mkdir(dir, { recursive: true });
   for (const f of ['lint-commit.mjs', 'lint-commit-core.mjs']) await cp(path.join(SKILLS_DIR, 'weave-commit', 'scripts', f), path.join(dir, f));
-  await writeFile(file, `#!/bin/sh\n${HOOK_MARK} (v${await version()}). Remove with: npx agentic-weave hook remove\nexec node "$(dirname "$0")/agentic-weave/lint-commit.mjs" "$1"\n`, { mode: 0o755 });
+  // Prefer the installed package, so an upgrade takes effect without
+  // rerunning `hook`. --offline --no-install never waits on the registry; the
+  // probe tells "package missing" apart from "commit rejected", and only the
+  // former falls back to the copy.
+  const npx = 'npx --offline --no-install agentic-weave';
+  await writeFile(file, [
+    '#!/bin/sh',
+    `${HOOK_MARK} (v${await version()}). Remove with: npx agentic-weave hook remove`,
+    `if command -v npx >/dev/null 2>&1 && ${npx} version >/dev/null 2>&1; then`,
+    `  exec ${npx} check --commit-file "$1"`,
+    'fi',
+    'echo "agentic-weave: package not found; using the copy in .git/hooks/agentic-weave. Run npx agentic-weave hook to update it." >&2',
+    'exec node "$(dirname "$0")/agentic-weave/lint-commit.mjs" "$1"',
+    '',
+  ].join('\n'), { mode: 0o755 });
   console.log(`${c.green('✓')} commit-msg hook ${c.gray(file)}`);
   console.log(c.gray('  Commits with generic subjects or emoji are rejected; warnings are printed but allowed.'));
 }

@@ -160,17 +160,44 @@ test('check names a missing path without a raw ENOENT', (env) => {
   }
 });
 
-test('hook rejects a generic commit and accepts a specific one', (env) => {
-  const git = (...a) => spawnSync('git', a, { cwd: env.project, encoding: 'utf8', env: { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' } });
-  git('init', '-q');
-  git('config', 'core.hooksPath', '');
-  git('config', '--unset', 'core.hooksPath');
+test('hook prefers the installed package and falls back to its copy', (env) => {
+  const bin = path.join(env.project, '..', 'fakebin');
+  mkdirSync(bin);
+  const gitEnv = (fakeNpx) => {
+    const e = { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' };
+    if (fakeNpx !== undefined) {
+      writeFileSync(path.join(bin, 'npx'), `#!/bin/sh\nexit ${fakeNpx}\n`, { mode: 0o755 });
+      e.PATH = `${bin}${path.delimiter}${process.env.PATH}`;
+    }
+    return e;
+  };
+  const git = (fakeNpx, ...a) => spawnSync('git', a, { cwd: env.project, encoding: 'utf8', env: gitEnv(fakeNpx) });
+  const commit = (fakeNpx, msg) => {
+    writeFileSync(path.join(env.project, 'a.txt'), String(Math.random()));
+    git(fakeNpx, 'add', 'a.txt');
+    return git(fakeNpx, 'commit', '-q', '-m', msg);
+  };
+  git(undefined, 'init', '-q');
+  git(undefined, 'config', '--unset', 'core.hooksPath');
   const r = env.run('hook');
   assert(r.status === 0, r.stderr || r.stdout);
-  writeFileSync(path.join(env.project, 'a.txt'), 'a');
-  git('add', 'a.txt');
-  assert(git('commit', '-q', '-m', 'Update code').status !== 0, 'generic commit accepted');
-  assert(git('commit', '-q', '-m', 'feat: add the first sample file').status === 0, 'specific commit rejected');
+
+  // Whatever npx finds here, a generic subject is rejected and a specific one passes.
+  assert(commit(undefined, 'Update code').status !== 0, 'generic commit accepted');
+  assert(commit(undefined, 'feat: add the first sample file').status === 0, 'specific commit rejected');
+
+  // Package missing: the copy runs, says so on stderr, and still judges.
+  const generic = commit(1, 'Update code');
+  assert(generic.status !== 0, 'copy accepted a generic commit');
+  assert(/using the copy/.test(generic.stderr), generic.stderr);
+  assert(commit(1, 'feat: add the second sample file').status === 0, 'copy rejected a specific commit');
+  assert(commit(1, "Merge branch 'main'").status === 0, 'merge message rejected');
+  assert(commit(1, 'Revert "Update code"').status === 0, 'revert message rejected');
+
+  // Package present: it runs instead of the copy, even when the copy is broken.
+  const copy = path.join(env.project, '.git', 'hooks', 'agentic-weave', 'lint-commit.mjs');
+  writeFileSync(copy, 'process.exit(1);\n');
+  assert(commit(0, 'feat: add the third sample file').status === 0, 'hook ran the copy instead of the package');
 });
 
 console.log(failed ? `\n${failed} installer test(s) failed.` : '\nAll installer tests passed.');

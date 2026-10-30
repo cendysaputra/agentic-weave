@@ -137,7 +137,7 @@ To check every commit message in a repository before it is saved:
 npx agentic-weave hook
 ```
 
-The hook copies the checker into `.git/hooks/`, so it works offline. `npx agentic-weave hook remove` takes it out. With husky or another `core.hooksPath`, the command prints the line to add to your own commit-msg hook instead of writing one.
+The hook runs the installed `agentic-weave` package without touching the network, so an upgrade applies to it right away. When the package is not installed, it falls back to a copy of the checker in `.git/hooks/agentic-weave/` and says so; rerun `npx agentic-weave hook` to refresh that copy. `npx agentic-weave hook remove` takes it out. With husky or another `core.hooksPath`, the command prints the line to add to your own commit-msg hook instead of writing one.
 
 On GitHub, the Action checks the PR title, every commit in the PR, and the Markdown files the PR changes, with annotations on the lines and the score in the job summary:
 
