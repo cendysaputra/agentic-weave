@@ -1,13 +1,13 @@
 #!/usr/bin/env node
-// Installer for the anti-ai skills: copies skill folders into the skills
+// Installer for the Agentic Weave skills: copies skill folders into the skills
 // directories that coding agents read (Claude Code, the shared .agents/skills,
 // Antigravity, Hermes, Cline, Kiro, Windsurf, Junie, and optionally Grok and
 // OpenCode), and can add a managed block to a project's AGENTS.md.
 //
-//   npx anti-ai-skills                      interactive install
-//   npx anti-ai-skills install [skills...]  install, with -t, -p, -y for no prompts
-//   npx anti-ai-skills list                 list skills in this package
-//   npx anti-ai-skills remove [skills...]   remove installed anti-ai skills
+//   npx agentic-weave                      interactive install
+//   npx agentic-weave install [skills...]  install, with -t, -p, -y for no prompts
+//   npx agentic-weave list                 list skills in this package
+//   npx agentic-weave remove [skills...]   remove installed Agentic Weave skills
 
 import { cp, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
@@ -24,16 +24,21 @@ const c = { bold: paint('1'), dim: paint('2'), green: paint('32'), yellow: paint
 
 const LETTERS = {
   A: [' █████╗ ', '██╔══██╗', '███████║', '██╔══██║', '██║  ██║', '╚═╝  ╚═╝'],
+  C: [' ██████╗', '██╔════╝', '██║     ', '██║     ', '╚██████╗', ' ╚═════╝'],
+  E: ['███████╗', '██╔════╝', '█████╗  ', '██╔══╝  ', '███████╗', '╚══════╝'],
+  G: [' ██████╗ ', '██╔════╝ ', '██║  ███╗', '██║   ██║', '╚██████╔╝', ' ╚═════╝ '],
+  I: ['██╗', '██║', '██║', '██║', '██║', '╚═╝'],
   N: ['███╗   ██╗', '████╗  ██║', '██╔██╗ ██║', '██║╚██╗██║', '██║ ╚████║', '╚═╝  ╚═══╝'],
   T: ['████████╗', '╚══██╔══╝', '   ██║   ', '   ██║   ', '   ██║   ', '   ╚═╝   '],
-  I: ['██╗', '██║', '██║', '██║', '██║', '╚═╝'],
-  '-': ['      ', '      ', '█████╗', '╚════╝', '      ', '      '],
+  V: ['██╗   ██╗', '██║   ██║', '██║   ██║', '╚██╗ ██╔╝', ' ╚████╔╝ ', '  ╚═══╝  '],
+  W: ['██╗    ██╗', '██║    ██║', '██║ █╗ ██║', '██║███╗██║', '╚███╔███╔╝', ' ╚══╝╚══╝ '],
 };
 
+// Two lines, AGENTIC over WEAVE, so the banner fits an 80-column terminal.
 function banner() {
   const shades = [c.white, c.white, paint('37'), paint('37'), c.gray, c.gray];
-  const lines = LETTERS.A.map((_, row) => [...'ANTI-AI'].map((ch) => LETTERS[ch][row]).join(''));
-  console.log('\n' + lines.map((l, i) => shades[i](l)).join('\n') + '\n');
+  const word = (w) => LETTERS.A.map((_, row) => [...w].map((ch) => LETTERS[ch][row]).join('')).map((l, i) => shades[i](l));
+  console.log('\n' + [...word('AGENTIC'), ...word('WEAVE')].join('\n') + '\n');
 }
 
 // Skill folders per agent, from each agent's documentation (checked 2026-10-29,
@@ -81,12 +86,12 @@ function targetDirs(name, project) {
 const BLOCK_START = /<!-- agentic-weave:start[^>]*-->/;
 const BLOCK_END = '<!-- agentic-weave:end -->';
 function agentsBlock(v) {
-  return `<!-- agentic-weave:start v${v} (managed by anti-ai-skills, do not edit by hand) -->
+  return `<!-- agentic-weave:start v${v} (managed by agentic-weave, do not edit by hand) -->
 ## agentic-weave
 
-- Load the antiai-core skill with the skill that fits the task: antiai-ui for UI, antiai-docs for docs, antiai-commit for commits, antiai-pr for pull requests.
-- For a website from brief to handoff, follow antiai-flow; its state and decisions live in .antiai/.
-- Run the Delivery Gate in antiai-core before handing over text, UI, a commit, or a PR.
+- Load the weave-core skill with the skill that fits the task: weave-ui for UI, weave-docs for docs, weave-commit for commits, weave-pr for pull requests.
+- For a website from brief to handoff, follow weave-flow; its state and decisions live in .weave/.
+- Run the Delivery Gate in weave-core before handing over text, UI, a commit, or a PR.
 - Never commit atm/ or reference-crawl/: they hold copies of third-party sites.
 ${BLOCK_END}`;
 }
@@ -134,10 +139,10 @@ async function loadSkills() {
     const name = (fm.match(/^name:\s*(.+)$/m) || [])[1]?.trim() || entry.name;
     const description = ((fm.match(/^description:\s*"?(.+?)"?$/m) || [])[1] || '').replace(/\\"/g, '"');
     const loadWith = (description.match(/Load with ([^.]+)\./) || [])[1] || '';
-    skills.push({ name, dir: entry.name, description, requires: loadWith.match(/antiai-[a-z-]+/g) || [] });
+    skills.push({ name, dir: entry.name, description, requires: loadWith.match(/weave-[a-z-]+/g) || [] });
   }
-  // antiai-core first, since every other skill depends on it.
-  const rank = (s) => (s.name === 'antiai-core' ? 0 : 1);
+  // weave-core first, since every other skill depends on it.
+  const rank = (s) => (s.name === 'weave-core' ? 0 : 1);
   return skills.sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name));
 }
 
@@ -174,10 +179,10 @@ function parseArgs(argv) {
 
 function help() {
   console.log(`${c.bold('Usage')}
-  npx anti-ai-skills                         interactive install
-  npx anti-ai-skills install [skills...]     install the named skills (default: all)
-  npx anti-ai-skills list                    list the skills in this package
-  npx anti-ai-skills remove [skills...]      remove installed anti-ai skills (default: all)
+  npx agentic-weave                         interactive install
+  npx agentic-weave install [skills...]     install the named skills (default: all)
+  npx agentic-weave list                    list the skills in this package
+  npx agentic-weave remove [skills...]      remove installed Agentic Weave skills (default: all)
 
 ${c.bold('Options')}
   -t, --target <names>               comma-separated agents (default: claude)
@@ -216,8 +221,8 @@ function pickByInput(input, skills) {
   if (/^(all|\*)$/i.test(input)) return skills.map((s) => s.name);
   return input.split(/[\s,]+/).filter(Boolean).map((token) => {
     const n = Number(token);
-    const skill = Number.isInteger(n) ? skills[n - 1] : skills.find((s) => s.name === token || s.name === `antiai-${token}`);
-    if (!skill) throw new Error(`Unknown skill "${token}". Run "npx anti-ai-skills list" to see the names.`);
+    const skill = Number.isInteger(n) ? skills[n - 1] : skills.find((s) => s.name === token || s.name === `weave-${token}`);
+    if (!skill) throw new Error(`Unknown skill "${token}". Run "npx agentic-weave list" to see the names.`);
     return skill.name;
   });
 }
@@ -277,17 +282,24 @@ async function install(args, skills) {
         const to = path.join(dest, s.dir);
         await rm(to, { recursive: true, force: true });
         await cp(path.join(SKILLS_DIR, s.dir), to, { recursive: true });
+        // Skills were named antiai-* before the Agentic Weave rename; drop the
+        // old copy so agents do not list the same skill twice.
+        const legacy = path.join(dest, s.dir.replace(/^weave-/, 'antiai-'));
+        if (legacy !== to && existsSync(legacy)) {
+          await rm(legacy, { recursive: true, force: true });
+          console.log(c.gray(`  removed old ${path.basename(legacy)} (renamed to ${s.dir})`));
+        }
       }
       console.log(`${c.green('✓')} ${chosen.length} skill(s) to ${c.bold(TARGETS[t].label)} ${c.gray(dest)}`);
     }
   }
   if (args.agentsMd) await writeAgentsBlock(await version());
 
-  if (chosen.some((s) => s.name === 'antiai-ui')) {
-    console.log(`\n${c.bold('antiai-ui scripts')} (crawl, snapshot, compare) need Playwright in your project:`);
+  if (chosen.some((s) => s.name === 'weave-ui')) {
+    console.log(`\n${c.bold('weave-ui scripts')} (crawl, snapshot, compare) need Playwright in your project:`);
     console.log(c.cyan('  npm i -D playwright && npx playwright install chromium'));
   }
-  console.log(`\nRestart your agent so it picks up the new skills. Update later with ${c.cyan('npx anti-ai-skills@latest')}.`);
+  console.log(`\nRestart your agent so it picks up the new skills. Update later with ${c.cyan('npx agentic-weave@latest')}.`);
 }
 
 async function remove(args, skills) {
