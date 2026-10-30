@@ -104,6 +104,7 @@ description: "Filters slide decks that read as AI-generated: slides that are doc
 - Present it at the real size: on a projector or a shared screen at the resolution the audience will see. Text that reads on a laptop can fail on a projector (C-4).
 - For HTML decks, run the `weave-ui` checks (keyboard navigation, reduced motion, contrast) and test the export to PDF if the deck will be sent.
 - Read only the titles in order. They should tell the argument on their own.
+- For an outline written in Markdown, `npx agentic-weave check outline.md` flags label titles (`label-title`), em dashes, and stock phrases.
 
 ## Slides Skill Checklist
 
