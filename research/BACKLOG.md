@@ -35,6 +35,7 @@ Prioritas: **P1** langsung memblokir pekerjaan skill berikutnya, **P2** dibutuhk
 - [ ] **P1** `lint-text.mjs` deterministik EN + ID: desain aturan, perbandingan dengan Vale, textlint, alex, proselint, write-good. Format konfigurasi, dukungan bahasa Indonesia, cara jadi pre-commit hook.
 - [ ] **P2** Pesan ke klien (WhatsApp, Slack, email singkat): pola slop, register Bapak/Ibu vs kamu, panjang per kanal, struktur update progres. Resolusi konflik dengan aturan "Register Mixing" di `antiai-copywriting-id`.
 - [ ] **P2** Kamus slop bahasa Indonesia lanjutan: cari studi atau korpus teks AI berbahasa Indonesia (paper ACL/arXiv, IndoNLP), daftar frasa terjemahan kaku dari pola Inggris.
+- [~] **P1** Dokumentasi anti-slop (README, docs teknis, docstring/PHPDoc/JSDoc, API reference, changelog, ADR, runbook, panduan handoff klien, docs untuk agent seperti AGENTS.md dan llms.txt, dokumentasi bahasa Indonesia sesuai EYD V). Perluasan skill `antiai-docs` yang sudah ada. Riset mode Research sedang berjalan (30 Okt 2026), hasil akan disimpan sebagai `2026-10-30-01-dokumentasi-anti-slop.md`.
 
 ### CMS dan konversi (verifikasi lanjutan)
 - [ ] **P1** Elementor V4: skema JSON widget atomic (heading, paragraph, button, image, svg) dari dokumentasi developer dan contoh ekspor, Variables/Classes impor massal, Interactions V4 vs GSAP, cara menambah GSAP/Lenis lewat Custom Code, performa.

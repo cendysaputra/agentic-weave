@@ -10,6 +10,7 @@ Baca dari yang terbaru. File lama tetap disimpan sebagai jejak keputusan, dan se
 
 | File | Isi | Status |
 |---|---|---|
+| [`2026-10-30-01-dokumentasi-anti-slop.md`](2026-10-30-01-dokumentasi-anti-slop.md) | Dokumentasi anti-slop: bukti (paket halusinasi, evaluasi AGENTS.md), Diátaxis, docstring, ADR, runbook, handoff klien, llms.txt, EYD V, Vale/markdownlint | Acuan untuk `antiai-docs` |
 | [`2026-10-29-04-tahap-1-deep.md`](2026-10-29-04-tahap-1-deep.md) | Tahap 1 mode Research: matriks 14 agent, AGENTS.md, plugin marketplace, riset skill smell, flow `.antiai/`, konversi WordPress/Elementor V4/Woo/Statamic, DTCG 2025.10, Tailwind v4, Playwright | **Acuan utama** |
 | [`2026-10-29-03-tahap-1-websearch.md`](2026-10-29-03-tahap-1-websearch.md) | Tahap 1 versi web search | Digantikan sebagian oleh 04 |
 | [`2026-10-29-02-gap-analysis.md`](2026-10-29-02-gap-analysis.md) | Review isi repo commit `ebe7cfe` dan daftar gap | Ada koreksi soal Cursor |
