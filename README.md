@@ -51,6 +51,7 @@ Writing for people:
 - [`weave-docs`](skills/weave-docs/SKILL.md): READMEs, how-tos, reference, docblocks, ADRs, runbooks, client handoff guides, and AGENTS.md. Requires samples that were run and APIs that exist, ships templates, and includes `lint-docs.mjs` for English and Indonesian Markdown.
 - [`weave-email`](skills/weave-email/SKILL.md): emails and notifications (generic subjects, signposting, empty CTAs).
 - [`weave-error`](skills/weave-error/SKILL.md): error messages, validation text, and logs.
+- [`weave-slides`](skills/weave-slides/SKILL.md): presentations and pitch decks (slides that are documents, bullet walls, label titles, template layouts, stock images, invented charts).
 
 Version control:
 

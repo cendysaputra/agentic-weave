@@ -47,6 +47,7 @@ Load `weave-core` first, then the skill for the task:
 | Changelogs and release notes | `weave-changelog` |
 | Error messages and logs | `weave-error` |
 | Email and notifications | `weave-email` |
+| Slide decks and presentations | `weave-slides` |
 | Chat or assistant replies | `weave-chat` |
 
 Run the Delivery Gate in `weave-core` before handing over any text, UI, commit, or PR.
