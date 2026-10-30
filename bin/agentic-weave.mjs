@@ -449,18 +449,22 @@ async function remove(args, skills) {
 
 // `check`: lint Markdown files and commit messages with the same rules the
 // skills use, and print a score plus the three most useful fixes.
+const missing = (p) => (err) => {
+  throw err.code === 'ENOENT' ? new Error(`No such file or directory: ${p}`) : err;
+};
+
 async function check(args) {
   const { lintMarkdown } = await import(pathToFileURL(path.join(SKILLS_DIR, 'weave-docs', 'scripts', 'lint-core.mjs')).href);
   const { lintCommit } = await import(pathToFileURL(path.join(SKILLS_DIR, 'weave-commit', 'scripts', 'lint-commit-core.mjs')).href);
   if (args.sapaan && !['kamu', 'anda'].includes(args.sapaan)) throw new Error('--sapaan must be kamu or anda');
   const results = [];
   if (args.commit !== null || args.commitFile) {
-    const msg = args.commitFile ? await readFile(args.commitFile, 'utf8') : args.commit;
+    const msg = args.commitFile ? await readFile(args.commitFile, 'utf8').catch(missing(args.commitFile)) : args.commit;
     results.push({ target: args.commitFile || 'commit message', issues: lintCommit(msg) });
   }
   const files = [];
   const collect = async (p) => {
-    const st = await stat(p);
+    const st = await stat(p).catch(missing(p));
     if (st.isDirectory()) {
       for (const e of await readdir(p)) if (!['node_modules', '.git', 'vendor'].includes(e)) await collect(path.join(p, e));
     } else if (/\.(md|markdown|mdx)$/i.test(p)) files.push(p);

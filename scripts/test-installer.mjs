@@ -153,6 +153,13 @@ test('check reads .md, .markdown, and .mdx only', (env) => {
   assert(/page\.mdx/.test(r.stdout) && !/notes\.txt/.test(r.stdout), r.stdout);
 });
 
+test('check names a missing path without a raw ENOENT', (env) => {
+  for (const args of [['does-not-exist.md'], ['--commit-file', 'no-msg.txt']]) {
+    const r = env.run('check', ...args);
+    assert(r.status === 1 && r.stderr.includes(args.at(-1)) && !/ENOENT/.test(r.stderr), r.stderr);
+  }
+});
+
 test('hook rejects a generic commit and accepts a specific one', (env) => {
   const git = (...a) => spawnSync('git', a, { cwd: env.project, encoding: 'utf8', env: { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' } });
   git('init', '-q');
