@@ -85,6 +85,7 @@ function agentsBlock(v) {
 ## agentic-weave
 
 - Load the antiai-core skill with the skill that fits the task: antiai-ui for UI, antiai-docs for docs, antiai-commit for commits, antiai-pr for pull requests.
+- For a website from brief to handoff, follow antiai-flow; its state and decisions live in .antiai/.
 - Run the Delivery Gate in antiai-core before handing over text, UI, a commit, or a PR.
 - Never commit atm/ or reference-crawl/: they hold copies of third-party sites.
 ${BLOCK_END}`;

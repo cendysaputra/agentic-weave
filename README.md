@@ -6,6 +6,10 @@ Agent skills that catch AI slop in the text and UI an agent produces, published 
 
 Start with [`antiai-core`](skills/antiai-core/SKILL.md). It defines the numbered rules (R-XX for wording, C-X for structure and checks) and the Delivery Gate that every other skill cites. Load it alongside whichever skill fits the task.
 
+Projects:
+
+- [`antiai-flow`](skills/antiai-flow/SKILL.md): a web project from brief to client handoff in nine stages. Each stage writes a file in `.antiai/` and passes a gate that `scripts/flow.mjs` checks, so any agent can pick up where another stopped. Modes: build, atm, rewrite, audit.
+
 Interfaces:
 
 - [`antiai-ui`](skills/antiai-ui/SKILL.md): web and app UI that looks generated (default fonts, purple gradients, stock landing-page layout, preset motion), raised to Awwwards jury craft: concept, signature moment, Core Web Vitals, accessibility, and a rubric self-score. Its scripts need Playwright (`npm i -D playwright && npx playwright install chromium`):

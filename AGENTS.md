@@ -35,7 +35,8 @@ Load `antiai-core` first, then the skill for the task:
 
 | Task | Skill |
 | --- | --- |
-| Web or app UI, reference sites, ATM | `antiai-ui` (`antiai-ui-id` for Indonesian products) |
+| A web project from brief to handoff | `antiai-flow` (stages and gates in `.antiai/`) |
+| Web or app UI, reference sites, ATM, design tokens | `antiai-ui` (`antiai-ui-id` for Indonesian products) |
 | Indonesian copy | `antiai-copywriting-id` |
 | README or docs | `antiai-docs` |
 | Commit messages | `antiai-commit` |
