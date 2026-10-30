@@ -9,7 +9,8 @@
     "anti-ai": "bin/anti-ai.mjs"
   },
   "scripts": {
-    "test": "node scripts/lint-skills.mjs"
+    "test": "node scripts/lint-skills.mjs",
+    "version": "node scripts/sync-version.mjs && git add .claude-plugin/plugin.json"
   },
   "files": [
     "bin",

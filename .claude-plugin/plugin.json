@@ -1,0 +1,12 @@
+{
+  "name": "anti-ai",
+  "description": "Anti-slop skills for AI agents: UI, Indonesian copy, docs, commits, PRs, errors, and email.",
+  "author": {
+    "name": "Cendy Saputra",
+    "url": "https://github.com/cendysaputra"
+  },
+  "homepage": "https://github.com/cendysaputra/agentic-weave",
+  "repository": "https://github.com/cendysaputra/agentic-weave",
+  "license": "MIT",
+  "version": "1.0.1"
+}

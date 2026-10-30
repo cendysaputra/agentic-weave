@@ -48,7 +48,17 @@ npx anti-ai-skills list
 npx anti-ai-skills remove -y
 ```
 
-After a global install (`npm i -g anti-ai-skills`) the command is also available as `anti-ai`. Update with `npx anti-ai-skills@latest`. The same skills also install through the skills CLI (`npx skills add cendysaputra/agentic-weave`), or by copying `antiai-core` plus the folders you need into `~/.claude/skills/` or `~/.agents/skills/`.
+After a global install (`npm i -g anti-ai-skills`) the command is also available as `anti-ai`. Update with `npx anti-ai-skills@latest`.
+
+In Claude Code 2.1.275 or later, the repository also installs as a plugin, which updates with the repo:
+
+```text
+/plugin install anti-ai --marketplace cendysaputra/agentic-weave
+```
+
+On older versions, run `/plugin marketplace add cendysaputra/agentic-weave`, then `/plugin install anti-ai@imajiner-agentic-weave`.
+
+Contributors and agents working on this repository: read [`AGENTS.md`](AGENTS.md). The same skills also install through the skills CLI (`npx skills add cendysaputra/agentic-weave`), or by copying `antiai-core` plus the folders you need into `~/.claude/skills/` or `~/.agents/skills/`.
 
 ## Publishing
 
