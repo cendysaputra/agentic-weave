@@ -2,6 +2,33 @@
 
 Agent skills that catch AI slop in the text and UI an agent produces, published on npm as `agentic-weave`. One skill per concern, in `skills/<name>/SKILL.md`. Each entry names a tell, why it reads as generated, and the fix, and each skill ends with a checklist.
 
+## Before and after
+
+Indonesian copy, with `weave-copywriting-id`:
+
+> Dengan menggunakan platform kami, Anda dapat dengan mudah meningkatkan produktivitas tim secara efektif dan efisien.
+
+> Platform kami memangkas waktu rapat status tim Anda.
+
+A commit message, with `weave-commit`:
+
+> Update code
+
+> fix: stop duplicate webhook processing on Stripe retry
+
+A README, checked with `weave-docs` and its linter:
+
+```text
+$ node skills/weave-docs/scripts/lint-docs.mjs README.md
+README.md:5  error   em-dash          em dash; use a comma, colon, period, or parentheses (R-02)
+README.md:5  warning stock-phrase     stock phrase "This guide will walk you through"; start with the content (R-36)
+README.md:11  warning fence-language   code fence has no language; tag it so samples can be linted and run (R-44)
+
+1 file(s), 1 error(s), 2 warning(s).
+```
+
+Indonesian is a first-class target: `weave-copywriting-id` and `weave-ui-id` cover tells that only appear in Indonesian copy and interfaces (empty vocabulary, nominalisasi, Rupiah and date formats), and `lint-docs.mjs --sapaan kamu|anda` keeps one form of address per document.
+
 ## Skills
 
 Start with [`weave-core`](skills/weave-core/SKILL.md). It defines the numbered rules (R-XX for wording, C-X for structure and checks) and the Delivery Gate that every other skill cites. Load it alongside whichever skill fits the task.
@@ -68,21 +95,32 @@ npx agentic-weave list
 npx agentic-weave remove -y
 ```
 
-After a global install (`npm i -g agentic-weave`) Update with `npx agentic-weave@latest`.
+Update with `npx agentic-weave@latest`. The installer records what it installed in `~/.agentic-weave/installed.json`; a skill you edited is backed up to `~/.agentic-weave/backups/` before it is replaced, and `remove` asks before deleting anything.
 
-In Claude Code 2.1.275 or later, the repository also installs as a plugin, which updates with the repo:
+The same skills also install through the skills CLI (`npx skills add cendysaputra/agentic-weave`), or by copying `weave-core` plus the folders you need into `~/.claude/skills/` or `~/.agents/skills/`.
+
+### Claude Code plugin
+
+In Claude Code 2.1.275 or later:
 
 ```text
 /plugin install agentic-weave --marketplace cendysaputra/agentic-weave
 ```
 
-On older versions, run `/plugin marketplace add cendysaputra/agentic-weave`, then `/plugin install agentic-weave@imajiner-agentic-weave`.
+On older versions, add the marketplace, then install the plugin from it:
 
-Contributors and agents working on this repository: read [`AGENTS.md`](AGENTS.md). The same skills also install through the skills CLI (`npx skills add cendysaputra/agentic-weave`), or by copying `weave-core` plus the folders you need into `~/.claude/skills/` or `~/.agents/skills/`.
+```text
+/plugin marketplace add cendysaputra/agentic-weave
+/plugin install agentic-weave@agentic-weave
+```
+
+The first command points at the GitHub repository; in `agentic-weave@agentic-weave`, the part after `@` is the marketplace name from `.claude-plugin/marketplace.json`.
+
+Contributors and agents working on this repository: read [`AGENTS.md`](AGENTS.md).
 
 ## Upgrading from anti-ai-skills
 
-Version 1.0.0 shipped as the npm package `anti-ai-skills` with skills named `antiai-*`. The project is now Agentic Weave: the package is `agentic-weave`, the skills are `weave-*` (for example `antiai-ui` became `weave-ui`), the Claude Code plugin is `agentic-weave`, and the flow keeps its state in `.weave/` instead of `.antiai/`. Rule IDs (R-XX, C-X) are unchanged. Running `npx agentic-weave` removes the old `antiai-*` folders it replaces.
+Version 1.0.0 shipped as the npm package `anti-ai-skills` with skills named `antiai-*`. The project is now Agentic Weave: the package is `agentic-weave`, the skills are `weave-*` (for example `antiai-ui` became `weave-ui`), the Claude Code plugin is `agentic-weave`, and the flow keeps its state in `.weave/` instead of `.antiai/`. Rule IDs (R-XX, C-X) are unchanged. Running `npx agentic-weave` moves the old `antiai-*` folders it replaces to `~/.agentic-weave/backups/`.
 
 ## Publishing
 
