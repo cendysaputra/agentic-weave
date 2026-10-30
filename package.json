@@ -1,6 +1,6 @@
 {
   "name": "anti-ai-skills",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Skills that keep AI coding agents from writing and designing slop: copy, docs, commits, PRs, errors, and award-grade UI.",
   "type": "module",
   "bin": {
