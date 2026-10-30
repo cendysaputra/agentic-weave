@@ -10,6 +10,7 @@
 //   npx agentic-weave remove [skills...]   remove installed Agentic Weave skills
 
 import { cp, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -96,13 +97,22 @@ function agentsBlock(v) {
 ${BLOCK_END}`;
 }
 
+// Only both markers, in order, count as a block. Anything else was edited by
+// hand, so stop instead of guessing and adding a second block.
+function checkMarkers(file, start, end) {
+  if ((start === -1) !== (end === -1) || (start !== -1 && end < start)) {
+    throw new Error(`${file} has an incomplete agentic-weave block (one marker missing or out of order). Fix or delete it by hand, then run again.`);
+  }
+}
+
 async function writeAgentsBlock(v) {
   const file = path.join(process.cwd(), 'AGENTS.md');
   const block = agentsBlock(v);
   let text = existsSync(file) ? await readFile(file, 'utf8') : '';
   const start = text.search(BLOCK_START);
   const end = text.indexOf(BLOCK_END);
-  if (start !== -1 && end > start) text = text.slice(0, start) + block + text.slice(end + BLOCK_END.length);
+  checkMarkers(file, start, end);
+  if (start !== -1) text = text.slice(0, start) + block + text.slice(end + BLOCK_END.length);
   else text = text ? `${text.replace(/\s*$/, '')}\n\n${block}\n` : `# AGENTS.md\n\n${block}\n`;
   await writeFile(file, text);
   console.log(`${c.green('✓')} agentic-weave block in ${c.bold('AGENTS.md')} ${c.gray(file)}`);
@@ -117,10 +127,64 @@ async function removeAgentsBlock() {
   const text = await readFile(file, 'utf8');
   const start = text.search(BLOCK_START);
   const end = text.indexOf(BLOCK_END);
-  if (start === -1 || end < start) return false;
+  checkMarkers(file, start, end);
+  if (start === -1) return false;
   await writeFile(file, (text.slice(0, start).replace(/\s*$/, '') + text.slice(end + BLOCK_END.length)).replace(/^\s*$/, '') + '\n');
   console.log(`${c.red('-')} agentic-weave block ${c.gray(file)}`);
   return true;
+}
+
+// Installer state lives outside every agent's skills folder, so backups are
+// never loaded as skills: installed.json records what was installed where,
+// with a content hash, and backups/ keeps anything replaced or removed.
+const STATE_DIR = process.env.AGENTIC_WEAVE_HOME || home('.agentic-weave');
+const MANIFEST = path.join(STATE_DIR, 'installed.json');
+const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+
+async function loadManifest() {
+  try {
+    return JSON.parse(await readFile(MANIFEST, 'utf8'));
+  } catch {
+    return { dirs: {} };
+  }
+}
+async function saveManifest(m) {
+  await mkdir(STATE_DIR, { recursive: true });
+  await writeFile(MANIFEST, JSON.stringify(m, null, 2) + '\n');
+}
+
+// One hash for a whole folder: relative paths and file contents, sorted.
+async function hashDir(dir) {
+  const h = createHash('sha256');
+  const walk = async (d, rel) => {
+    for (const e of (await readdir(d, { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name))) {
+      const p = path.join(d, e.name);
+      const r = rel ? `${rel}/${e.name}` : e.name;
+      if (e.isDirectory()) await walk(p, r);
+      else h.update(r).update('\0').update(await readFile(p)).update('\0');
+    }
+  };
+  await walk(dir, '');
+  return h.digest('hex');
+}
+
+// Move a folder into backups/<stamp>/ and return where it went.
+async function backup(dir) {
+  const rel = dir.replace(/^[A-Za-z]:/, '').replace(/^[\\/]+/, '');
+  const dest = path.join(STATE_DIR, 'backups', stamp, rel);
+  await mkdir(path.dirname(dest), { recursive: true });
+  await cp(dir, dest, { recursive: true });
+  await rm(dir, { recursive: true, force: true });
+  return dest;
+}
+
+// Questions are only asked on a terminal and without -y; otherwise the
+// fallback answer is used.
+function prompter(args) {
+  if (!process.stdin.isTTY || args.yes) return { ask: async (q, fallback) => fallback, close() {} };
+  const rl = createInterface({ input: process.stdin, terminal: false });
+  const lines = rl[Symbol.asyncIterator]();
+  return { ask: (q, fallback) => ask(lines, q, fallback), close: () => rl.close() };
 }
 
 async function version() {
@@ -164,8 +228,11 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '-t' || a === '--target') args.target = argv[++i];
-    else if (a === '-p' || a === '--project') args.project = true;
-    else if (a === '-g' || a === '--global') args.project = false;
+    else if (a === '-p' || a === '--project') args.project = args.scopeSet = true;
+    else if (a === '-g' || a === '--global') {
+      args.project = false;
+      args.scopeSet = true;
+    }
     else if (a === '-y' || a === '--yes') args.yes = true;
     else if (a === '--with-agents-md') args.agentsMd = true;
     else if (a === '-h' || a === '--help') args.command = 'help';
@@ -182,11 +249,12 @@ function help() {
   npx agentic-weave                         interactive install
   npx agentic-weave install [skills...]     install the named skills (default: all)
   npx agentic-weave list                    list the skills in this package
-  npx agentic-weave remove [skills...]      remove installed Agentic Weave skills (default: all)
+  npx agentic-weave remove [skills...]      remove installed Agentic Weave skills (asks first; -y to skip)
 
 ${c.bold('Options')}
   -t, --target <names>               comma-separated agents (default: claude)
                                      ${TARGET_NAMES.join(', ')}, both (claude,agents)
+  -g, --global                       install into your user folder (default)
   -p, --project                      install into this project instead of your user folder
   --with-agents-md                   add or update the agentic-weave block in ./AGENTS.md
   -y, --yes                          skip prompts
@@ -232,9 +300,9 @@ async function install(args, skills) {
   let project = args.project;
   let names = args.names.length ? pickByInput(args.names.join(','), skills) : skills.map((s) => s.name);
 
+  const prompt = prompter(args);
   if (process.stdin.isTTY && !args.yes) {
-    const rl = createInterface({ input: process.stdin, terminal: false });
-    const lines = rl[Symbol.asyncIterator]();
+    const ask = prompt.ask;
     try {
       if (!args.target) {
         console.log(c.bold('Install to'));
@@ -243,22 +311,23 @@ async function install(args, skills) {
           const hint = t.optional ? 'only if you skip 1 and 2; it already reads them' : t.note;
           console.log(`  ${String(i + 1).padStart(2)}) ${t.label}${hint ? c.gray(`  ${hint}`) : ''}`);
         });
-        targets = resolveTargets(await ask(lines, 'Numbers or names, separated by commas', '1'));
+        targets = resolveTargets(await ask('Numbers or names, separated by commas', '1'));
       }
-      if (!args.project) {
+      if (!args.scopeSet) {
         console.log(`\n${c.bold('Scope')}\n  1) Global: every project on this computer\n  2) This project only: ${process.cwd()}`);
-        project = (await ask(lines, 'Choose 1 or 2', '1')) === '2';
+        project = (await ask('Choose 1 or 2', '1')) === '2';
       }
       if (project && !args.agentsMd) {
-        args.agentsMd = /^y/i.test(await ask(lines, 'Add the agentic-weave block to ./AGENTS.md? y/n', 'n'));
+        args.agentsMd = /^y/i.test(await ask('Add the agentic-weave block to ./AGENTS.md? y/n', 'n'));
       }
       if (!args.names.length) {
         console.log(`\n${c.bold('Skills')}`);
         skills.forEach((s, i) => console.log(`  ${String(i + 1).padStart(2)}) ${s.name}`));
-        names = pickByInput(await ask(lines, 'Type "all", or numbers/names separated by commas', 'all'), skills);
+        names = pickByInput(await ask('Type "all", or numbers/names separated by commas', 'all'), skills);
       }
-    } finally {
-      rl.close();
+    } catch (err) {
+      prompt.close();
+      throw err;
     }
   }
 
@@ -267,6 +336,8 @@ async function install(args, skills) {
   console.log('');
   if (added.length) console.log(c.gray(`Also installing required: ${added.join(', ')}`));
 
+  const manifest = await loadManifest();
+  const backups = [];
   const done = new Set();
   for (const t of targets) {
     const dirs = targetDirs(t, project);
@@ -278,21 +349,45 @@ async function install(args, skills) {
       if (done.has(dest)) continue;
       done.add(dest);
       await mkdir(dest, { recursive: true });
+      const record = (manifest.dirs[dest] ||= {});
+      let installed = 0;
       for (const s of chosen) {
+        const src = path.join(SKILLS_DIR, s.dir);
         const to = path.join(dest, s.dir);
-        await rm(to, { recursive: true, force: true });
-        await cp(path.join(SKILLS_DIR, s.dir), to, { recursive: true });
-        // Skills were named antiai-* before the Agentic Weave rename; drop the
-        // old copy so agents do not list the same skill twice.
+        const fresh = await hashDir(src);
+        if (existsSync(to)) {
+          const current = await hashDir(to);
+          // Unchanged since we installed it, or already identical: replace quietly.
+          // Anything else was edited by the user: back it up first, or skip.
+          if (current !== fresh && current !== record[s.dir]) {
+            const yes = /^y/i.test(await prompt.ask(`${to} was edited since it was installed. Back it up and replace it? y/n`, 'y'));
+            if (!yes) {
+              console.log(c.gray(`  kept your edited ${s.dir}`));
+              continue;
+            }
+            backups.push(await backup(to));
+          }
+          await rm(to, { recursive: true, force: true });
+        }
+        await cp(src, to, { recursive: true });
+        record[s.dir] = fresh;
+        installed++;
+        // Skills were named antiai-* before the Agentic Weave rename. Move the
+        // old copy to backups so agents do not list the same skill twice.
         const legacy = path.join(dest, s.dir.replace(/^weave-/, 'antiai-'));
         if (legacy !== to && existsSync(legacy)) {
-          await rm(legacy, { recursive: true, force: true });
-          console.log(c.gray(`  removed old ${path.basename(legacy)} (renamed to ${s.dir})`));
+          if (/^y/i.test(await prompt.ask(`Move the old ${path.basename(legacy)} (now ${s.dir}) to backups? y/n`, 'y'))) {
+            backups.push(await backup(legacy));
+            console.log(c.gray(`  moved old ${path.basename(legacy)} to backups (renamed to ${s.dir})`));
+          }
         }
       }
-      console.log(`${c.green('✓')} ${chosen.length} skill(s) to ${c.bold(TARGETS[t].label)} ${c.gray(dest)}`);
+      console.log(`${c.green('✓')} ${installed} skill(s) to ${c.bold(TARGETS[t].label)} ${c.gray(dest)}`);
     }
   }
+  prompt.close();
+  await saveManifest(manifest);
+  if (backups.length) console.log(`${c.yellow('!')} Backed up ${backups.length} folder(s) to ${c.bold(path.join(STATE_DIR, 'backups', stamp))}`);
   if (args.agentsMd) await writeAgentsBlock(await version());
 
   if (chosen.some((s) => s.name === 'weave-ui')) {
@@ -304,20 +399,44 @@ async function install(args, skills) {
 
 async function remove(args, skills) {
   const names = args.names.length ? pickByInput(args.names.join(','), skills) : skills.map((s) => s.name);
-  const targets = args.target ? resolveTargets(args.target) : TARGET_NAMES;
-  let removed = 0;
-  const dirs = [...new Set(targets.flatMap((t) => targetDirs(t, args.project)))];
+  const manifest = await loadManifest();
+  // Without -t, only touch folders this installer recorded; fall back to every
+  // known folder only when there is no record at all (installs before 1.1).
+  const known = Object.keys(manifest.dirs).filter((d) => args.project === d.startsWith(process.cwd() + path.sep));
+  const dirs = args.target
+    ? [...new Set(resolveTargets(args.target).flatMap((t) => targetDirs(t, args.project)))]
+    : known.length ? known : [...new Set(TARGET_NAMES.flatMap((t) => targetDirs(t, args.project)))];
+  const found = [];
   for (const dest of dirs) {
     for (const s of skills.filter((x) => names.includes(x.name))) {
       const dir = path.join(dest, s.dir);
-      if (existsSync(dir) && (await stat(dir)).isDirectory()) {
-        await rm(dir, { recursive: true, force: true });
-        console.log(`${c.red('-')} ${s.name} ${c.gray(dir)}`);
-        removed++;
-      }
+      if (existsSync(dir) && (await stat(dir)).isDirectory()) found.push({ dest, s, dir });
     }
   }
+  if (!found.length && !args.agentsMd) return console.log('Nothing to remove.');
+  for (const f of found) console.log(`  ${f.s.name} ${c.gray(f.dir)}`);
+  if (!args.yes) {
+    if (!process.stdin.isTTY) throw new Error('remove deletes folders; run it in a terminal or add -y to confirm.');
+    const prompt = prompter(args);
+    const yes = /^y/i.test(await prompt.ask(`Remove ${found.length} folder(s)? y/n`, 'n'));
+    prompt.close();
+    if (!yes) return console.log('Nothing removed.');
+  }
+  let removed = 0;
+  const backups = [];
+  for (const { dest, s, dir } of found) {
+    const record = manifest.dirs[dest] || {};
+    // A skill edited after install goes to backups instead of being deleted.
+    if ((await hashDir(dir)) !== record[s.dir]) backups.push(await backup(dir));
+    else await rm(dir, { recursive: true, force: true });
+    delete record[s.dir];
+    if (manifest.dirs[dest] && !Object.keys(manifest.dirs[dest]).length) delete manifest.dirs[dest];
+    console.log(`${c.red('-')} ${s.name} ${c.gray(dir)}`);
+    removed++;
+  }
+  await saveManifest(manifest);
   if (args.agentsMd && (await removeAgentsBlock())) removed++;
+  if (backups.length) console.log(`${c.yellow('!')} ${backups.length} edited folder(s) kept in ${c.bold(path.join(STATE_DIR, 'backups', stamp))}`);
   console.log(removed ? `${c.green('✓')} Removed ${removed} item(s).` : 'Nothing to remove.');
 }
 

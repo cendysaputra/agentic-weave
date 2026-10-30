@@ -39,3 +39,24 @@ Hasil bongkar `bin/agentic-weave.mjs` dan CI.
 - **Blok AGENTS.md bisa dobel.** Kalau penanda `agentic-weave:end` hilang tapi penanda start masih ada, installer menambah blok kedua, dan `remove` tidak membersihkan blok yang rusak. Saran: kalau hanya satu penanda yang ketemu, berhenti dan beri tahu pengguna.
 - **Installer belum punya tes.** `npm test` baru memeriksa isi skill, padahal installer yang menghapus folder di home pengguna adalah bagian paling berisiko.
 - **Izin token CI.** `.github/workflows/lint-skills.yml` belum memakai `permissions: contents: read`, jadi token-nya masih memakai izin default.
+
+## Status tindak lanjut (30 Oktober 2026)
+
+| Saran | Status |
+| --- | --- |
+| `weave-ui/SKILL.md` terlalu panjang | Selesai. Rubrik juri, self-score, tell kualitas build dan konten, serta Library Soup dipindah ke `references/`. Linter tidak lagi memberi peringatan |
+| Contoh before/after di README | Selesai. Contoh copy Indonesia, pesan commit, dan output asli `lint-docs.mjs` |
+| Nama marketplace `imajiner-agentic-weave` | Selesai. Sekarang `agentic-weave`, install lama jadi `agentic-weave@agentic-weave` |
+| Rilis sebagai 2.0.0 | Tidak dipakai. `agentic-weave` 1.0.1 adalah rilis pertama dengan nama baru, jadi di package ini belum ada yang rusak. Perubahan berikutnya cukup minor (1.1.0) |
+| `npm deprecate anti-ai-skills` | Tidak bisa lagi. Package itu sudah di-unpublish pada 30 Oktober 2026, jadi tidak ada yang perlu ditandai |
+| Marketplace tidak konsisten | Sebenarnya keduanya benar (yang pertama alamat repo, yang kedua `plugin@nama-marketplace`). Setelah rename, README menjelaskan bedanya |
+| Typo "Update with" | Selesai. Ternyata kalimat terpotong sisa rename, bukan typo; kalimatnya ditulis ulang |
+| Install menimpa skill tanpa backup | Selesai. Hash tiap skill dicatat di `~/.agentic-weave/installed.json`; skill yang diedit di-backup ke `~/.agentic-weave/backups/` (atau dipertahankan bila pengguna menolak) |
+| Folder lama `antiai-*` dihapus otomatis | Selesai. Dipindah ke backups, dengan konfirmasi kecuali `-y` |
+| `remove` tanpa konfirmasi, menyasar semua target | Selesai. Wajib konfirmasi atau `-y`, hanya menyasar folder yang tercatat di manifest, skill yang diedit masuk backups |
+| Blok AGENTS.md bisa dobel | Selesai. Kalau hanya satu penanda yang ketemu, installer berhenti dan memberi tahu |
+| Installer belum punya tes | Selesai. `scripts/test-installer.mjs`, 8 kasus, jalan di `npm test` dan CI |
+| Izin token CI | Selesai. `permissions: contents: read` |
+| Template issue "Laporkan tanda slop baru" | Selesai. `.github/ISSUE_TEMPLATE/tanda-slop-baru.yml` |
+| Bahasa Indonesia sebagai pembeda | Selesai sebagian: contoh dan paragraf di bagian before/after README |
+| `check`, GitHub Action, hook commit, `examples/`, `weave-slides`, halaman demo | Belum. Fitur baru yang butuh desain sendiri; masuk antrean |
