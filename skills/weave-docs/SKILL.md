@@ -179,5 +179,5 @@ Run these alongside the Delivery Gate in `weave-core`. Every line below must be 
 - [ ] Docblocks add what the types do not say (R-45)
 - [ ] Decision records name rejected options and a downside (R-48)
 - [ ] Agent files hold only concrete, non-standard instructions (R-47)
-- [ ] Indonesian docs: one form of address, UI labels exactly as on screen, terms from the glossary
+- [ ] One term per concept, UI labels exactly as on screen; Indonesian docs keep one form of address and use terms from the glossary (R-51)
 - [ ] `lint-docs.mjs` reports no errors (R-02)
