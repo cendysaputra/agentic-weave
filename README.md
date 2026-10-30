@@ -119,6 +119,49 @@ The first command points at the GitHub repository; in `agentic-weave@agentic-wea
 
 Contributors and agents working on this repository: read [`AGENTS.md`](AGENTS.md).
 
+## Check your text
+
+The linters behind `weave-docs` and `weave-commit` also run on their own. They catch the tells a machine can find (stock phrases, em dashes, stacked hedges, vague links, mixed *kamu* and *Anda*, generic commit subjects, emoji); the rest is in the skills.
+
+```bash
+npx agentic-weave check README.md docs
+npx agentic-weave check --commit "Update code"
+npx agentic-weave check docs --sapaan kamu --json
+```
+
+`check` prints each finding, a score out of 100 (minus 10 per error, minus 3 per warning), and the three rules to fix first. It exits with 1 when there is an error.
+
+To check every commit message in a repository before it is saved:
+
+```bash
+npx agentic-weave hook
+```
+
+The hook copies the checker into `.git/hooks/`, so it works offline. `npx agentic-weave hook remove` takes it out. With husky or another `core.hooksPath`, the command prints the line to add to your own commit-msg hook instead of writing one.
+
+On GitHub, the Action checks the PR title, every commit in the PR, and the Markdown files the PR changes, with annotations on the lines and the score in the job summary:
+
+```yaml
+name: weave-check
+on: pull_request
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cendysaputra/agentic-weave@main
+        with:
+          sapaan: kamu # optional: kamu or anda
+          fail-on: error # error, warning, or never
+```
+
+Pin `@main` to a commit SHA for stable runs. Set `paths` to check fixed files instead of the changed ones, and `pr-title: false` or `commits: false` to skip either check. Every input is in [`action.yml`](action.yml).
+
+[`examples/`](examples/) holds a before/after pair for every rule, and `npm test` fails if a linter stops catching one. [`demo/index.html`](demo/index.html) runs the same linters in the browser: serve the repo root (`python3 -m http.server`) and open `/demo/`.
+
 ## Upgrading from anti-ai-skills
 
 Version 1.0.0 shipped as the npm package `anti-ai-skills` with skills named `antiai-*`. The project is now Agentic Weave: the package is `agentic-weave`, the skills are `weave-*` (for example `antiai-ui` became `weave-ui`), the Claude Code plugin is `agentic-weave`, and the flow keeps its state in `.weave/` instead of `.antiai/`. Rule IDs (R-XX, C-X) are unchanged. Running `npx agentic-weave` moves the old `antiai-*` folders it replaces to `~/.agentic-weave/backups/`.
