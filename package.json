@@ -1,6 +1,6 @@
 {
   "name": "agentic-weave",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Agentic Weave: skills that keep AI coding agents from writing and designing slop, from copy, docs, commits, and PRs to award-grade UI and a gated web project flow.",
   "license": "MIT",
   "type": "module",
