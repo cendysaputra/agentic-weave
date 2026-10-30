@@ -90,26 +90,26 @@ for (const dir of skills) {
   }
 }
 
-// Cross-skill checks: every cited rule exists in antiai-core, and every
+// Cross-skill checks: every cited rule exists in weave-core, and every
 // "Load with ..." dependency is a real skill.
-const core = parsed.get('antiai-core');
-if (!core) err('skills/antiai-core', 'antiai-core is missing; every skill depends on it');
+const core = parsed.get('weave-core');
+if (!core) err('skills/weave-core', 'weave-core is missing; every skill depends on it');
 else {
   const defined = new Set([...core.body.matchAll(/^### ((?:R|C)-\d+)/gm)].map((m) => m[1]));
   for (const [dir, { body, rel }] of parsed) {
-    if (dir === 'antiai-core') continue;
+    if (dir === 'weave-core') continue;
     const cited = new Set(body.match(/\b(?:R|C)-\d+\b/g) || []);
-    for (const id of cited) if (!defined.has(id)) err(rel, `cites ${id}, which antiai-core does not define`);
+    for (const id of cited) if (!defined.has(id)) err(rel, `cites ${id}, which weave-core does not define`);
   }
 }
 for (const [dir, { fm, rel }] of parsed) {
-  if (dir === 'antiai-core' || !fm?.description) continue;
+  if (dir === 'weave-core' || !fm?.description) continue;
   const loadWith = (fm.description.match(/Load with ([^.]+)\./) || [])[1];
   if (!loadWith) {
-    warn(rel, 'description does not say "Load with antiai-core."; the installer uses it to add dependencies');
+    warn(rel, 'description does not say "Load with weave-core."; the installer uses it to add dependencies');
     continue;
   }
-  for (const dep of loadWith.match(/antiai-[a-z-]+/g) || []) {
+  for (const dep of loadWith.match(/weave-[a-z-]+/g) || []) {
     if (!parsed.has(dep)) err(rel, `"Load with" names ${dep}, which is not a skill in this repo`);
   }
 }
