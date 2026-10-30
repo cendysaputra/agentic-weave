@@ -132,3 +132,10 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
 });
 // Under reduced motion nothing above runs: native scroll, final states shown.
 ```
+
+## Library Soup
+
+- **Tell:** GSAP and Motion in one bundle, Barba next to Swup, AOS fade-ups on top of ScrollTrigger, a Spline scene for a spinning logo.
+- **Why:** overlapping libraries fight over the same frames and bloat the bundle, and preset packs produce the stock-effect tells.
+- **Fix:** native CSS and browser APIs first, then one library per job, each with a reduced-motion path and cleanup on navigation.
+- **Rule:** R-41, C-6.

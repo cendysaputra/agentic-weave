@@ -7,37 +7,28 @@ description: "Design and review web UI that does not look AI-generated and meets
 
 > Agentic Weave: Rules for AI Coding Agents. Visual UI skill
 
-> Part of the Agentic Weave system. Read together with `weave-core`. This skill filters interfaces that look generated and sets the bar at what an Awwwards jury rewards. It references core rules by number and never duplicates or renumbers them. Load it when the task designs, builds, or reviews a UI.
+> Part of the Agentic Weave system. Read together with `weave-core`. Filters interfaces that look generated and sets the bar at what an Awwwards jury rewards.
 
 ## How to use this skill
 
 - Load together with `weave-core` whenever the task produces or reviews a web page or app screen. Add `weave-ui-id` for an Indonesian product and `weave-copywriting-id` for Indonesian copy.
-- Work in order: **Reference sites** (when the user has them, optionally through **ATM**), then **Concept**, then **Art direction**, then build, then the tells below, then **Usability**, then the rubric self-score.
+- Work in order: reference sites (optionally ATM), concept, art direction, build, the tells below, build quality, then the self-score.
+- Pick tools after the concept from `references/libraries.md`: one per job, native first, with reduced-motion paths and cleanup on navigation.
 - Every entry has the same shape: **Tell** / **Why** / **Fix**, with the governing core rule cited as R-XX.
-- A tell marks an unchosen default, not proof that AI wrote the code. A default you chose on purpose, can justify in one sentence, and apply consistently is not slop (R-37). The test is always: could this page belong to anyone?
+- A tell marks an unchosen default, not proof of AI. A default chosen on purpose, justified in one sentence, and applied consistently is not slop (R-37). The test: could this page belong to anyone?
 - The Delivery Gate in `weave-core` remains the gate. The checklist at the end supplements it.
 
-## What the jury scores
+## The Bar and How It Is Scored
 
-Awwwards scores every submission on four weighted criteria: **Design 40%**, **Usability 30%**, **Creativity 20%**, **Content 10%**. Jurors score from 1 to 10; an Honorable Mention needs a jury average of 6.5 or more, and Site of the Day goes to the top-scoring site of the day. Jury members report that Site of the Day winners are then reviewed by a separate developer jury for the Developer Award, which looks at semantics, performance, accessibility, responsiveness, and motion quality.
-
-Two consequences shape this skill:
-
-- **Effects are not the score.** In one unofficial analysis of 808 winners, GSAP, smooth scroll, full-screen WebGL, preloaders, and custom cursors each appear on half or more of winning sites, and none separates high scorers from low ones. What separated Sites of the Month and Year from Sites of the Day was creativity: a concept carried through the whole page.
-- **Usability is 30%.** A slow, confusing, or inaccessible site loses more than a beautiful one gains. Treat performance and accessibility as design constraints from the first sketch, not a final pass.
+Awwwards scores Design 40%, Usability 30%, Creativity 20%, Content 10%. Effects do not move the score; a concept carried through the page does, and a slow or inaccessible site loses more than a beautiful one gains. Jury process and self-score: `references/awwwards-rubric.md`. Performance, mobile, keyboard, consistency, and content tells: `references/build-quality.md`.
 
 ## Reference Sites and ATM
 
-When the user names reference websites, crawl them before designing with `scripts/crawl-reference.mjs`. It reports type, palette, components, motion stack, performance, accessibility, and slop flags, with screenshots. To learn a page by rebuilding it, use ATM (Amati, Tiru, Modifikasi): `scripts/snapshot-site.mjs` saves a local copy, and `scripts/compare-build.mjs` scores the rebuild (`--mode tiru`) and then gates originality (`--mode modifikasi`, exit code 2 on failure).
+Crawl reference sites with `scripts/crawl-reference.mjs`; learn by rebuilding through ATM (`scripts/snapshot-site.mjs`, `scripts/compare-build.mjs`). Read `references/reference-sites.md` and `references/atm.md` first. Always:
 
-Read `references/reference-sites.md` before running the crawler and `references/atm.md` before running ATM. `scripts/build-tokens.mjs --from-report` turns a crawl report into the reference's tokens, for study only. They hold the commands, options, outputs, and thresholds.
-
-Four rules hold whichever path you take:
-
-- Study the reference's decisions and their reasons, then make new ones from this project's concept. Do not inherit its fonts, palette, layout, or signature moment (R-40).
-- Treat every slop flag in a crawl report as something not to inherit (R-40).
-- Crawler numbers are lab values from one run. When a report warns that stylesheets or fonts failed to load, rerun before drawing conclusions (C-6).
-- Copies under `atm/` and `reference-crawl/` stay local: never commit, deploy, or ship them. Nothing ships until `compare-build.mjs --mode modifikasi` passes. Never snapshot pages behind a login or paywall (R-43).
+- Study the reference's decisions and reasons, then decide anew from this project's concept; never inherit its fonts, palette, layout, signature moment, or slop flags (R-40).
+- Crawler numbers are lab values; rerun when a report warns that stylesheets or fonts failed (C-6).
+- `atm/` and `reference-crawl/` stay local and never ship; nothing ships until `compare-build.mjs --mode modifikasi` passes; never snapshot behind a login or paywall (R-43).
 
 ## Concept
 
@@ -165,7 +156,7 @@ Four rules hold whichever path you take:
 
 - **Tell:** `bg-indigo-500`, `from-purple-500 to-pink-500`, `rounded-2xl`, `shadow-lg`, and `font-sans` across the page: Tailwind's built-in scales used as the design.
 - **Why:** the default theme is the most common source of the generated look, and while it exists an agent will reach for it.
-- **Fix:** write the project's tokens (`references/design-tokens.md`) and generate the `@theme` block with `scripts/build-tokens.mjs --to tailwind`. It resets the default color, font, radius, and shadow scales, so only project utilities exist.
+- **Fix:** generate `@theme` from the project's tokens with `scripts/build-tokens.mjs --to tailwind` (`references/design-tokens.md`); it resets the default scales so only project utilities exist.
 - **Rule:** R-40.
 
 ### Reflexive Glassmorphism
@@ -219,81 +210,12 @@ Four rules hold whichever path you take:
 - **Fix:** gate non-essential motion behind `prefers-reduced-motion: no-preference`, and give the signature moment a still or crossfade equivalent.
 - **Rule:** R-41, R-42.
 
-## Libraries
-
-Choose tools after the concept, from the shortlist in `references/libraries.md`. It covers animation, scroll, page transitions, text splitting, 3D and canvas, and vector animation, with versions, starting stacks per site type, and a Lenis + GSAP + reduced-motion setup.
-
-### Library Soup
-
-- **Tell:** GSAP and Motion in one bundle, Barba next to Swup, AOS fade-ups on top of ScrollTrigger, a Spline scene for a spinning logo.
-- **Why:** overlapping libraries fight over the same frames and bloat the bundle, and preset packs produce the stock-effect tells.
-- **Fix:** native CSS and browser APIs first, then one library per job, each with a reduced-motion path and cleanup on navigation.
-- **Rule:** R-41, C-6.
-
-## Content and Imagery
-
-### Placeholder Content
-
-- **Tell:** lorem ipsum, stock photos of people at laptops, placeholder avatars, invented testimonials, logo strips of companies that are not customers.
-- **Why:** content is 10% of the score, and invented social proof is fabrication.
-- **Fix:** real copy and real imagery, art-directed to the concept. Where real material is missing, mark it (`[REAL DATA]`) and say so.
-- **Rule:** R-17, R-23, R-38.
-
-### Generic Copy in the UI
-
-- **Tell:** "Elevate your workflow," "Seamless," "Powerful," "Get Started →."
-- **Why:** the copy carries the same default as the layout.
-- **Fix:** apply the core wording rules. Buttons name the action and the result.
-- **Rule:** R-15, R-16, R-36.
-
-## Usability and Build Quality
-
-### Performance
-
-- **Tell:** a 10 MB hero video, an uncompressed WebGL scene on load, a multi-second preloader hiding slow assets.
-- **Why:** slow loading is the most objective usability failure a juror sees.
-- **Fix:** meet Core Web Vitals "good" at the 75th percentile at minimum (LCP 2.5 s or less, INP 200 ms or less, CLS 0.1 or less), and aim well under that on a throttled mid-range phone. Lazy-mount 3D when it enters the viewport and pause its render loop off-screen. Serve modern image formats at the right size.
-- **Rule:** R-26, C-6.
-
-### Mobile as an Afterthought
-
-- **Tell:** the desktop layout squeezed into one column; hover-only interactions; tap targets under 24px.
-- **Why:** jurors check on phones, and a desktop masterpiece that breaks there loses.
-- **Fix:** design the mobile composition separately; give every hover interaction a touch equivalent; keep tap targets at 24×24 CSS px or more (44px recommended).
-- **Rule:** R-03, R-26, C-4.
-
-### Keyboard and Semantics
-
-- **Tell:** `div` buttons, removed focus outlines, no skip link, a custom cursor that hides the real one, content only in canvas.
-- **Why:** the developer jury reviews markup and accessibility, and keyboard users cannot use the page.
-- **Fix:** semantic HTML (`button`, `nav`, `main`, headings in order), a visible focus style designed as part of the system, a skip link, no keyboard traps, and text alternatives for anything drawn in canvas or WebGL.
-- **Rule:** R-42.
-
-### Inconsistent Inner Pages
-
-- **Tell:** a crafted home page and template inner pages with different type, spacing, radius, or nav.
-- **Why:** jurors open inner pages, and consistency is part of the design score.
-- **Fix:** one token set across every page. Check two inner pages for every change to the home page.
-- **Rule:** R-40, C-4.
-
-## Self-Score
-
-Before delivery, score the page like a juror, in a real browser on desktop and a throttled phone:
-
-1. Design (40%): hierarchy, type, color, spacing, consistency across pages.
-2. Usability (30%): speed, navigation, mobile, accessibility, measured not guessed (C-6).
-3. Creativity (20%): is there one idea a visitor would remember and describe?
-4. Content (10%): real, specific, art-directed.
-
-Write the score for each, the three changes that would raise it most, and whether the limit is the concept or the execution. If it is the concept, say so; polishing will not fix it.
-
 ## UI Skill Checklist
 
 Run these alongside the Delivery Gate in `weave-core`. Every line below must be true:
 
-- [ ] Reference sites, if any, were crawled and studied for decisions, not copied (R-40)
-- [ ] If ATM was used: `compare-build.mjs --mode modifikasi` passes, and `atm/` is not committed or deployed (R-43)
-- [ ] One library per job from `references/libraries.md`, native first, each with a reduced-motion path (R-41)
+- [ ] References were studied for decisions, not copied; any ATM build passes `compare-build.mjs --mode modifikasi` and `atm/` is not committed (R-40, R-43)
+- [ ] One library per job, native first (R-41)
 - [ ] A one-sentence concept exists, and type, color, layout, and motion trace back to it (R-40)
 - [ ] The page passes the silhouette test; it could not belong to anyone else (R-40)
 - [ ] One signature moment, with mobile and reduced-motion versions; other effects stay quiet (R-40, R-41)
@@ -301,8 +223,7 @@ Run these alongside the Delivery Gate in `weave-core`. Every line below must be 
 - [ ] No purple-blue gradient, gradient text, accent-word headline, or preset "tasteful" palette without a reason (R-40)
 - [ ] No stock landing-page skeleton, identical card grid, or template chrome (R-05, R-40, C-3)
 - [ ] Radius, shadow, blur, and icons are system tokens, not framework defaults; Tailwind defaults are reset in `@theme` (R-40)
-- [ ] Motion has a language; no fade-up-everything, bounce, count-up, or scroll-jacking (R-41)
-- [ ] `prefers-reduced-motion` is honored everywhere (R-41, R-42)
+- [ ] Motion has a language, honors `prefers-reduced-motion`, and has no fade-up-everything, bounce, count-up, or scroll-jacking (R-41, R-42)
 - [ ] Text contrast meets WCAG AA; focus is visible; keyboard and semantics work (R-42)
 - [ ] Every interactive state, the 404, favicon, and OG image are designed (R-26, R-27)
 - [ ] Core Web Vitals measured in a real browser on a throttled phone, not estimated (C-6)
