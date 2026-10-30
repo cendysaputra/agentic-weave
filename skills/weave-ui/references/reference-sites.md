@@ -11,6 +11,19 @@ node <skill-dir>/scripts/crawl-reference.mjs https://reference.example --pages 5
 
 Options: `--pages N` (default 5, same origin, nav links first), `--out DIR` (default `reference-crawl/`), `--delay MS` between pages (default 1000), `--no-screenshots`, and `--ignore-robots` (only for a site the user owns). Output goes to `reference-crawl/<host>/report.md`, `report.json`, and the PNG screenshots.
 
+## Finding References
+
+When the user names no reference site, browse these galleries with the user and pick one to three sites whose decisions fit the project's concept. Crawl the chosen sites, not the gallery pages.
+
+- https://muuuuu.org/
+- https://sankoudesign.com/
+- https://io3000.com/
+- https://webdesignclip.com/
+- https://www.s5-style.com/
+- https://81-web.com/
+
+Added at the project owner's request on 2026-10-30. Not verified from this repository: the sites could not be reached from the build environment, so their content, filters, and language are unchecked. They are understood to be curated web design galleries, mostly of Japanese sites; confirm before describing them further.
+
 ## Copying the Surface
 
 - **Tell:** the shipped design reuses the reference's fonts, palette, layout, and signature interaction, so it reads as a clone.
