@@ -13,6 +13,15 @@ Versions are the latest on npm as of 2026-10-29. Check `npm view <package> versi
 5. **Load heavy things late.** Mount 3D, Rive, and Lottie when they enter the viewport (IntersectionObserver), and pause render loops off-screen.
 6. **No preset effect packs.** AOS, animate.css, particles backgrounds, typewriter heroes, and copy-pasted Aceternity or Magic UI components produce the "Fade-Up Everything" and stock-effect tells. Write the motion the concept needs.
 
+## Styling
+
+| Pick | Package | Version | Use when |
+| --- | --- | --- | --- |
+| Tailwind CSS v4 | `tailwindcss` | 4.3.3 (checked 2026-10-30) | Utility CSS driven by project tokens. Configure in CSS with `@theme`; every theme variable becomes both a utility and a CSS variable. Generate the `@theme` block from the project's tokens with `scripts/build-tokens.mjs --to tailwind` (see `design-tokens.md`). |
+| Plain CSS variables | none | - | Small sites, CMS themes, or any project without a build step: `build-tokens.mjs --to css`. |
+
+Start every Tailwind project with the default scales reset (`--color-*: initial`, `--font-*: initial`, `--radius-*: initial`, `--shadow-*: initial`) so only project tokens exist. Then `bg-indigo-500`, `rounded-2xl`, and `shadow-lg` are not available to fall back on. Blocking the default in configuration beats asking an agent not to use it.
+
 ## Animation engine
 
 | Pick | Package | Version | Use when |
@@ -93,6 +102,7 @@ Split text must stay readable to assistive technology: keep the original string 
 | Portfolio or editorial, multi-page | Astro or plain HTML, GSAP (ScrollTrigger, SplitText), Lenis, native View Transitions with Swup or Taxi as fallback |
 | React marketing or product site | Next.js, Motion or GSAP with `@gsap/react`, Lenis, React Three Fiber only if the concept needs 3D |
 | Vue or Nuxt | Nuxt, GSAP, Lenis, TresJS if 3D |
+| Laravel Blade or Statamic | Tailwind CSS v4 with tokens from `build-tokens.mjs`, GSAP and Lenis loaded with Vite, Swup for transitions |
 | No-JS-first, fastest | CSS scroll-driven animations and View Transitions behind `@supports`, nothing else |
 
 ## Wiring Lenis, GSAP, and reduced motion

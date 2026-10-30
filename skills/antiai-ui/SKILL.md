@@ -30,7 +30,7 @@ Two consequences shape this skill:
 
 When the user names reference websites, crawl them before designing with `scripts/crawl-reference.mjs`. It reports type, palette, components, motion stack, performance, accessibility, and slop flags, with screenshots. To learn a page by rebuilding it, use ATM (Amati, Tiru, Modifikasi): `scripts/snapshot-site.mjs` saves a local copy, and `scripts/compare-build.mjs` scores the rebuild (`--mode tiru`) and then gates originality (`--mode modifikasi`, exit code 2 on failure).
 
-Read `references/reference-sites.md` before running the crawler and `references/atm.md` before running ATM. They hold the commands, options, outputs, and thresholds.
+Read `references/reference-sites.md` before running the crawler and `references/atm.md` before running ATM. `scripts/build-tokens.mjs --from-report` turns a crawl report into the reference's tokens, for study only. They hold the commands, options, outputs, and thresholds.
 
 Four rules hold whichever path you take:
 
@@ -159,6 +159,13 @@ Four rules hold whichever path you take:
 - **Tell:** `rounded-2xl`, `shadow-lg`, and `backdrop-blur` on everything; untouched component-library themes.
 - **Why:** framework defaults applied wholesale are the visual equivalent of "Update code."
 - **Fix:** set radius, elevation, and borders as tokens derived from the concept (sharp, soft, or none), and use them on purpose. Restyle library components to the system.
+- **Rule:** R-40.
+
+### Default Tailwind Theme
+
+- **Tell:** `bg-indigo-500`, `from-purple-500 to-pink-500`, `rounded-2xl`, `shadow-lg`, and `font-sans` across the page: Tailwind's built-in scales used as the design.
+- **Why:** the default theme is the most common source of the generated look, and while it exists an agent will reach for it.
+- **Fix:** write the project's tokens (`references/design-tokens.md`) and generate the `@theme` block with `scripts/build-tokens.mjs --to tailwind`. It resets the default color, font, radius, and shadow scales, so only project utilities exist.
 - **Rule:** R-40.
 
 ### Reflexive Glassmorphism
@@ -293,7 +300,7 @@ Run these alongside the Delivery Gate in `antiai-core`. Every line below must be
 - [ ] Typefaces are chosen, loaded, and paired; no Inter or second-order default without a reason (R-40, C-4)
 - [ ] No purple-blue gradient, gradient text, accent-word headline, or preset "tasteful" palette without a reason (R-40)
 - [ ] No stock landing-page skeleton, identical card grid, or template chrome (R-05, R-40, C-3)
-- [ ] Radius, shadow, blur, and icons are system tokens, not framework defaults (R-40)
+- [ ] Radius, shadow, blur, and icons are system tokens, not framework defaults; Tailwind defaults are reset in `@theme` (R-40)
 - [ ] Motion has a language; no fade-up-everything, bounce, count-up, or scroll-jacking (R-41)
 - [ ] `prefers-reduced-motion` is honored everywhere (R-41, R-42)
 - [ ] Text contrast meets WCAG AA; focus is visible; keyboard and semantics work (R-42)
