@@ -1,6 +1,6 @@
-# anti-ai
+# agentic-weave
 
-Skills that catch AI slop in text an agent writes. One skill per concern, in `skills/<name>/SKILL.md`. Each entry names a tell, why it reads as generated, and the fix, and each skill ends with a checklist.
+Agent skills that catch AI slop in the text and UI an agent produces, published on npm as `anti-ai-skills`. One skill per concern, in `skills/<name>/SKILL.md`. Each entry names a tell, why it reads as generated, and the fix, and each skill ends with a checklist.
 
 ## Skills
 
@@ -48,7 +48,7 @@ npx anti-ai-skills list
 npx anti-ai-skills remove -y
 ```
 
-After a global install (`npm i -g anti-ai-skills`) the command is also available as `anti-ai`. Update with `npx anti-ai-skills@latest`. The same skills also install through the skills CLI (`npx skills add cendysaputra/anti-ai`), or by copying `antiai-core` plus the folders you need into `~/.claude/skills/` or `~/.agents/skills/`.
+After a global install (`npm i -g anti-ai-skills`) the command is also available as `anti-ai`. Update with `npx anti-ai-skills@latest`. The same skills also install through the skills CLI (`npx skills add cendysaputra/agentic-weave`), or by copying `antiai-core` plus the folders you need into `~/.claude/skills/` or `~/.agents/skills/`.
 
 ## Publishing
 

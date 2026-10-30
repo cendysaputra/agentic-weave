@@ -24,8 +24,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cendysaputra/anti-ai.git"
+    "url": "git+https://github.com/cendysaputra/agentic-weave.git"
   },
-  "homepage": "https://github.com/cendysaputra/anti-ai#readme",
-  "bugs": "https://github.com/cendysaputra/anti-ai/issues"
+  "homepage": "https://github.com/cendysaputra/agentic-weave#readme",
+  "bugs": "https://github.com/cendysaputra/agentic-weave/issues"
 }
