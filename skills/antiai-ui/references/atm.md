@@ -25,7 +25,9 @@ node <skill-dir>/scripts/compare-build.mjs --original atm/reference.example/work
 - `manifest.json`, mapping each URL to its local path, type, and hash.
 - Desktop and mobile screenshots.
 
-Options: `--out DIR` (default `atm/`), `--max-mb N` total asset budget (default 150), `--ignore-robots` (only for a site the user owns). Read the copy in DevTools: the grid, the type scale, how the signature moment is built. Run the crawler on the same site for the measured report.
+Options: `--out DIR` (default `atm/`), `--max-mb N` total asset budget (default 150), `--video`, `--ignore-robots` (only for a site the user owns).
+
+The static `index.html` drops scripts, so GSAP, WebGL, and smooth-scroll motion are lost there. `--video` records the page scrolling into `video/`: `desktop.webm` (1440×900, scrolled with the mouse wheel so smooth-scroll and ScrollTrigger play as designed), `desktop-reduced-motion.webm` (the same with `prefers-reduced-motion: reduce`, to see whether the reference respects it), and `mobile.webm` (390×844). Videos are recorded at full viewport size and capped at about a minute of scrolling. Study the choreography from them: what moves, in what order, with what easing, and what stays still. Read the copy in DevTools: the grid, the type scale, how the signature moment is built. Run the crawler on the same site for the measured report.
 
 **Tiru.** Rebuild the page in the project's own stack and code, not by editing the snapshot. Writing it yourself is where the learning happens, and it keeps the original's code out of the project. Use the snapshot as the visual target and run `--mode tiru` after each pass. It renders both pages at desktop and mobile and reports:
 

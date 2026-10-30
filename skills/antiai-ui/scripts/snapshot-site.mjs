@@ -10,11 +10,12 @@
 //   atm/<host>/<page>/original/assets/...        downloaded assets
 //   atm/<host>/<page>/original/manifest.json     url -> local path, type, sha256
 //   atm/<host>/<page>/screens/original-*.png     desktop and mobile screenshots
+//   atm/<host>/<page>/video/*.webm               with --video: scroll recordings for studying motion
 //
 // The copy is third-party work: keep it local, out of git, and never deploy it.
 //
 // Usage:
-//   node snapshot-site.mjs <url> [--out atm] [--max-mb 150] [--ignore-robots]
+//   node snapshot-site.mjs <url> [--out atm] [--max-mb 150] [--video] [--ignore-robots]
 
 import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -26,14 +27,68 @@ import {
 const TYPE_DIR = { stylesheet: 'css', script: 'js', image: 'img', font: 'fonts', media: 'media' };
 const MAX_ASSET_BYTES = 50 * 1024 * 1024;
 
+// Scroll with the mouse wheel, as a visitor would, so smooth-scroll libraries
+// and ScrollTrigger timelines play as designed. Stops at the bottom or after maxMs.
+async function wheelThrough(page, maxMs = 60000) {
+  const started = Date.now();
+  await page.waitForTimeout(1500);
+  while (Date.now() - started < maxMs) {
+    const atBottom = await page.evaluate(() => window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2);
+    if (atBottom) break;
+    await page.mouse.wheel(0, 120);
+    await page.waitForTimeout(60);
+  }
+  await page.waitForTimeout(1500);
+}
+
+// Record the page scrolling at full viewport size (Playwright's default would
+// shrink it to fit 800x800), once with motion and once with reduced motion.
+async function recordMotion(browser, url, dir) {
+  const runs = [
+    ['desktop', DESKTOP, 'no-preference', {}],
+    ['desktop-reduced-motion', DESKTOP, 'reduce', {}],
+    ['mobile', MOBILE, 'no-preference', { isMobile: true, hasTouch: true }],
+  ];
+  const saved = [];
+  for (const [name, viewport, reducedMotion, extra] of runs) {
+    const ctx = await browser.newContext({
+      viewport, reducedMotion, userAgent: USER_AGENT, ...extra,
+      recordVideo: { dir, size: viewport },
+    });
+    const page = await ctx.newPage();
+    try {
+      await page.goto(url, { waitUntil: 'load', timeout: 60000 });
+      if (extra.isMobile) {
+        // Touch devices do not get wheel events; step the scroll position instead.
+        await scrollThrough(page, 0.5, 400);
+      } else {
+        await page.mouse.move(viewport.width / 2, viewport.height / 2);
+        await wheelThrough(page);
+      }
+    } catch (err) {
+      console.log(`Video ${name}: ${err.message.split('\n')[0]}`);
+    }
+    const video = page.video();
+    await ctx.close();
+    if (video) {
+      const file = path.join(dir, `${name}.webm`);
+      await video.saveAs(file);
+      await video.delete();
+      saved.push(file);
+    }
+  }
+  return saved;
+}
+
 function parseArgs(argv) {
-  const args = { out: 'atm', maxMb: 150, robots: true };
+  const args = { out: 'atm', maxMb: 150, robots: true, video: false };
   const rest = [];
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--out') args.out = argv[++i];
     else if (a === '--max-mb') args.maxMb = Math.max(1, parseInt(argv[++i], 10) || 150);
     else if (a === '--ignore-robots') args.robots = false;
+    else if (a === '--video') args.video = true;
     else if (a === '-h' || a === '--help') args.help = true;
     else rest.push(a);
   }
@@ -136,7 +191,7 @@ function rewriteDom({ map, stripScripts }) {
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help || !args.url) {
-    console.log('Usage: node snapshot-site.mjs <url> [--out atm] [--max-mb 150] [--ignore-robots]');
+    console.log('Usage: node snapshot-site.mjs <url> [--out atm] [--max-mb 150] [--video] [--ignore-robots]');
     process.exit(args.help ? 0 : 1);
   }
   const start = normalizeUrl(args.url);
@@ -252,6 +307,13 @@ async function main() {
   await mpage.waitForTimeout(1500);
   await mpage.screenshot({ path: path.join(root, 'screens', 'original-mobile-fold.png') }).catch(() => {});
   await mctx.close();
+  let videos = [];
+  if (args.video) {
+    console.log('Recording scroll videos (desktop, desktop with reduced motion, mobile)...');
+    const videoDir = path.join(root, 'video');
+    await mkdir(videoDir, { recursive: true });
+    videos = await recordMotion(browser, start.toString(), videoDir);
+  }
   await browser.close();
 
   const textSample = staticHtml.replace(/<(script|style)[\s\S]*?<\/\1>/gi, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
@@ -273,6 +335,7 @@ async function main() {
   if (skipped.length) console.log(`Skipped ${skipped.length} asset(s) over the size limit; they still load from the original URL.`);
   console.log(`Static copy: ${path.join(dir, 'index.html')}`);
   console.log(`Screens:     ${path.join(root, 'screens')}`);
+  if (videos.length) console.log(`Videos:      ${videos.map((v) => path.basename(v)).join(', ')} in ${path.join(root, 'video')}`);
 }
 
 main().catch((err) => {
