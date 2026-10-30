@@ -98,6 +98,13 @@ await test('one file at zero does not zero the run, and still fails', async (dir
   assert(r.status === 1 && /score=50\n/.test(r.output), r.stdout + r.output);
 });
 
+await test('paths read .mdx but not .txt', async (dir) => {
+  writeFileSync(path.join(dir, 'docs', 'notes.txt'), 'It works — mostly.\n');
+  writeFileSync(path.join(dir, 'docs', 'page.mdx'), '# Page\n\nIt works — mostly.\n');
+  const r = await run(dir, 'docs: explain the retry policy', { commits: 'false', paths: 'docs' });
+  assert(/file=docs\/page\.mdx/.test(r.stdout) && !/notes\.txt/.test(r.stdout), r.stdout);
+});
+
 server.close();
 console.log(failed ? `\n${failed} action test(s) failed.` : '\nAll action tests passed.');
 process.exit(failed ? 1 : 0);

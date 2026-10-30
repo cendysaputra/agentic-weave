@@ -145,6 +145,14 @@ test('check averages the score per file and still fails on one error', (env) => 
   assert(zero.status === 1 && /Score 50\/100/.test(zero.stdout), zero.stdout);
 });
 
+test('check reads .md, .markdown, and .mdx only', (env) => {
+  mkdirSync(path.join(env.project, 'docs'));
+  writeFileSync(path.join(env.project, 'docs', 'notes.txt'), 'It works — mostly.\n');
+  writeFileSync(path.join(env.project, 'docs', 'page.mdx'), '# Page\n\nIt works — mostly.\n');
+  const r = env.run('check', 'docs');
+  assert(/page\.mdx/.test(r.stdout) && !/notes\.txt/.test(r.stdout), r.stdout);
+});
+
 test('hook rejects a generic commit and accepts a specific one', (env) => {
   const git = (...a) => spawnSync('git', a, { cwd: env.project, encoding: 'utf8', env: { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' } });
   git('init', '-q');

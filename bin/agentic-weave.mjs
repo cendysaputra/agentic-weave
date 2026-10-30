@@ -463,7 +463,7 @@ async function check(args) {
     const st = await stat(p);
     if (st.isDirectory()) {
       for (const e of await readdir(p)) if (!['node_modules', '.git', 'vendor'].includes(e)) await collect(path.join(p, e));
-    } else if (/\.(md|markdown|mdx|txt)$/i.test(p)) files.push(p);
+    } else if (/\.(md|markdown|mdx)$/i.test(p)) files.push(p);
   };
   for (const p of args.names) await collect(p);
   for (const f of files) results.push({ target: f, issues: lintMarkdown(await readFile(f, 'utf8'), { sapaan: args.sapaan }) });
