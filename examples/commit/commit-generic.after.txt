@@ -1,0 +1,1 @@
+fix(menu): close the mobile nav when Barba changes page

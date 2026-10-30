@@ -1,0 +1,3 @@
+docs: document the deploy pipeline
+
+The VPS needs the deploy key added once; see docs/deploy.md.

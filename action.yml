@@ -1,0 +1,51 @@
+name: Agentic Weave check
+description: Flag AI slop in PR titles, commit messages, and Markdown docs with the Agentic Weave linters.
+author: cendysaputra
+branding:
+  icon: check-square
+  color: gray-dark
+
+inputs:
+  paths:
+    description: Markdown files or folders to check, separated by spaces or new lines. Empty checks the Markdown files a pull request changes.
+    default: ''
+  pr-title:
+    description: Check the pull request title like a commit subject.
+    default: 'true'
+  commits:
+    description: Check every commit message in the pull request, or in the push.
+    default: 'true'
+  sapaan:
+    description: Required Indonesian form of address in docs, kamu or anda. Empty only warns when a file mixes both.
+    default: ''
+  fail-on:
+    description: Fail the step on error (default), on any warning, or never.
+    default: error
+  github-token:
+    description: Token used to list the pull request's commits and files.
+    default: ${{ github.token }}
+
+outputs:
+  score:
+    description: Score out of 100, the same one `npx agentic-weave check` prints.
+    value: ${{ steps.check.outputs.score }}
+  errors:
+    description: Number of errors.
+    value: ${{ steps.check.outputs.errors }}
+  warnings:
+    description: Number of warnings.
+    value: ${{ steps.check.outputs.warnings }}
+
+runs:
+  using: composite
+  steps:
+    - id: check
+      shell: bash
+      run: node "$GITHUB_ACTION_PATH/action/run.mjs"
+      env:
+        INPUT_PATHS: ${{ inputs.paths }}
+        INPUT_PR_TITLE: ${{ inputs.pr-title }}
+        INPUT_COMMITS: ${{ inputs.commits }}
+        INPUT_SAPAAN: ${{ inputs.sapaan }}
+        INPUT_FAIL_ON: ${{ inputs.fail-on }}
+        INPUT_GITHUB_TOKEN: ${{ inputs.github-token }}

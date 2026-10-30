@@ -55,8 +55,13 @@ Hasil bongkar `bin/agentic-weave.mjs` dan CI.
 | Folder lama `antiai-*` dihapus otomatis | Selesai. Dipindah ke backups, dengan konfirmasi kecuali `-y` |
 | `remove` tanpa konfirmasi, menyasar semua target | Selesai. Wajib konfirmasi atau `-y`, hanya menyasar folder yang tercatat di manifest, skill yang diedit masuk backups |
 | Blok AGENTS.md bisa dobel | Selesai. Kalau hanya satu penanda yang ketemu, installer berhenti dan memberi tahu |
-| Installer belum punya tes | Selesai. `scripts/test-installer.mjs`, 8 kasus, jalan di `npm test` dan CI |
+| Installer belum punya tes | Selesai. `scripts/test-installer.mjs`, 10 kasus, jalan di `npm test` dan CI |
 | Izin token CI | Selesai. `permissions: contents: read` |
 | Template issue "Laporkan tanda slop baru" | Selesai. `.github/ISSUE_TEMPLATE/tanda-slop-baru.yml` |
-| Bahasa Indonesia sebagai pembeda | Selesai sebagian: contoh dan paragraf di bagian before/after README |
-| `check`, GitHub Action, hook commit, `examples/`, `weave-slides`, halaman demo | Belum. Fitur baru yang butuh desain sendiri; masuk antrean |
+| Bahasa Indonesia sebagai pembeda | Selesai sebagian: contoh before/after README, contoh Indonesia di `examples/`, `--sapaan kamu\|anda` di `check` dan Action, halaman demo berbahasa Indonesia |
+| `npx agentic-weave check` dengan skor dan tiga saran | Selesai. Skor 100 dikurangi 10 per error dan 3 per peringatan, plus `--json` |
+| Hook pesan commit | Selesai. `npx agentic-weave hook`, bisa jalan offline; untuk husky dicetak baris yang perlu ditambahkan |
+| GitHub Action | Selesai. `action.yml` mengecek judul PR, semua commit, dan file Markdown yang berubah; repo ini memakainya di `.github/workflows/weave-check.yml` |
+| Folder `examples/` sebagai tes | Selesai. 15 pasangan before/after, jalan di `npm test` |
+| Skill `weave-slides` | Selesai, dengan aturan baru R-49 |
+| Halaman demo | Halaman ada di `demo/index.html`. Belum di-deploy: perlu dipilih antara GitHub Pages atau subdomain ruangartefak.com (butuh akses DNS pemilik) |

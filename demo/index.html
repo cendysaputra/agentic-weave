@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentic Weave check</title>
+<meta name="description" content="Tempel README, dokumentasi, atau pesan commit. Linter Agentic Weave menandai tanda tulisan AI dan memberi skor, langsung di browser.">
+<style>
+  :root {
+    --paper: #f5f3ee;
+    --panel: #ffffff;
+    --ink: #1c1b19;
+    --muted: #5f5b53;
+    --rule: #d9d4c9;
+    --error: #a63a12;
+    --error-bg: #f8e6dd;
+    --warn: #7a5a00;
+    --warn-bg: #f6ecc9;
+    --ok: #2f6b3a;
+    --serif: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #171614;
+      --panel: #201f1c;
+      --ink: #ece8df;
+      --muted: #a8a294;
+      --rule: #3a3731;
+      --error: #f08a63;
+      --error-bg: #3a2219;
+      --warn: #e5c35c;
+      --warn-bg: #352d14;
+      --ok: #8fcf98;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.55 var(--serif); }
+  main { max-width: 1120px; margin: 0 auto; padding: 48px 16px 64px; }
+  h1 { font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.05; margin: 0 0 12px; letter-spacing: -0.01em; font-weight: 600; }
+  .lede { max-width: 60ch; color: var(--muted); margin: 0 0 32px; }
+  .grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+  @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
+  .controls { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; margin-bottom: 12px; font-size: 15px; }
+  fieldset { border: 0; padding: 0; margin: 0; display: flex; gap: 4px; }
+  legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .seg input { position: absolute; opacity: 0; }
+  .seg label { padding: 6px 12px; border: 1px solid var(--rule); border-radius: 4px; cursor: pointer; }
+  .seg input:checked + label { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .seg input:focus-visible + label, select:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  select, button { font: inherit; font-size: 15px; color: var(--ink); background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 5px 10px; }
+  button { cursor: pointer; }
+  textarea { width: 100%; min-height: 420px; resize: vertical; font: 14px/1.6 var(--mono); color: var(--ink); background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 14px; }
+  .samples { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; font-size: 15px; color: var(--muted); align-items: center; }
+  .score { display: flex; align-items: baseline; gap: 12px; border-bottom: 1px solid var(--rule); padding-bottom: 12px; margin-bottom: 12px; }
+  .score b { font-size: 3.5rem; line-height: 1; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .score span { color: var(--muted); font-size: 15px; }
+  h2 { font-size: 1rem; margin: 20px 0 8px; }
+  ol.top { margin: 0; padding-left: 1.3em; }
+  ul.issues { list-style: none; margin: 0; padding: 0; font-size: 15px; }
+  ul.issues li { padding: 8px 10px; border-left: 3px solid; margin-bottom: 6px; border-radius: 0 4px 4px 0; }
+  ul.issues li.error { border-color: var(--error); background: var(--error-bg); }
+  ul.issues li.warning { border-color: var(--warn); background: var(--warn-bg); }
+  .meta { font: 12px/1.4 var(--mono); color: var(--muted); display: block; margin-bottom: 2px; }
+  .clean { color: var(--ok); }
+  footer { margin-top: 48px; border-top: 1px solid var(--rule); padding-top: 16px; font-size: 15px; color: var(--muted); }
+  footer code, .lede code { font: 14px var(--mono); }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Cek tanda tulisan AI sebelum kamu kirim.</h1>
+  <p class="lede">Tempel README, dokumentasi, atau pesan commit. Linter yang sama dengan <code>npx agentic-weave check</code> menandai frasa template, em dash, hedging bertumpuk, sapaan campur, dan lainnya. Semua berjalan di browser kamu; teks tidak dikirim ke mana pun.</p>
+
+  <div class="grid">
+    <section aria-label="Teks yang dicek">
+      <div class="controls">
+        <fieldset class="seg">
+          <legend>Jenis teks</legend>
+          <input type="radio" name="kind" id="kind-docs" value="docs" checked><label for="kind-docs">Dokumentasi</label>
+          <input type="radio" name="kind" id="kind-commit" value="commit"><label for="kind-commit">Pesan commit</label>
+        </fieldset>
+        <label>Sapaan
+          <select id="sapaan">
+            <option value="">Bebas (peringatan jika campur)</option>
+            <option value="kamu">Wajib kamu</option>
+            <option value="anda">Wajib Anda</option>
+          </select>
+        </label>
+      </div>
+      <label for="text" class="meta">Teks</label>
+      <textarea id="text" spellcheck="false"></textarea>
+      <div class="samples">Contoh:
+        <button type="button" data-sample="docsEn">README Inggris</button>
+        <button type="button" data-sample="docsId">Panduan Indonesia</button>
+        <button type="button" data-sample="commit">Commit</button>
+        <button type="button" data-sample="clear">Kosongkan</button>
+      </div>
+    </section>
+
+    <section aria-live="polite" aria-label="Hasil">
+      <div class="score"><b id="score">100</b><span id="counts">0 error, 0 peringatan</span></div>
+      <div id="top"></div>
+      <h2>Temuan</h2>
+      <ul class="issues" id="issues"></ul>
+    </section>
+  </div>
+
+  <footer>
+    Skor = 100 dikurangi 10 per error dan 3 per peringatan. Pemeriksaan ini hanya menangkap pola yang bisa dicek mesin; sisanya ada di skill.
+    Pakai di proyek: <code>npx agentic-weave check README.md</code>, <code>npx agentic-weave hook</code>, atau GitHub Action di
+    <a href="https://github.com/cendysaputra/agentic-weave">cendysaputra/agentic-weave</a>.
+  </footer>
+</main>
+
+<script type="module">
+import { lintMarkdown } from '../skills/weave-docs/scripts/lint-core.mjs';
+import { lintCommit } from '../skills/weave-commit/scripts/lint-commit-core.mjs';
+
+const SAMPLES = {
+  docsEn: '# Webhook Relay\n\nCertainly! In this guide, we will walk you through the setup.\n\nWebhook Relay is a seamless solution — it may potentially help your team.\n\nFor more info, click here: [here](docs/setup.md)\n\n## Roadmap\n\nComing soon: retries.\n\n```\nnpm install webhook-relay\n```\n',
+  docsId: '# Panduan Ekspor\n\nDalam panduan ini, kami akan menjelaskan cara ekspor data.\n\nSilakan buka menu Laporan. Anda bisa memilih rentang tanggal, lalu kamu tekan Ekspor.\n\nSilakan tunggu hingga file siap. Biasanya umumnya butuh satu menit.\n',
+  commit: 'Update code\n\nThis commit updates the code to enhance performance.\n',
+};
+const $ = (id) => document.getElementById(id);
+const kind = () => document.querySelector('input[name="kind"]:checked').value;
+
+function render() {
+  const text = $('text').value;
+  const issues = !text.trim() ? [] : kind() === 'commit' ? lintCommit(text) : lintMarkdown(text, { sapaan: $('sapaan').value || null });
+  const errors = issues.filter((i) => i.level === 'error').length;
+  const warnings = issues.length - errors;
+  $('score').textContent = Math.max(0, 100 - errors * 10 - warnings * 3);
+  $('counts').textContent = `${errors} error, ${warnings} peringatan`;
+
+  const byRule = new Map();
+  for (const i of issues) byRule.set(i.rule, [...(byRule.get(i.rule) || []), i]);
+  const top = [...byRule.values()].sort((a, b) => (b[0].level === 'error') - (a[0].level === 'error') || b.length - a.length).slice(0, 3);
+  $('top').replaceChildren();
+  if (top.length) {
+    const h = Object.assign(document.createElement('h2'), { textContent: 'Perbaiki dulu' });
+    const ol = Object.assign(document.createElement('ol'), { className: 'top' });
+    for (const list of top) ol.append(Object.assign(document.createElement('li'), { textContent: `${list[0].rule} (${list.length}x)` }));
+    $('top').append(h, ol);
+  }
+
+  $('issues').replaceChildren();
+  if (!issues.length) {
+    $('issues').append(Object.assign(document.createElement('li'), { className: 'clean', textContent: text.trim() ? 'Tidak ada temuan.' : 'Tempel teks atau pilih contoh.' }));
+    return;
+  }
+  for (const i of issues) {
+    const li = Object.assign(document.createElement('li'), { className: i.level });
+    li.append(Object.assign(document.createElement('span'), { className: 'meta', textContent: `baris ${i.n} · ${i.level} · ${i.rule}` }), i.msg);
+    $('issues').append(li);
+  }
+}
+
+for (const b of document.querySelectorAll('[data-sample]')) {
+  b.addEventListener('click', () => {
+    const s = b.dataset.sample;
+    if (s !== 'clear') document.getElementById(s === 'commit' ? 'kind-commit' : 'kind-docs').checked = true;
+    $('text').value = SAMPLES[s] || '';
+    render();
+    $('text').focus();
+  });
+}
+$('text').addEventListener('input', render);
+$('sapaan').addEventListener('change', render);
+for (const r of document.querySelectorAll('input[name="kind"]')) r.addEventListener('change', render);
+$('text').value = SAMPLES.docsEn;
+render();
+</script>
+</body>
+</html>

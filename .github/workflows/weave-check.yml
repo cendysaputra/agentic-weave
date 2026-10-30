@@ -1,0 +1,19 @@
+name: weave-check
+
+# Runs this repo's own GitHub Action on every pull request. Skill files are
+# left out on purpose: they quote the tells they teach.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          paths: README.md AGENTS.md CHANGELOG.md

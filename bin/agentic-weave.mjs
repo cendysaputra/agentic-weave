@@ -15,7 +15,7 @@ import { existsSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { createInterface } from 'node:readline/promises';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SKILLS_DIR = path.join(ROOT, 'skills');
@@ -224,7 +224,7 @@ function withDependencies(selected, skills) {
 }
 
 function parseArgs(argv) {
-  const args = { command: null, names: [], target: null, project: false, yes: false, agentsMd: false };
+  const args = { command: null, names: [], target: null, project: false, yes: false, agentsMd: false, commit: null, commitFile: null, sapaan: null, json: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '-t' || a === '--target') args.target = argv[++i];
@@ -235,9 +235,13 @@ function parseArgs(argv) {
     }
     else if (a === '-y' || a === '--yes') args.yes = true;
     else if (a === '--with-agents-md') args.agentsMd = true;
+    else if (a === '--commit' || a === '-m') args.commit = argv[++i];
+    else if (a === '--commit-file') args.commitFile = argv[++i];
+    else if (a === '--sapaan') args.sapaan = argv[++i];
+    else if (a === '--json') args.json = true;
     else if (a === '-h' || a === '--help') args.command = 'help';
     else if (a === '-v' || a === '--version') args.command = 'version';
-    else if (!args.command && ['install', 'add', 'i', 'list', 'ls', 'remove', 'rm', 'help'].includes(a)) args.command = a;
+    else if (!args.command && ['install', 'add', 'i', 'list', 'ls', 'remove', 'rm', 'help', 'check', 'hook'].includes(a)) args.command = a;
     else args.names.push(a);
   }
   args.command = { add: 'install', i: 'install', ls: 'list', rm: 'remove' }[args.command] || args.command || 'install';
@@ -249,6 +253,9 @@ function help() {
   npx agentic-weave                         interactive install
   npx agentic-weave install [skills...]     install the named skills (default: all)
   npx agentic-weave list                    list the skills in this package
+  npx agentic-weave check <file-or-dir>...  lint Markdown with the skills' rules; score and top fixes
+  npx agentic-weave check --commit "<msg>"   lint a commit message (or --commit-file <file>)
+  npx agentic-weave hook                    install a commit-msg hook that runs the commit check
   npx agentic-weave remove [skills...]      remove installed Agentic Weave skills (asks first; -y to skip)
 
 ${c.bold('Options')}
@@ -440,9 +447,97 @@ async function remove(args, skills) {
   console.log(removed ? `${c.green('✓')} Removed ${removed} item(s).` : 'Nothing to remove.');
 }
 
+// `check`: lint Markdown files and commit messages with the same rules the
+// skills use, and print a score plus the three most useful fixes.
+async function check(args) {
+  const { lintMarkdown } = await import(pathToFileURL(path.join(SKILLS_DIR, 'weave-docs', 'scripts', 'lint-core.mjs')).href);
+  const { lintCommit } = await import(pathToFileURL(path.join(SKILLS_DIR, 'weave-commit', 'scripts', 'lint-commit-core.mjs')).href);
+  if (args.sapaan && !['kamu', 'anda'].includes(args.sapaan)) throw new Error('--sapaan must be kamu or anda');
+  const results = [];
+  if (args.commit !== null || args.commitFile) {
+    const msg = args.commitFile ? await readFile(args.commitFile, 'utf8') : args.commit;
+    results.push({ target: args.commitFile || 'commit message', issues: lintCommit(msg) });
+  }
+  const files = [];
+  const collect = async (p) => {
+    const st = await stat(p);
+    if (st.isDirectory()) {
+      for (const e of await readdir(p)) if (!['node_modules', '.git', 'vendor'].includes(e)) await collect(path.join(p, e));
+    } else if (/\.(md|markdown|mdx|txt)$/i.test(p)) files.push(p);
+  };
+  for (const p of args.names) await collect(p);
+  for (const f of files) results.push({ target: f, issues: lintMarkdown(await readFile(f, 'utf8'), { sapaan: args.sapaan }) });
+  if (!results.length) throw new Error('Nothing to check. Usage: npx agentic-weave check <file-or-dir>... [--commit "<message>" | --commit-file <file>] [--sapaan kamu|anda]');
+
+  const all = results.flatMap((r) => r.issues);
+  const errors = all.filter((i) => i.level === 'error').length;
+  const warnings = all.length - errors;
+  const score = Math.max(0, 100 - errors * 10 - warnings * 3);
+  const byRule = new Map();
+  for (const i of all) byRule.set(i.rule, [...(byRule.get(i.rule) || []), i]);
+  const top = [...byRule.values()].sort((a, b) => (b[0].level === 'error') - (a[0].level === 'error') || b.length - a.length).slice(0, 3)
+    .map((list) => ({ rule: list[0].rule, count: list.length, fix: list[0].msg }));
+  if (args.json) {
+    console.log(JSON.stringify({ score, errors, warnings, top, results }, null, 2));
+  } else {
+    for (const r of results) for (const i of r.issues) {
+      console.log(`${r.target}:${i.n}  ${(i.level === 'error' ? c.red : c.yellow)(i.level.padEnd(7))} ${i.rule.padEnd(16)} ${i.msg}`);
+    }
+    console.log(`\n${c.bold(`Score ${score}/100`)}  ${errors} error(s), ${warnings} warning(s) in ${results.length} item(s).`);
+    if (top.length) {
+      console.log(c.bold('Fix first:'));
+      top.forEach((t, n) => console.log(`  ${n + 1}. ${t.rule} (${t.count}x): ${t.fix}`));
+    }
+  }
+  process.exitCode = errors ? 1 : 0;
+}
+
+// `hook`: install a commit-msg hook that runs weave-commit's checker. The
+// checker is copied next to the hook, so commits work offline and without npx.
+const HOOK_MARK = '# agentic-weave commit-msg hook';
+async function hook(args) {
+  const { execFileSync } = await import('node:child_process');
+  const git = (...a) => execFileSync('git', a, { encoding: 'utf8' }).trim();
+  let hooksDir;
+  try {
+    hooksDir = path.resolve(git('rev-parse', '--git-path', 'hooks'));
+  } catch {
+    throw new Error('Not inside a git repository.');
+  }
+  let custom = '';
+  try {
+    custom = git('config', '--get', 'core.hooksPath');
+  } catch {}
+  const file = path.join(hooksDir, 'commit-msg');
+  const ours = existsSync(file) && (await readFile(file, 'utf8')).includes(HOOK_MARK);
+  if (args.names[0] === 'remove' || args.names[0] === '--remove') {
+    if (!ours) return console.log('No agentic-weave commit-msg hook to remove.');
+    await rm(file, { force: true });
+    await rm(path.join(hooksDir, 'agentic-weave'), { recursive: true, force: true });
+    return console.log(`${c.red('-')} commit-msg hook ${c.gray(file)}`);
+  }
+  if (custom) {
+    console.log(`${c.yellow('!')} This repository uses core.hooksPath (${custom}), for example through husky.`);
+    console.log('  Add this line to that commit-msg hook instead:');
+    console.log(c.cyan('  npx --yes agentic-weave check --commit-file "$1"'));
+    return;
+  }
+  if (existsSync(file) && !ours) {
+    throw new Error(`${file} already exists and was not written by agentic-weave. Add this line to it instead:\n  npx --yes agentic-weave check --commit-file "$1"`);
+  }
+  const dir = path.join(hooksDir, 'agentic-weave');
+  await mkdir(dir, { recursive: true });
+  for (const f of ['lint-commit.mjs', 'lint-commit-core.mjs']) await cp(path.join(SKILLS_DIR, 'weave-commit', 'scripts', f), path.join(dir, f));
+  await writeFile(file, `#!/bin/sh\n${HOOK_MARK} (v${await version()}). Remove with: npx agentic-weave hook remove\nexec node "$(dirname "$0")/agentic-weave/lint-commit.mjs" "$1"\n`, { mode: 0o755 });
+  console.log(`${c.green('✓')} commit-msg hook ${c.gray(file)}`);
+  console.log(c.gray('  Commits with generic subjects or emoji are rejected; warnings are printed but allowed.'));
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.command === 'version') return console.log(await version());
+  if (args.command === 'check') return check(args);
+  if (args.command === 'hook') return hook(args);
   banner();
   console.log(`${c.gray(`v${await version()}  Skills that keep AI agents from writing and designing slop.`)}\n`);
   const skills = await loadSkills();

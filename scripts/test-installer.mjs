@@ -125,5 +125,28 @@ test('a half-deleted AGENTS.md block stops the install', (env) => {
   assert(readFileSync(path.join(env.project, 'AGENTS.md'), 'utf8') === original, 'AGENTS.md changed');
 });
 
+test('check scores Markdown and commit messages and fails on errors', (env) => {
+  writeFileSync(path.join(env.project, 'doc.md'), '# Doc\n\nCertainly! It works — well.\n');
+  const bad = env.run('check', 'doc.md', '--commit', 'Update code');
+  assert(bad.status === 1, 'check passed with errors');
+  assert(/em-dash/.test(bad.stdout) && /generic-subject/.test(bad.stdout) && /Score \d+\/100/.test(bad.stdout), bad.stdout);
+  writeFileSync(path.join(env.project, 'ok.md'), '# Doc\n\nRun `npm test` before each commit.\n');
+  const good = env.run('check', 'ok.md', '--commit', 'fix: stop duplicate webhook processing');
+  assert(good.status === 0, good.stdout);
+});
+
+test('hook rejects a generic commit and accepts a specific one', (env) => {
+  const git = (...a) => spawnSync('git', a, { cwd: env.project, encoding: 'utf8', env: { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' } });
+  git('init', '-q');
+  git('config', 'core.hooksPath', '');
+  git('config', '--unset', 'core.hooksPath');
+  const r = env.run('hook');
+  assert(r.status === 0, r.stderr || r.stdout);
+  writeFileSync(path.join(env.project, 'a.txt'), 'a');
+  git('add', 'a.txt');
+  assert(git('commit', '-q', '-m', 'Update code').status !== 0, 'generic commit accepted');
+  assert(git('commit', '-q', '-m', 'feat: add the first sample file').status === 0, 'specific commit rejected');
+});
+
 console.log(failed ? `\n${failed} installer test(s) failed.` : '\nAll installer tests passed.');
 process.exit(failed ? 1 : 0);

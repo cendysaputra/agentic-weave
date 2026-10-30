@@ -1,0 +1,3 @@
+docs: document the deploy pipeline
+
+This commit updates the docs.

@@ -4,7 +4,7 @@ Instructions for AI agents working on this repository: the Agentic Weave skills,
 
 ## Commands
 
-- `npm test`: lint every skill (`scripts/lint-skills.mjs`). It must pass before every commit.
+- `npm test`: lint every skill, test the installer, and run the before/after pairs in `examples/`. It must pass before every commit.
 - `node bin/agentic-weave.mjs list`: list skills the way the installer reads them.
 - `claude plugin validate .`: check `.claude-plugin/` when it changes.
 - Scripts in `skills/weave-ui/scripts/` need Playwright: `npm i -D playwright && npx playwright install chromium`.
@@ -13,7 +13,10 @@ Instructions for AI agents working on this repository: the Agentic Weave skills,
 
 - `skills/<name>/SKILL.md`: one skill per concern. Detail lives in `skills/<name>/references/`, runnable helpers in `scripts/`, templates in `assets/`.
 - `skills/weave-core/`: the numbered rules and the Delivery Gate. Every other skill depends on it.
-- `bin/agentic-weave.mjs`: the installer behind `npx agentic-weave`.
+- `bin/agentic-weave.mjs`: the installer behind `npx agentic-weave`, plus its `check` and `hook` commands.
+- `action.yml` and `action/run.mjs`: the GitHub Action. It imports the linters from `skills/weave-docs/scripts/` and `skills/weave-commit/scripts/`, so keep those free of Node-only APIs in their `*-core.mjs` files.
+- `examples/`: before/after pairs that `npm test` runs through the linters.
+- `demo/index.html`: a static page that runs the same linters in the browser. It imports them from `skills/` by relative path, so serve the repo root (`python3 -m http.server`) and open `/demo/`.
 - `scripts/`: repo tooling (linter, version sync). Not shipped to npm.
 - `.claude-plugin/`: Claude Code marketplace and plugin manifests.
 - `research/`: research notes behind the skills. Read `research/README.md` first; the newest file is the reference.
@@ -45,6 +48,7 @@ Load `weave-core` first, then the skill for the task:
 | Changelogs and release notes | `weave-changelog` |
 | Error messages and logs | `weave-error` |
 | Email and notifications | `weave-email` |
+| Slide decks and presentations | `weave-slides` |
 | Chat or assistant replies | `weave-chat` |
 
 Run the Delivery Gate in `weave-core` before handing over any text, UI, commit, or PR.

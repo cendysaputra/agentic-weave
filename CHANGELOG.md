@@ -2,6 +2,17 @@
 
 Each release lists only the categories that have entries. Versions match the `anti-ai-skills` package on npm.
 
+## Unreleased
+
+Added:
+
+- `npx agentic-weave check`: scores Markdown files and commit messages out of 100 and names the three rules to fix first.
+- `npx agentic-weave hook`: a commit-msg hook that rejects generic, emoji, or buzzword commit subjects.
+- A GitHub Action (`action.yml`) that checks the PR title, its commits, and changed Markdown files.
+- `examples/`: before/after pairs for every lint rule, run by `npm test`.
+- `weave-slides`: tells for presentations and pitch decks, and rule R-49 (one slide, one point) in `weave-core`.
+- `demo/index.html`: a page that runs the linters in the browser.
+
 ## 1.0.0 (2026-10-29)
 
 Added:

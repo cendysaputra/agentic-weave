@@ -114,6 +114,10 @@ Files written for agents (AGENTS.md, CLAUDE.md, skills) hold only what an agent 
 
 A document that records a decision names the alternatives that were rejected and at least one negative consequence of the choice.
 
+### R-49: One slide, one point
+
+A slide carries one point, stated in its title, and only what the audience must see to accept it. The argument lives in the speaker notes or a separate document, not in bullets on the slide.
+
 ## Structure and Checks (C)
 
 ### C-1: One change per summary line
