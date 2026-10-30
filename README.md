@@ -129,7 +129,7 @@ npx agentic-weave check --commit "Update code"
 npx agentic-weave check docs --sapaan kamu --json
 ```
 
-`check` prints each finding, a score out of 100 (minus 10 per error, minus 3 per warning), and the three rules to fix first. It exits with 1 when there is an error.
+`check` prints each finding, a score out of 100, and the three rules to fix first. Each file or commit message scores 100 minus 10 per error and 3 per warning, and the score shown is the average over all of them. It exits with 1 when there is any error, whatever the average.
 
 To check every commit message in a repository before it is saved:
 

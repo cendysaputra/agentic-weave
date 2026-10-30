@@ -75,7 +75,8 @@ for (const r of results) for (const i of r.issues) {
 const all = results.flatMap((r) => r.issues);
 const errors = all.filter((i) => i.level === 'error').length;
 const warnings = all.length - errors;
-const score = Math.max(0, 100 - errors * 10 - warnings * 3);
+const itemScore = (issues) => Math.max(0, 100 - issues.filter((i) => i.level === 'error').length * 10 - issues.filter((i) => i.level !== 'error').length * 3);
+const score = results.length ? Math.round(results.reduce((n, r) => n + itemScore(r.issues), 0) / results.length) : 100;
 console.log(`Score ${score}/100: ${errors} error(s), ${warnings} warning(s) in ${results.length} item(s).`);
 
 const cell = (s) => String(s).replace(/\|/g, '\\|').replace(/\n/g, ' ');

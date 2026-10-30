@@ -472,7 +472,11 @@ async function check(args) {
   const all = results.flatMap((r) => r.issues);
   const errors = all.filter((i) => i.level === 'error').length;
   const warnings = all.length - errors;
-  const score = Math.max(0, 100 - errors * 10 - warnings * 3);
+  // Each item (a file or a commit message) scores 100 minus 10 per error and
+  // 3 per warning; the score shown is their average, so one bad file in a
+  // large folder does not zero the whole run.
+  const itemScore = (issues) => Math.max(0, 100 - issues.filter((i) => i.level === 'error').length * 10 - issues.filter((i) => i.level !== 'error').length * 3);
+  const score = Math.round(results.reduce((n, r) => n + itemScore(r.issues), 0) / results.length);
   const byRule = new Map();
   for (const i of all) byRule.set(i.rule, [...(byRule.get(i.rule) || []), i]);
   const top = [...byRule.values()].sort((a, b) => (b[0].level === 'error') - (a[0].level === 'error') || b.length - a.length).slice(0, 3)

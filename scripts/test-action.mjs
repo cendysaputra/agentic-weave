@@ -64,7 +64,8 @@ await test('flags a generic commit and fails on errors', async (dir) => {
   assert(r.status === 1, r.stdout);
   assert(/::error title=commit aaaaaaa%3A generic-subject::/.test(r.stdout), r.stdout);
   assert(!/commit bbbbbbb/.test(r.stdout), 'specific commit flagged');
-  assert(/score=90\n/.test(r.output) && /Agentic Weave check: 90\/100/.test(r.summary), r.output + r.summary);
+  // Four items: clean title 100, `Update code` 90, specific commit 100, clean guide 100.
+  assert(/score=98\n/.test(r.output) && /Agentic Weave check: 98\/100/.test(r.summary), r.output + r.summary);
 });
 
 await test('annotates changed Markdown by file and line', async (dir) => {
@@ -83,6 +84,18 @@ await test('fail-on never reports without failing', async (dir) => {
 await test('a clean PR passes with score 100', async (dir) => {
   const r = await run(dir, 'docs: explain the retry policy', { commits: 'false', paths: 'docs' });
   assert(r.status === 0 && /score=100\n/.test(r.output), r.stdout + r.output);
+});
+
+await test('the score is the average over files, not one total', async (dir) => {
+  writeFileSync(path.join(dir, 'docs', 'dash.md'), '# Dash\n\nIt works — mostly.\n');
+  const r = await run(dir, 'docs: explain the retry policy', { commits: 'false', 'pr-title': 'false', paths: 'docs' });
+  assert(r.status === 1 && /score=95\n/.test(r.output), r.stdout + r.output);
+});
+
+await test('one file at zero does not zero the run, and still fails', async (dir) => {
+  writeFileSync(path.join(dir, 'docs', 'bad.md'), '# Bad\n\n' + 'A — b.\n\n'.repeat(11));
+  const r = await run(dir, 'docs: explain the retry policy', { commits: 'false', 'pr-title': 'false', paths: 'docs' });
+  assert(r.status === 1 && /score=50\n/.test(r.output), r.stdout + r.output);
 });
 
 server.close();

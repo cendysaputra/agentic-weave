@@ -135,6 +135,16 @@ test('check scores Markdown and commit messages and fails on errors', (env) => {
   assert(good.status === 0, good.stdout);
 });
 
+test('check averages the score per file and still fails on one error', (env) => {
+  writeFileSync(path.join(env.project, 'dash.md'), '# Dash\n\nIt works — mostly.\n');
+  writeFileSync(path.join(env.project, 'ok.md'), '# Doc\n\nRun `npm test` before each commit.\n');
+  const two = env.run('check', 'dash.md', 'ok.md');
+  assert(two.status === 1 && /Score 95\/100/.test(two.stdout), two.stdout);
+  writeFileSync(path.join(env.project, 'dash.md'), '# Bad\n\n' + 'A — b.\n\n'.repeat(11));
+  const zero = env.run('check', 'dash.md', 'ok.md');
+  assert(zero.status === 1 && /Score 50\/100/.test(zero.stdout), zero.stdout);
+});
+
 test('hook rejects a generic commit and accepts a specific one', (env) => {
   const git = (...a) => spawnSync('git', a, { cwd: env.project, encoding: 'utf8', env: { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' } });
   git('init', '-q');
