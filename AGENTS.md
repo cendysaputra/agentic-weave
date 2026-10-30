@@ -39,7 +39,7 @@ Load `weave-core` first, then the skill for the task:
 | Web or app UI, reference sites, ATM, design tokens | `weave-ui` (`weave-ui-id` for Indonesian products) |
 | Converting a static build to WordPress, Elementor, WooCommerce, Statamic, Laravel, Astro, or React | `weave-convert` |
 | Indonesian copy | `weave-copywriting-id` |
-| README or docs | `weave-docs` |
+| README, guides, docblocks, ADRs, runbooks, client handoff, agent docs | `weave-docs` |
 | Commit messages | `weave-commit` |
 | Pull requests and review comments | `weave-pr` |
 | Changelogs and release notes | `weave-changelog` |

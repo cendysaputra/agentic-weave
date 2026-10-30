@@ -21,7 +21,7 @@ Interfaces:
 Writing for people:
 
 - [`weave-chat`](skills/weave-chat/SKILL.md): assistant and agent replies (canned openers and closers, sycophancy, over-apologizing, hedging).
-- [`weave-docs`](skills/weave-docs/SKILL.md): READMEs and documentation (chat leaks, cutoff disclaimers, template skeletons, emoji headings).
+- [`weave-docs`](skills/weave-docs/SKILL.md): READMEs, how-tos, reference, docblocks, ADRs, runbooks, client handoff guides, and AGENTS.md. Requires samples that were run and APIs that exist, ships templates, and includes `lint-docs.mjs` for English and Indonesian Markdown.
 - [`weave-email`](skills/weave-email/SKILL.md): emails and notifications (generic subjects, signposting, empty CTAs).
 - [`weave-error`](skills/weave-error/SKILL.md): error messages, validation text, and logs.
 
