@@ -94,6 +94,26 @@ Text meets WCAG AA contrast, focus is visible, everything works by keyboard, mar
 
 Studying, snapshotting, or rebuilding someone else's page to learn from it is fine in private. What ships contains no other party's text, images, code, fonts, or brand without a license, and it does not read as their page with new colors.
 
+### R-44: Run what you document
+
+Every command and code sample in a document has been run, against the version written next to it, or is marked as illustration only. Every package, function, hook, flag, and field it names exists in the code or the registry.
+
+### R-45: Docs say what the code cannot
+
+A docblock or comment carries what names and types do not show: units, ranges, when it returns null, side effects, the reason behind a choice. It never restates the signature or narrates the obvious.
+
+### R-46: Docs change with the code
+
+Documentation lives next to the code it describes and changes in the same commit or pull request as the behavior. Incorrect documentation is worse than none.
+
+### R-47: Agent instructions stay minimal and concrete
+
+Files written for agents (AGENTS.md, CLAUDE.md, skills) hold only what an agent cannot find by reading the code: exact commands, non-standard conventions, specific prohibitions. No generic advice, no repository tour.
+
+### R-48: Record the trade-off
+
+A document that records a decision names the alternatives that were rejected and at least one negative consequence of the choice.
+
 ## Structure and Checks (C)
 
 ### C-1: One change per summary line
@@ -135,4 +155,5 @@ Run this on every piece of text before handing it over, then run the checklist o
 - [ ] Formats and layout checked for the real locale and longest strings (R-03, C-2, C-4)
 - [ ] For UI: visual choices are decided, motion has a purpose, and the page is accessible, measured in a real browser (R-40, R-41, R-42, C-6)
 - [ ] Nothing shipped is another party's text, images, code, fonts, or brand (R-43)
+- [ ] For docs: commands and samples were run, and every named package, function, and flag exists (R-44)
 - [ ] The text still sounds like a person wrote it (R-37)
