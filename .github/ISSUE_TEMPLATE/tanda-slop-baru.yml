@@ -1,0 +1,44 @@
+name: Laporkan tanda slop baru
+description: Contoh teks, UI, atau kode yang terasa buatan AI dan belum ditangkap skill mana pun.
+title: "[slop] "
+labels: ["slop-report"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Copy (bahasa Indonesia)
+        - Copy (English)
+        - UI / desain
+        - Dokumentasi
+        - Commit / PR / changelog
+        - Pesan error / log
+        - Email / notifikasi
+        - Lainnya
+    validations:
+      required: true
+  - type: textarea
+    id: before
+    attributes:
+      label: Contoh asli (before)
+      description: Tempel teks atau tautan screenshot apa adanya. Hapus data pribadi.
+    validations:
+      required: true
+  - type: textarea
+    id: after
+    attributes:
+      label: Versi yang lebih baik (after)
+      description: Opsional. Bagaimana seharusnya ditulis atau dibuat.
+  - type: textarea
+    id: why
+    attributes:
+      label: Kenapa terasa buatan AI?
+      description: Pola yang kamu lihat, dan kalau tahu, rule (R-XX) yang paling dekat.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Sumber
+      description: Dari mana contoh ini (produk, situs, atau "buatan sendiri"). Jangan tempel karya orang lain yang tidak boleh dibagikan.
