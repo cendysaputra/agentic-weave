@@ -76,7 +76,8 @@ for (const dir of skills) {
 
   const lines = body.split('\n').length;
   if (lines > LIMITS.bodyLines) err(rel, `body is ${lines} lines (max ${LIMITS.bodyLines}); move detail into references/`);
-  const tokens = Math.round(body.length / 4);
+  // About 3 characters per token for this mix of English, Indonesian, and markup.
+  const tokens = Math.round(body.length / 3);
   if (tokens > LIMITS.bodyTokens) warn(rel, `body is about ${tokens} tokens (spec suggests under ${LIMITS.bodyTokens})`);
 
   const dashes = emDashLines(body);
