@@ -4,7 +4,7 @@ Instructions for AI agents working on this repository: the Agentic Weave skills,
 
 ## Commands
 
-- `npm test`: lint every skill (`scripts/lint-skills.mjs`). It must pass before every commit.
+- `npm test`: lint every skill, test the installer, and run the before/after pairs in `examples/`. It must pass before every commit.
 - `node bin/agentic-weave.mjs list`: list skills the way the installer reads them.
 - `claude plugin validate .`: check `.claude-plugin/` when it changes.
 - Scripts in `skills/weave-ui/scripts/` need Playwright: `npm i -D playwright && npx playwright install chromium`.

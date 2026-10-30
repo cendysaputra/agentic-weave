@@ -8,7 +8,7 @@
     "agentic-weave": "bin/agentic-weave.mjs"
   },
   "scripts": {
-    "test": "node scripts/lint-skills.mjs && node scripts/test-installer.mjs",
+    "test": "node scripts/lint-skills.mjs && node scripts/test-installer.mjs && node scripts/test-examples.mjs",
     "version": "node scripts/sync-version.mjs && git add .claude-plugin/plugin.json"
   },
   "files": [

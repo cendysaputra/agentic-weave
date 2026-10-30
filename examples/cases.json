@@ -1,0 +1,139 @@
+[
+  {
+    "id": "docs-chat-opener",
+    "kind": "docs",
+    "before": "docs/docs-chat-opener.before.md",
+    "after": "docs/docs-chat-opener.after.md",
+    "expect": [
+      "stock-phrase"
+    ]
+  },
+  {
+    "id": "docs-em-dash",
+    "kind": "docs",
+    "before": "docs/docs-em-dash.before.md",
+    "after": "docs/docs-em-dash.after.md",
+    "expect": [
+      "em-dash"
+    ]
+  },
+  {
+    "id": "docs-hedge-stack",
+    "kind": "docs",
+    "before": "docs/docs-hedge-stack.before.md",
+    "after": "docs/docs-hedge-stack.after.md",
+    "expect": [
+      "hedge-stack"
+    ]
+  },
+  {
+    "id": "docs-vague-link",
+    "kind": "docs",
+    "before": "docs/docs-vague-link.before.md",
+    "after": "docs/docs-vague-link.after.md",
+    "expect": [
+      "vague-link"
+    ]
+  },
+  {
+    "id": "docs-empty-section",
+    "kind": "docs",
+    "before": "docs/docs-empty-section.before.md",
+    "after": "docs/docs-empty-section.after.md",
+    "expect": [
+      "empty-section"
+    ]
+  },
+  {
+    "id": "docs-untagged-fence",
+    "kind": "docs",
+    "before": "docs/docs-untagged-fence.before.md",
+    "after": "docs/docs-untagged-fence.after.md",
+    "expect": [
+      "fence-language"
+    ]
+  },
+  {
+    "id": "docs-pre-announcement",
+    "kind": "docs",
+    "before": "docs/docs-pre-announcement.before.md",
+    "after": "docs/docs-pre-announcement.after.md",
+    "expect": [
+      "pre-announcement"
+    ]
+  },
+  {
+    "id": "docs-badge-wall",
+    "kind": "docs",
+    "before": "docs/docs-badge-wall.before.md",
+    "after": "docs/docs-badge-wall.after.md",
+    "expect": [
+      "badge-wall"
+    ]
+  },
+  {
+    "id": "docs-id-silakan-sapaan",
+    "kind": "docs",
+    "before": "docs/docs-id-silakan-sapaan.before.md",
+    "after": "docs/docs-id-silakan-sapaan.after.md",
+    "expect": [
+      "silakan",
+      "sapaan"
+    ]
+  },
+  {
+    "id": "docs-id-sapaan-kamu",
+    "kind": "docs",
+    "before": "docs/docs-id-sapaan-kamu.before.md",
+    "after": "docs/docs-id-sapaan-kamu.after.md",
+    "expect": [
+      "sapaan"
+    ],
+    "sapaan": "kamu"
+  },
+  {
+    "id": "docs-id-stock-phrase",
+    "kind": "docs",
+    "before": "docs/docs-id-stock-phrase.before.md",
+    "after": "docs/docs-id-stock-phrase.after.md",
+    "expect": [
+      "stock-phrase"
+    ]
+  },
+  {
+    "id": "commit-generic",
+    "kind": "commit",
+    "before": "commit/commit-generic.before.txt",
+    "after": "commit/commit-generic.after.txt",
+    "expect": [
+      "generic-subject"
+    ]
+  },
+  {
+    "id": "commit-emoji",
+    "kind": "commit",
+    "before": "commit/commit-emoji.before.txt",
+    "after": "commit/commit-emoji.after.txt",
+    "expect": [
+      "emoji"
+    ]
+  },
+  {
+    "id": "commit-buzzword",
+    "kind": "commit",
+    "before": "commit/commit-buzzword.before.txt",
+    "after": "commit/commit-buzzword.after.txt",
+    "expect": [
+      "buzzword"
+    ]
+  },
+  {
+    "id": "commit-echo-body",
+    "kind": "commit",
+    "before": "commit/commit-echo-body.before.txt",
+    "after": "commit/commit-echo-body.after.txt",
+    "expect": [
+      "echo-body"
+    ]
+  }
+]
