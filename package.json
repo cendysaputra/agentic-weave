@@ -2,10 +2,14 @@
   "name": "anti-ai-skills",
   "version": "1.0.1",
   "description": "Skills that keep AI coding agents from writing and designing slop: copy, docs, commits, PRs, errors, and award-grade UI.",
+  "license": "MIT",
   "type": "module",
   "bin": {
     "anti-ai-skills": "bin/anti-ai.mjs",
     "anti-ai": "bin/anti-ai.mjs"
+  },
+  "scripts": {
+    "test": "node scripts/lint-skills.mjs"
   },
   "files": [
     "bin",
