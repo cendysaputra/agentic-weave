@@ -1,6 +1,6 @@
 # Changelog
 
-Each release lists only the categories that have entries. Versions match the `anti-ai-skills` package on npm.
+Each release lists only the categories that have entries. Version numbers are those of the `agentic-weave` package on npm. Release 1.0.0 shipped as `anti-ai-skills`, which was unpublished on 2026-10-30.
 
 ## Unreleased
 
