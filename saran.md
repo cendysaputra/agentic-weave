@@ -17,3 +17,14 @@ Kumpulan saran dari review repo [agentic-weave](https://github.com/cendysaputra/
   ```
 - Nama marketplace plugin Claude Code tidak konsisten: perintah pertama memakai `cendysaputra/agentic-weave`, sedangkan cara untuk versi lama memakai `agentic-weave@imajiner-agentic-weave`. Periksa `.claude-plugin` untuk memastikan mana yang benar.
 - Typo kecil di bagian Install: "After a global install (...) Update with" seharusnya huruf kecil, menjadi "update with".
+
+## Ide fitur
+
+- **Perintah `npx agentic-weave check <file>`.** Menandai baris yang kena aturan R-XX, memberi skor singkat dan tiga saran perbaikan. Cara tercepat untuk mencoba tanpa memasang skill ke agent.
+- **GitHub Action.** Mengecek judul PR, pesan commit, dan file Markdown memakai aturan `weave-commit`, `weave-pr`, dan `lint-docs.mjs`.
+- **Hook pesan commit.** Misalnya `npx agentic-weave hook` (atau lewat `husky`) yang memasang pengecekan `weave-commit` sebelum commit tersimpan.
+- **Folder `examples/` sebagai bahan tes.** Pasangan teks "sebelum" dan "sesudah" per skill dan per aturan R-XX, sebaiknya termasuk contoh slop asli dari komunitas. `npm test` mengecek apakah `check` menangkap semuanya dan tidak salah tandai.
+- **Template issue "Laporkan tanda slop baru"** supaya orang lain bisa menyumbang contoh.
+- **Skill `weave-slides`** untuk deck presentasi: teks kepanjangan, label tidak perlu, foto gepeng atau gelap, layout kaku seperti template.
+- **Bahasa Indonesia sebagai pembeda.** Tonjolkan `weave-copywriting-id` dan `weave-ui-id` di bagian atas README, dengan satu contoh copy slop berbahasa Indonesia beserta perbaikannya.
+- **Halaman demo** di subdomain ruangartefak.com: tempel teks, langsung terlihat before/after-nya.
