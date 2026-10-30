@@ -3,7 +3,7 @@
 import { createRequire } from 'node:module';
 import path from 'node:path';
 
-export const USER_AGENT = 'antiai-reference-crawler/1.0 (+https://github.com/cendysaputra/anti-ai)';
+export const USER_AGENT = 'antiai-reference-crawler/1.0 (+https://github.com/cendysaputra/agentic-weave)';
 export const DESKTOP = { width: 1440, height: 900 };
 export const MOBILE = { width: 390, height: 844 };
 

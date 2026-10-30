@@ -2,10 +2,15 @@
   "name": "anti-ai-skills",
   "version": "1.0.1",
   "description": "Skills that keep AI coding agents from writing and designing slop: copy, docs, commits, PRs, errors, and award-grade UI.",
+  "license": "MIT",
   "type": "module",
   "bin": {
     "anti-ai-skills": "bin/anti-ai.mjs",
     "anti-ai": "bin/anti-ai.mjs"
+  },
+  "scripts": {
+    "test": "node scripts/lint-skills.mjs",
+    "version": "node scripts/sync-version.mjs && git add .claude-plugin/plugin.json"
   },
   "files": [
     "bin",
@@ -24,8 +29,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cendysaputra/anti-ai.git"
+    "url": "git+https://github.com/cendysaputra/agentic-weave.git"
   },
-  "homepage": "https://github.com/cendysaputra/anti-ai#readme",
-  "bugs": "https://github.com/cendysaputra/anti-ai/issues"
+  "homepage": "https://github.com/cendysaputra/agentic-weave#readme",
+  "bugs": "https://github.com/cendysaputra/agentic-weave/issues"
 }

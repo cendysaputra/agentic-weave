@@ -1,0 +1,11 @@
+{
+  "measuredOn": "",
+  "device": "",
+  "lcpMs": null,
+  "cls": null,
+  "inpMs": null,
+  "a11y": { "tool": "", "violations": null, "keyboardChecked": false },
+  "compareBuild": { "used": false, "modifikasiPassed": null, "report": "" },
+  "selfScore": { "design": null, "usability": null, "creativity": null, "content": null, "topFixes": [] },
+  "deliveryGatePassed": false
+}
