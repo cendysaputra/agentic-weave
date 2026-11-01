@@ -1,8 +1,14 @@
 # Changelog
 
-Each release lists only the categories that have entries. Version numbers are those of the `agentic-weave` package on npm. Release 1.0.0 shipped as `anti-ai-skills`, which was unpublished on 2026-10-30.
+Each release lists only the categories that have entries. Version numbers are those of the `agentic-weave` package on npm. Release 1.0.0 shipped as `anti-ai-skills`, which was unpublished on 2026-10-30. Version 1.1.0 was prepared but never published; its changes ship in 2.0.0.
 
-## 1.1.0 (2026-10-30)
+## 2.0.0 (2026-11-01)
+
+Removed:
+
+- `weave-flow` and `weave-convert` moved to the [deflow](https://github.com/cendysaputra/deflow) repository as `deflow` and `deflow-convert`. Project state there lives in `.deflow/`; rename an existing `.weave/` folder to keep going.
+- The `weave-ui` scripts (`crawl-reference.mjs`, `snapshot-site.mjs`, `compare-build.mjs`, `build-tokens.mjs`) and its references (library shortlist, design tokens, build quality, Awwwards rubric, reference galleries, ATM) moved to `deflow-ref` in deflow. agentic-weave no longer needs Playwright.
+- The installer does not delete `weave-flow` or `weave-convert` folders installed by 1.x; delete them by hand after installing deflow.
 
 Added:
 
@@ -17,6 +23,7 @@ Added:
 
 Changed:
 
+- `weave-ui` keeps its tells and checklist without the jury framing, and its checklist now states the accessibility minimums: 4.5:1 text contrast, visible focus, and no state that relies on color alone.
 - Skill bodies are about 10,000 characters shorter in total: the repeated intro in every skill is gone, so each load costs fewer tokens.
 
 ## 1.0.0 (2026-10-29)

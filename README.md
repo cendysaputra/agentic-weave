@@ -146,13 +146,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: cendysaputra/agentic-weave@v1
+      - uses: cendysaputra/agentic-weave@v2
         with:
           sapaan: kamu # optional: kamu or anda
           fail-on: error # error, warning, or never
 ```
 
-`@v1` follows the 1.x releases; pin a full commit SHA instead to stay on one exact version. Set `paths` to check fixed files instead of the changed ones, and `pr-title: false` or `commits: false` to skip either check. Every input is in [`action.yml`](action.yml).
+`@v2` follows the 2.x releases; pin a full commit SHA instead to stay on one exact version. Set `paths` to check fixed files instead of the changed ones, and `pr-title: false` or `commits: false` to skip either check. Every input is in [`action.yml`](action.yml).
 
 [`examples/`](examples/) holds a before/after pair for every rule, and `npm test` fails if a linter stops catching one. [`demo/index.html`](demo/index.html) runs the same linters in the browser: serve the repo root (`python3 -m http.server`) and open `/demo/`.
 
