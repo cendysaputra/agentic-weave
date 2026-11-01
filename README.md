@@ -4,27 +4,34 @@ Agent skills that catch AI slop in the text and UI an agent produces, published 
 
 ## Before and after
 
+<!-- weave-ignore-start -->
 Indonesian copy, with `weave-copywriting-id`:
 
-> Dengan menggunakan platform kami, Anda dapat dengan mudah meningkatkan produktivitas tim secara efektif dan efisien.
-
-> Platform kami memangkas waktu rapat status tim Anda.
+> **Before:** Dengan menggunakan platform kami, Anda dapat dengan mudah meningkatkan produktivitas tim secara efektif dan efisien.
+>
+> **After:** Platform kami memangkas waktu rapat status tim Anda.
 
 A commit message, with `weave-commit`:
 
-> Update code
+> **Before:** Update code
+>
+> **After:** fix: stop duplicate webhook processing on Stripe retry
+<!-- weave-ignore-end -->
 
-> fix: stop duplicate webhook processing on Stripe retry
-
-A README, checked with `weave-docs` and its linter:
+A README checked with `npx agentic-weave check` (the `weave-docs` linter):
 
 ```text
-$ node skills/weave-docs/scripts/lint-docs.mjs README.md
-README.md:5  error   em-dash          em dash; use a comma, colon, period, or parentheses (R-02)
-README.md:5  warning stock-phrase     stock phrase "This guide will walk you through"; start with the content (R-36)
-README.md:11  warning fence-language   code fence has no language; tag it so samples can be linted and run (R-44)
+$ npx agentic-weave check README.md
+README.md:3  error   em-dash          em dash; use a comma, colon, period, or parentheses (R-02)
+README.md:3  warning stock-phrase     stock phrase "This guide will walk you through"; start with the content (R-36)
+README.md:5  warning buzzword         "seamless" claims without showing; state the fact it stands for, or cut it (R-16)
+README.md:7  warning fence-language   code fence has no language; tag it so samples can be linted and run (R-44)
 
-1 file(s), 1 error(s), 2 warning(s).
+Score 81/100  1 error(s), 3 warning(s) in 1 item(s).
+Fix first:
+  1. em-dash (1x): em dash; use a comma, colon, period, or parentheses (R-02)
+  2. stock-phrase (1x): stock phrase "This guide will walk you through"; start with the content (R-36)
+  3. buzzword (1x): "seamless" claims without showing; state the fact it stands for, or cut it (R-16)
 ```
 
 Indonesian is a first-class target: `weave-copywriting-id` and `weave-ui-id` cover tells that only appear in Indonesian copy and interfaces (empty vocabulary, nominalisasi, Rupiah and date formats), and `lint-docs.mjs --sapaan kamu|anda` keeps one form of address per document.
@@ -115,7 +122,7 @@ Contributors and agents working on this repository: read [`AGENTS.md`](AGENTS.md
 
 ## Check your text
 
-The linters behind `weave-docs` and `weave-commit` also run on their own. They catch the tells a machine can find (stock phrases, em dashes, stacked hedges, vague links, mixed *kamu* and *Anda*, generic commit subjects, emoji); the rest is in the skills.
+The linters behind `weave-docs` and `weave-commit` also run on their own. They catch the tells a machine can find (stock phrases, buzzwords, em dashes, stacked hedges, vague links, label headings, mixed `kamu` and `Anda`, generic commit subjects, emoji); the rest is in the skills.
 
 ```bash
 npx agentic-weave check README.md docs
@@ -124,6 +131,8 @@ npx agentic-weave check docs --sapaan kamu --json
 ```
 
 `check` prints each finding, a score out of 100, and the three rules to fix first. Each file or commit message scores 100 minus 10 per error and 3 per warning, and the score shown is the average over all of them. It exits with 1 when there is any error, whatever the average.
+
+To quote a tell on purpose, such as a "before" example, put it between `<!-- weave-ignore-start -->` and `<!-- weave-ignore-end -->` lines. Code blocks and inline code are always skipped.
 
 To check every commit message in a repository before it is saved:
 
