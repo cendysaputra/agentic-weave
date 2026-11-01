@@ -16,7 +16,7 @@ Added:
 - `npx agentic-weave hook`: a commit-msg hook that rejects commit subjects with errors (generic subjects, emoji) and prints warnings. It runs the installed package without network access and falls back to a copy in `.git/hooks/agentic-weave/` when the package is missing.
 - A GitHub Action (`action.yml`) that checks the PR title, its commits, and the Markdown files a PR or push changed, with line annotations and the score in the job summary.
 - `label-title` warning in the Markdown linter for headings that are only labels (Introduction, Overview, Conclusion, Q&A, and similar).
-- `buzzword` warning in the Markdown linter for hype words (seamless, cutting-edge, world-class, inovatif, solusi terbaik, and similar), and `<!-- weave-ignore-start -->` / `<!-- weave-ignore-end -->` regions for quoting a tell on purpose.
+- `buzzword` warning in the Markdown linter for hype words (`seamless`, `cutting-edge`, `world-class`, `inovatif`, `solusi terbaik`, and similar), and `<!-- weave-ignore-start -->` / `<!-- weave-ignore-end -->` regions for quoting a tell on purpose.
 - `examples/`: before/after pairs for every lint rule, including a `weave-slides` outline, run by `npm test`.
 - `weave-slides`: tells for presentations and pitch decks, and rule R-49 (one slide, one point) in `weave-core`.
 - `weave-core` rules R-50 (report only what was checked) and R-51 (one name per thing). The Delivery Gate now also covers placeholders, versioned facts, summary lines, and docs that change with the code, and points at `npx agentic-weave check`.
