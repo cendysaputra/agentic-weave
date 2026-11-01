@@ -7,7 +7,6 @@ Instructions for AI agents working on this repository: the Agentic Weave skills,
 - `npm test`: lint every skill, test the installer, and run the before/after pairs in `examples/`. It must pass before every commit.
 - `node bin/agentic-weave.mjs list`: list skills the way the installer reads them.
 - `claude plugin validate .`: check `.claude-plugin/` when it changes.
-- Scripts in `skills/weave-ui/scripts/` need Playwright: `npm i -D playwright && npx playwright install chromium`.
 
 ## Repository map
 
@@ -35,13 +34,11 @@ Instructions for AI agents working on this repository: the Agentic Weave skills,
 
 ## Using the skills on a task
 
-Load `weave-core` first, then the skill for the task:
+Load `weave-core` first, then the skill for the task. Project flow, stack conversion, and reference tooling live in the deflow repository.
 
 | Task | Skill |
 | --- | --- |
-| A web project from brief to handoff | `weave-flow` (stages and gates in `.weave/`) |
-| Web or app UI, reference sites, ATM, design tokens | `weave-ui` (`weave-ui-id` for Indonesian products) |
-| Converting a static build to WordPress, Elementor, WooCommerce, Statamic, Laravel, Astro, or React | `weave-convert` |
+| Web UI | `weave-ui` (`weave-ui-id` for Indonesian products) |
 | Indonesian copy | `weave-copywriting-id` |
 | README, guides, docblocks, ADRs, runbooks, client handoff, agent docs | `weave-docs` |
 | Commit messages | `weave-commit` |
@@ -57,6 +54,5 @@ Run the Delivery Gate in `weave-core` before handing over any text, UI, commit, 
 ## Git and releases
 
 - Write commits and PRs with `weave-commit` and `weave-pr`. Commit subjects use Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`) and name the change.
-- Never commit `atm/` or `reference-crawl/`. They hold third-party copies.
 - Research sessions write only to `research/`. Skill changes go in their own commits.
 - Release: add a `CHANGELOG.md` entry with the version and date, run `npm version <patch|minor|major>` (the version hook copies the version into `.claude-plugin/plugin.json`), then `npm publish` and `git push --follow-tags`.

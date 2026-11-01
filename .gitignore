@@ -2,6 +2,3 @@ node_modules/
 *.tgz
 .DS_Store
 
-# Output of the weave-ui scripts: third-party copies and crawl reports.
-atm/
-reference-crawl/

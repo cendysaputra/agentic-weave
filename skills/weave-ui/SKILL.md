@@ -1,29 +1,17 @@
 ---
 name: weave-ui
-description: "Design and review web UI that does not look AI-generated and meets Awwwards jury standards: concept first, decided type and color, purposeful motion, Core Web Vitals, accessibility. Includes a reference crawler, ATM snapshot and compare scripts, and a library shortlist. Use for websites, landing pages, portfolios, app UI. Load with weave-core."
+description: "Design and review web UI that does not look AI-generated: concept first, decided type and color, no stock layouts or default themes, purposeful motion, designed states, accessibility, and Core Web Vitals. Use for websites, landing pages, portfolios, and web apps. Load with weave-core."
 ---
 
 # weave-ui
 
-Filters interfaces that look generated and sets the bar at what an Awwwards jury rewards.
+Filters interfaces that look generated. Reference crawling, ATM, design tokens, and a library shortlist live in deflow-ref, in the deflow repository.
 
 ## How to use this skill
 
-- Work in order: reference sites (optionally ATM), concept, art direction, build, the tells below, build quality, then the self-score.
-- Pick tools after the concept from `references/libraries.md`: one per job, native first, with reduced-motion paths and cleanup on navigation.
+- Work in order: concept, art direction, build, then check the tells below.
+- Pick libraries after the concept: one per job, native first, with reduced-motion paths and cleanup on navigation.
 - A tell marks an unchosen default, not proof of AI. A default chosen on purpose, justified in one sentence, and applied consistently is not slop (R-37). The test: could this page belong to anyone?
-
-## The Bar and How It Is Scored
-
-Awwwards scores Design 40%, Usability 30%, Creativity 20%, Content 10%. Effects do not move the score; a concept carried through the page does, and a slow or inaccessible site loses more than a beautiful one gains. Jury process and self-score: `references/awwwards-rubric.md`. Performance, mobile, keyboard, consistency, and content tells: `references/build-quality.md`.
-
-## Reference Sites and ATM
-
-Crawl reference sites with `scripts/crawl-reference.mjs`; learn by rebuilding through ATM (`scripts/snapshot-site.mjs`, `scripts/compare-build.mjs`). Read `references/reference-sites.md` (it also lists galleries for finding references) and `references/atm.md` first. Always:
-
-- Study the reference's decisions and reasons, then decide anew from this project's concept; never inherit its fonts, palette, layout, signature moment, or slop flags (R-40).
-- Crawler numbers are lab values; rerun when a report warns that stylesheets or fonts failed (C-6).
-- `atm/` and `reference-crawl/` stay local and never ship; nothing ships until `compare-build.mjs --mode modifikasi` passes; never snapshot behind a login or paywall (R-43).
 
 ## Concept
 
@@ -151,7 +139,7 @@ Crawl reference sites with `scripts/crawl-reference.mjs`; learn by rebuilding th
 
 - **Tell:** `bg-indigo-500`, `from-purple-500 to-pink-500`, `rounded-2xl`, `shadow-lg`, and `font-sans` across the page: Tailwind's built-in scales used as the design.
 - **Why:** the default theme is the most common source of the generated look, and while it exists an agent will reach for it.
-- **Fix:** generate `@theme` from the project's tokens with `scripts/build-tokens.mjs --to tailwind` (`references/design-tokens.md`); it resets the default scales so only project utilities exist.
+- **Fix:** generate `@theme` from the project's tokens and reset Tailwind's default scales so only project utilities exist (deflow-ref's `build-tokens.mjs --to tailwind` does both).
 - **Rule:** R-40.
 
 ### Reflexive Glassmorphism
@@ -171,7 +159,7 @@ Crawl reference sites with `scripts/crawl-reference.mjs`; learn by rebuilding th
 ### Missing States
 
 - **Tell:** no hover, focus, active, disabled, loading, empty, or error state; no 404 page; no favicon or social share image.
-- **Why:** jurors click through, and the craft pass is where generated sites are thinnest.
+- **Why:** visitors and reviewers click through, and the craft pass is where generated sites are thinnest.
 - **Fix:** design every state for every interactive component, plus the 404, favicon, and Open Graph image.
 - **Rule:** R-26, R-27.
 
@@ -194,14 +182,14 @@ Crawl reference sites with `scripts/crawl-reference.mjs`; learn by rebuilding th
 ### Scroll-Jacking
 
 - **Tell:** scroll that is slowed, snapped, or redirected so the user loses control, or content that only appears after a long pinned sequence.
-- **Why:** it is one of the usability failures jurors name most, especially on touch devices.
+- **Why:** it is one of the most named usability failures, especially on touch devices.
 - **Fix:** scroll-linked motion follows the user's input and never blocks reaching content. Keep native scroll on mobile unless the concept truly needs otherwise, and test it there.
 - **Rule:** R-41, R-26.
 
 ### Ignoring Reduced Motion
 
 - **Tell:** parallax, auto-playing video, and WebGL that run regardless of `prefers-reduced-motion`.
-- **Why:** it is an accessibility failure and the developer jury checks it.
+- **Why:** it is an accessibility failure, and accessibility audits check it.
 - **Fix:** gate non-essential motion behind `prefers-reduced-motion: no-preference`, and give the signature moment a still or crossfade equivalent.
 - **Rule:** R-41, R-42.
 
@@ -209,7 +197,7 @@ Crawl reference sites with `scripts/crawl-reference.mjs`; learn by rebuilding th
 
 Run these alongside the Delivery Gate in `weave-core`. Every line below must be true:
 
-- [ ] References were studied for decisions, not copied; any ATM build passes `compare-build.mjs --mode modifikasi` and `atm/` is not committed (R-40, R-43)
+- [ ] References, if any, were studied for decisions, not copied (R-40, R-43)
 - [ ] One library per job, native first (R-41)
 - [ ] A one-sentence concept exists, and type, color, layout, and motion trace back to it (R-40)
 - [ ] The page passes the silhouette test; it could not belong to anyone else (R-40)
@@ -219,7 +207,9 @@ Run these alongside the Delivery Gate in `weave-core`. Every line below must be 
 - [ ] No stock landing-page skeleton, identical card grid, or template chrome (R-05, R-40, C-3)
 - [ ] Radius, shadow, blur, and icons are system tokens, not framework defaults; Tailwind defaults are reset in `@theme` (R-40)
 - [ ] Motion has a language, honors `prefers-reduced-motion`, and has no fade-up-everything, bounce, count-up, or scroll-jacking (R-41, R-42)
-- [ ] Text contrast meets WCAG AA; focus is visible; keyboard and semantics work (R-42)
+- [ ] Text contrast is at least 4.5:1, or 3:1 for large text (WCAG 2.1 SC 1.4.3) (R-42)
+- [ ] Focus is visible on every interactive element; keyboard and semantics work (R-42)
+- [ ] No state relies on color alone; errors, selection, and status also use text, an icon, or shape (R-42)
 - [ ] Every interactive state, the 404, favicon, and OG image are designed (R-26, R-27)
 - [ ] Core Web Vitals measured in a real browser on a throttled phone, not estimated (C-6)
 - [ ] Real content and imagery; missing material is marked, not invented (R-17, R-23, R-38)

@@ -91,9 +91,7 @@ function agentsBlock(v) {
 ## agentic-weave
 
 - Load the weave-core skill with the skill that fits the task: weave-ui for UI, weave-docs for docs, weave-commit for commits, weave-pr for pull requests.
-- For a website from brief to handoff, follow weave-flow; its state and decisions live in .weave/.
 - Run the Delivery Gate in weave-core before handing over text, UI, a commit, or a PR.
-- Never commit atm/ or reference-crawl/: they hold copies of third-party sites.
 ${BLOCK_END}`;
 }
 
@@ -397,10 +395,6 @@ async function install(args, skills) {
   if (backups.length) console.log(`${c.yellow('!')} Backed up ${backups.length} folder(s) to ${c.bold(path.join(STATE_DIR, 'backups', stamp))}`);
   if (args.agentsMd) await writeAgentsBlock(await version());
 
-  if (chosen.some((s) => s.name === 'weave-ui')) {
-    console.log(`\n${c.bold('weave-ui scripts')} (crawl, snapshot, compare) need Playwright in your project:`);
-    console.log(c.cyan('  npm i -D playwright && npx playwright install chromium'));
-  }
   console.log(`\nRestart your agent so it picks up the new skills. Update later with ${c.cyan('npx agentic-weave@latest')}.`);
 }
 
