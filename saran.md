@@ -1,12 +1,6 @@
-Review 30 Oktober 2026 sudah dikerjakan; item yang selesai dihapus dari file ini. Yang tersisa:
+Pemisahan ke deflow (saran 1 November 2026) sudah dikerjakan. Yang masih menunggu Cendy:
 
-## Tidak perlu diubah
-
-- Item 3, pesan merge dan revert: dicek ulang dengan `lintCommit`. `Merge branch 'main'`, `Merge pull request #12 from ...`, dan `Revert "Update code"` kembali tanpa temuan karena keluar lebih awal lewat `SKIP`. Hook juga menerima keduanya (ada tesnya di `scripts/test-installer.mjs`).
-- Item 7, sapaan di README: peringatan `sapaan` datang dari kutipan contoh Indonesia dan teks `mixed *kamu* and *Anda*`, bukan dari kode. Hanya peringatan, skor 97, dan Action repo ini gagal hanya pada error.
-
-## Menunggu Cendy
-
-- Tag rilis: setelah PR rilis 1.1.0 di-merge, tag `v1.1.0` dan `v1` dipasang di commit itu di `main`, lalu `git push origin v1.1.0 v1`. Sampai tag `v1` ada, contoh `@v1` di README belum bisa dipakai.
-- `npm publish` versi 1.1.0 dari akun Cendy.
-- Item 12, demo online: pilih GitHub Pages atau subdomain ruangartefak.com (perlu DNS). Belum ada perubahan di repo.
+- Tag rilis: setelah PR 2.0.0 di-merge, pasang `v2.0.0` dan `v2` di commit itu di `main`, lalu `git push origin v2.0.0 v2`. Sampai tag `v2` ada, contoh Action `@v2` di README belum bisa dipakai.
+- `npm publish` versi 2.0.0 dari akun Cendy.
+- Demo online: pilih GitHub Pages atau subdomain ruangartefak.com (perlu DNS). Belum ada perubahan di repo.
+- Opsional, PR terpisah: gabung `weave-commit`, `weave-pr`, dan `weave-changelog` jadi `weave-git`. Path di `bin/agentic-weave.mjs` untuk `check` dan `hook` ikut diganti.
