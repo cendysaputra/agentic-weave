@@ -239,7 +239,7 @@ function parseArgs(argv) {
     else if (a === '--json') args.json = true;
     else if (a === '-h' || a === '--help') args.command = 'help';
     else if (a === '-v' || a === '--version') args.command = 'version';
-    else if (!args.command && ['install', 'add', 'i', 'list', 'ls', 'remove', 'rm', 'help', 'check', 'hook'].includes(a)) args.command = a;
+    else if (!args.command && ['install', 'add', 'i', 'list', 'ls', 'remove', 'rm', 'help', 'check', 'hook', 'version'].includes(a)) args.command = a;
     else args.names.push(a);
   }
   args.command = { add: 'install', i: 'install', ls: 'list', rm: 'remove' }[args.command] || args.command || 'install';
@@ -252,7 +252,7 @@ function help() {
   npx agentic-weave install [skills...]     install the named skills (default: all)
   npx agentic-weave list                    list the skills in this package
   npx agentic-weave check <file-or-dir>...  lint Markdown with the skills' rules; score and top fixes
-  npx agentic-weave check --commit "<msg>"   lint a commit message (or --commit-file <file>)
+  npx agentic-weave check --commit "<msg>"  lint a commit message (or --commit-file <file>)
   npx agentic-weave hook                    install a commit-msg hook that runs the commit check
   npx agentic-weave remove [skills...]      remove installed Agentic Weave skills (asks first; -y to skip)
 
@@ -264,6 +264,8 @@ ${c.bold('Options')}
   --with-agents-md                   add or update the agentic-weave block in ./AGENTS.md
   -y, --yes                          skip prompts
   -v, --version                      print the version
+  --sapaan kamu|anda                 check: require one Indonesian form of address
+  --json                             check: print the result as JSON
 `);
 }
 
@@ -414,7 +416,11 @@ async function remove(args, skills) {
       if (existsSync(dir) && (await stat(dir)).isDirectory()) found.push({ dest, s, dir });
     }
   }
-  if (!found.length && !args.agentsMd) return console.log('Nothing to remove.');
+  if (!found.length && !args.agentsMd) {
+    const other = Object.keys(manifest.dirs).some((d) => !args.project === d.startsWith(process.cwd() + path.sep));
+    if (other) return console.log(`Nothing to remove in ${args.project ? 'this project' : 'your user folder'}. Skills were installed ${args.project ? 'in your user folder; run without -p' : 'in this project; add -p'}.`);
+    return console.log('Nothing to remove.');
+  }
   for (const f of found) console.log(`  ${f.s.name} ${c.gray(f.dir)}`);
   if (!args.yes) {
     if (!process.stdin.isTTY) throw new Error('remove deletes folders; run it in a terminal or add -y to confirm.');
@@ -538,7 +544,7 @@ async function hook(args) {
   await writeFile(file, [
     '#!/bin/sh',
     `${HOOK_MARK} (v${await version()}). Remove with: npx agentic-weave hook remove`,
-    `if command -v npx >/dev/null 2>&1 && ${npx} version >/dev/null 2>&1; then`,
+    `if command -v npx >/dev/null 2>&1 && ${npx} --version >/dev/null 2>&1; then`,
     `  exec ${npx} check --commit-file "$1"`,
     'fi',
     'echo "agentic-weave: package not found; using the copy in .git/hooks/agentic-weave. Run npx agentic-weave hook to update it." >&2',
@@ -559,7 +565,7 @@ async function main() {
   const skills = await loadSkills();
   if (args.command === 'help') return help();
   if (args.command === 'list') {
-    for (const s of skills) console.log(`${c.bold(s.name)}\n  ${c.gray(s.description.split('. ')[0])}.\n`);
+    for (const s of skills) console.log(`${c.bold(s.name)}\n  ${c.gray(s.description.replace(/\s*Load with [^.]+\.\s*$/, ''))}\n`);
     return;
   }
   if (args.command === 'remove') return remove(args, skills);
