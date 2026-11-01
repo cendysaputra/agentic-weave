@@ -43,7 +43,7 @@ function banner() {
 }
 
 // Skill folders per agent, from each agent's documentation (checked 2026-10-29,
-// see research/2026-10-29-04-tahap-1-deep.md). null means the agent documents no
+// see research/2026-10-29-04-stage-1-deep.md). null means the agent documents no
 // folder for that scope. "optional" agents already read the claude or agents
 // folders, so installing there as well can list every skill twice.
 const home = (...p) => path.join(os.homedir(), ...p);

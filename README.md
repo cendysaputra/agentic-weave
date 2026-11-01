@@ -85,7 +85,7 @@ The installer asks which agents to install for, whether to install globally or i
 | `junie` | none documented | `.junie/skills` | |
 | `grok`, `opencode` | `~/.grok/skills`, `~/.config/opencode/skills` | `.grok/skills`, `.opencode/skills` | Only needed without `claude` or `agents`; both agents already read those folders |
 
-Paths come from each agent's documentation as of 2026-10-29 (`research/2026-10-29-04-tahap-1-deep.md`).
+Paths come from each agent's documentation as of 2026-10-29 (`research/2026-10-29-04-stage-1-deep.md`).
 
 Without prompts:
 

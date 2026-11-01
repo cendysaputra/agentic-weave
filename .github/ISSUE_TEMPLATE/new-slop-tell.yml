@@ -1,0 +1,44 @@
+name: Report a new slop tell
+description: Text, UI, or code that reads as AI-generated and that no skill catches yet.
+title: "[slop] "
+labels: ["slop-report"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Copy (Indonesian)
+        - Copy (English)
+        - UI / design
+        - Documentation
+        - Commit / PR / changelog
+        - Error message / log
+        - Email / notification
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: before
+    attributes:
+      label: Original example (before)
+      description: Paste the text or a screenshot link as it is. Remove personal data.
+    validations:
+      required: true
+  - type: textarea
+    id: after
+    attributes:
+      label: Better version (after)
+      description: Optional. How it should have been written or built.
+  - type: textarea
+    id: why
+    attributes:
+      label: Why does it read as AI-generated?
+      description: The pattern you see and, if you know it, the closest rule (R-XX).
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Where the example comes from (a product, a site, or "my own"). Do not paste work you are not allowed to share.
