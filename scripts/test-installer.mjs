@@ -135,6 +135,20 @@ test('check scores Markdown and commit messages and fails on errors', (env) => {
   assert(good.status === 0, good.stdout);
 });
 
+test('version prints only the version, as the hook probe expects', (env) => {
+  for (const arg of ['--version', 'version']) {
+    const r = env.run(arg);
+    assert(r.status === 0 && /^\d+\.\d+\.\d+\n$/.test(r.stdout), `${arg}: ${r.stdout}`);
+  }
+});
+
+test('remove points at -p when the skills were installed in the project', (env) => {
+  env.run('install', 'core', '-t', 'claude', '-p', '-y');
+  const r = env.run('remove', '-y');
+  assert(r.status === 0 && /add -p/.test(r.stdout), r.stdout);
+  assert(existsSync(path.join(env.project, '.claude', 'skills', 'weave-core')), 'project skill removed without -p');
+});
+
 test('check averages the score per file and still fails on one error', (env) => {
   writeFileSync(path.join(env.project, 'dash.md'), '# Dash\n\nIt works — mostly.\n');
   writeFileSync(path.join(env.project, 'ok.md'), '# Doc\n\nRun `npm test` before each commit.\n');
