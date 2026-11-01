@@ -33,17 +33,9 @@ Indonesian is a first-class target: `weave-copywriting-id` and `weave-ui-id` cov
 
 Start with [`weave-core`](skills/weave-core/SKILL.md). It defines the numbered rules (R-XX for wording, C-X for structure and checks) and the Delivery Gate that every other skill cites. Load it alongside whichever skill fits the task.
 
-Projects:
-
-- [`weave-flow`](skills/weave-flow/SKILL.md): a web project from brief to client handoff in nine stages. Each stage writes a file in `.weave/` and passes a gate that `scripts/flow.mjs` checks, so any agent can pick up where another stopped. Modes: build, atm, rewrite, audit.
-- [`weave-convert`](skills/weave-convert/SKILL.md): turn a static build or ATM rebuild into WordPress with ACF, Elementor V4 JSON (checked by `validate-elementor.mjs` against a real export), WooCommerce, Statamic, Laravel Blade, Astro, or React, with tokens from one file, motion that cleans up on page transitions, and a similarity check against the static build.
-
 Interfaces:
 
-- [`weave-ui`](skills/weave-ui/SKILL.md): web and app UI that looks generated (default fonts, purple gradients, stock landing-page layout, preset motion), raised to Awwwards jury craft: concept, signature moment, Core Web Vitals, accessibility, and a rubric self-score. Its scripts need Playwright (`npm i -D playwright && npx playwright install chromium`):
-  - `crawl-reference.mjs` reports a reference site's type, palette, motion stack, performance, and accessibility, with screenshots.
-  - `snapshot-site.mjs` and `compare-build.mjs` run ATM (Amati, Tiru, Modifikasi). They save a raw local copy of a page, score a rebuild's similarity, then gate the modified version on originality: no reused text, assets, or brand.
-  - `references/libraries.md` is a vetted shortlist of animation, scroll, transition, 3D, and vector libraries (GSAP, Lenis, Swup, Barba.js, Three.js, Rive, and more).
+- [`weave-ui`](skills/weave-ui/SKILL.md): web UI that looks generated (default fonts, purple gradients, stock landing-page layout, default Tailwind theme, preset motion, missing states), with a concept-first fix for each and accessibility minimums.
 
 Writing for people:
 
@@ -63,6 +55,8 @@ Bahasa Indonesia:
 
 - [`weave-copywriting-id`](skills/weave-copywriting-id/SKILL.md): Indonesian copywriting tells.
 - [`weave-ui-id`](skills/weave-ui-id/SKILL.md): Indonesian UI localization (Rupiah, numbers, dates, time, phone, address, translation overflow). Load with `weave-ui`.
+
+Running a whole web project (brief to handoff gates, conversion to WordPress, Elementor, Statamic, Laravel, Astro, or React, reference crawling, ATM, and design tokens) moved to [deflow](https://github.com/cendysaputra/deflow) in 2.0.0. Its skills load `weave-core` from here.
 
 ## Install
 
@@ -168,7 +162,7 @@ Agentic Weave started from [antislop](https://github.com/miqdadbadjuber/anti-slo
 
 ## Upgrading from anti-ai-skills
 
-Version 1.0.0 shipped as the npm package `anti-ai-skills` with skills named `antiai-*`. The project is now Agentic Weave: the package is `agentic-weave`, the skills are `weave-*` (for example `antiai-ui` became `weave-ui`), the Claude Code plugin is `agentic-weave`, and the flow keeps its state in `.weave/` instead of `.antiai/`. Rule IDs (R-XX, C-X) are unchanged. Running `npx agentic-weave` moves the old `antiai-*` folders it replaces to `~/.agentic-weave/backups/`.
+Version 1.0.0 shipped as the npm package `anti-ai-skills` with skills named `antiai-*`. The project is now Agentic Weave: the package is `agentic-weave`, the skills are `weave-*` (for example `antiai-ui` became `weave-ui`), and the Claude Code plugin is `agentic-weave`. Rule IDs (R-XX, C-X) are unchanged. Running `npx agentic-weave` moves the old `antiai-*` folders it replaces to `~/.agentic-weave/backups/`.
 
 ## Publishing
 
