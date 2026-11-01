@@ -10,7 +10,7 @@ The worst documentation slop is not its tone but what nobody checked: samples th
 ## How to use this skill
 
 - Decide the document type first (below), then write only what that type needs.
-- Run `scripts/lint-docs.mjs` on the files you wrote (`--sapaan kamu` or `--sapaan anda` for Indonesian docs). It catches the mechanical tells; the checklist catches the rest.
+- Run `scripts/lint-docs.mjs` on the files you wrote (`--sapaan kamu` or `--sapaan anda` for Indonesian docs). It catches the mechanical tells; the checklist catches the rest. Wrap a quoted "before" example in `<!-- weave-ignore-start -->` and `<!-- weave-ignore-end -->` so it is not flagged.
 
 ## Pick the Document Type First
 

@@ -144,5 +144,25 @@
     "expect": [
       "label-title"
     ]
+  },
+  {
+    "id": "docs-buzzword",
+    "kind": "docs",
+    "before": "docs/docs-buzzword.before.md",
+    "after": "docs/docs-buzzword.after.md",
+    "expect": [
+      "buzzword"
+    ]
+  },
+  {
+    "id": "docs-ignore-region",
+    "kind": "docs",
+    "before": "docs/docs-ignore-region.before.md",
+    "after": "docs/docs-ignore-region.after.md",
+    "expect": [
+      "stock-phrase",
+      "buzzword",
+      "em-dash"
+    ]
   }
 ]

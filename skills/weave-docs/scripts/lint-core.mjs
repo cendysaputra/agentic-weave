@@ -17,14 +17,20 @@ const PREANNOUNCE = /\b(?:coming soon|stay tuned|segera hadir)\b/i;
 const BADGE = /!\[[^\]]*\]\([^)]*(?:shields\.io|badge)[^)]*\)/gi;
 
 
-// Prose lines with their numbers: fenced code, HTML comments, and inline code removed.
+// Prose lines with their numbers: fenced code, HTML comments, inline code,
+// and regions between <!-- weave-ignore-start --> and <!-- weave-ignore-end -->
+// (for quoted "before" examples of a tell) removed.
 function proseLines(text) {
   const out = [];
   const fences = [];
   let fence = null;
   let comment = false;
+  let ignore = false;
   text.split('\n').forEach((raw, i) => {
     const line = raw.replace(/\r$/, '');
+    if (!fence && /^\s*<!--\s*weave-ignore-start\s*-->\s*$/.test(line)) return void (ignore = true);
+    if (/^\s*<!--\s*weave-ignore-end\s*-->\s*$/.test(line)) return void (ignore = false);
+    if (ignore) return;
     const f = line.match(/^\s*(`{3,}|~{3,})(.*)$/);
     if (f) {
       if (!fence) {
@@ -55,6 +61,10 @@ function proseLines(text) {
 }
 
 
+// R-16: words that claim without showing. Kept short on purpose: plain
+// words such as "fast" or "optimal" can be facts, so only the hype is listed.
+const BUZZ = /\b(seamless(?:ly)?|revolutionary|game[- ]chang(?:ing|er)|cutting[- ]edge|world[- ]class|best[- ]in[- ]class|state[- ]of[- ]the[- ]art|blazingly fast|enterprise[- ]grade|next[- ]level|supercharge[sd]?|unleash(?:es|ed)?|effortless(?:ly)?|inovatif|revolusioner|kelas dunia|terdepan|solusi (?:terbaik|tepat|lengkap|menyeluruh)|efektif dan efisien)\b/gi;
+
 const LABELS = new Set(['introduction', 'overview', 'key benefits', 'our solution', 'conclusion', 'q&a', 'thank you', 'any questions']);
 
 export function lintMarkdown(text, { sapaan = null } = {}) {
@@ -73,6 +83,7 @@ export function lintMarkdown(text, { sapaan = null } = {}) {
     for (const re of STOCK) if (re.test(text)) add(n, 'warning', 'stock-phrase', `stock phrase "${text.match(re)[0].trim()}"; start with the content (R-36)`);
     for (const re of HEDGES) if (re.test(text)) add(n, 'warning', 'hedge-stack', `stacked hedge "${text.match(re)[0]}"; state one claim with one condition (R-31)`);
     if (VAGUE_LINK.test(text)) add(n, 'warning', 'vague-link', 'vague link text; link the name of the destination (R-31)');
+    for (const m of text.matchAll(BUZZ)) add(n, 'warning', 'buzzword', `"${m[0]}" claims without showing; state the fact it stands for, or cut it (R-16)`);
     if (PREANNOUNCE.test(text)) add(n, 'warning', 'pre-announcement', `"${text.match(PREANNOUNCE)[0]}"; document what exists, track plans in issues (C-5)`);
     const a = text.match(/\bAnda\b/g)?.length || 0;
     const k = text.match(/\b[Kk]amu\b/g)?.length || 0;
