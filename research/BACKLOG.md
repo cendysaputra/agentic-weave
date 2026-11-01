@@ -1,72 +1,57 @@
-# Backlog Riset agentic-weave
+# agentic-weave Research Backlog
 
-Antrean topik untuk riset harian. Setiap sesi mengambil item teratas yang belum selesai (`[ ]`) dengan prioritas tertinggi, mengerjakannya sampai tuntas atau sampai batas waktu sesi, lalu memperbarui status di sini.
+Queue of research topics. Each session takes the highest-priority open item (`[ ]`), works on it until it is done or the session ends, and updates its status here.
 
-**Aturan:**
-- Satu sesi menghasilkan satu file `YYYY-MM-DD-NN-<slug>.md` (NN = nomor urut hari itu).
-- Item yang selesai diberi `[x]` dan nama file hasilnya. Item yang baru separuh diberi `[~]` dan catatan sampai mana.
-- Temuan baru yang butuh riset lanjutan ditambahkan sebagai item baru di bagian yang sesuai, jangan dikerjakan di sesi yang sama kalau di luar topik.
-- Label wajib di setiap file hasil: FAKTA (dengan sumber primer), REKOMENDASI, BELUM TERVERIFIKASI.
-- Utamakan dokumentasi resmi, paper, dan repo sumber. Sumber sekunder hanya pendukung.
-- Tulis dalam Bahasa Indonesia, tanpa em dash, pakai "kamu".
-- Sesi riset hanya menulis file. Push ke GitHub dilakukan Cendi sendiri.
+**Rules:**
 
-Prioritas: **P1** langsung memblokir pekerjaan skill berikutnya, **P2** dibutuhkan Tahap 2, **P3** Tahap 3 atau pelengkap.
+- One session produces one file, `YYYY-MM-DD-NN-<slug>.md` (NN is the sequence number for that day).
+- A finished item gets `[x]` and the name of its result file. A half-done item gets `[~]` and a note on how far it got.
+- New findings that need more research become new items in the right section. Do not work on them in the same session if they are off topic.
+- Every result file labels its claims: FACT (with a primary source), RECOMMENDATION, or UNVERIFIED.
+- Prefer official documentation, papers, and source repositories. Secondary sources only support.
+- Write in English, without em dashes or decorative emoji.
+- Research sessions only write files under `research/`.
 
-## Selesai
+Priority: **P1** blocks the next skill work, **P2** improves an existing skill, **P3** is proof, scale, or nice to have.
 
-- [x] Riset awal anti-slop lintas domain → `2026-10-29-01-riset-awal.md`
-- [x] Gap analysis isi repo commit `ebe7cfe` → `2026-10-29-02-gap-analysis.md`
-- [x] Tahap 1 versi web search → `2026-10-29-03-tahap-1-websearch.md`
-- [x] Tahap 1 mode Research: lintas agent, flow, konversi, token → `2026-10-29-04-tahap-1-deep.md`
+## Done
 
-## Mendesak
+- [x] Initial cross-domain anti-slop research: `2026-10-29-01-riset-awal.md` (removed, see git history)
+- [x] Gap analysis of the repository at commit `ebe7cfe`: `2026-10-29-02-gap-analysis.md` (removed)
+- [x] Stage 1, web search version: `2026-10-29-03-tahap-1-websearch.md` (removed)
+- [x] Stage 1, Research mode (agents, flow, conversion, tokens): `2026-10-29-04-stage-1-deep.md`
+- [x] Anti-slop documentation (README, docstrings, ADR, runbook, client handoff, AGENTS.md, llms.txt, Indonesian docs under EYD V): `2026-10-30-01-anti-slop-documentation.md`, applied in `weave-docs`
+- [x] Renaming `anti-ai` to `agentic-weave`: done in the repository (package `agentic-weave`, skills `weave-*`, plugin `agentic-weave`). `anti-ai-skills` was unpublished on 2026-10-30.
+- [x] Deterministic text linter: `npx agentic-weave check` with the `weave-docs` and `weave-commit` cores, run in CI and in a commit-msg hook. Comparison with Vale, textlint, alex, proselint, and write-good is still open below.
 
-- [ ] **P1** Dampak ganti nama repo `anti-ai` ke `agentic-weave`: perlu tidaknya mengganti prefix skill `antiai-*` (rule ID, rujukan antar skill, nama folder harus sama dengan `name`), cara rename package npm (publish nama baru + `npm deprecate` yang lama), redirect GitHub untuk `npx skills add`, nama marketplace dan plugin Claude Code, serta nama perintah CLI. Hasil: rencana migrasi bertahap yang tidak memutus pengguna lama.
+## Moved to deflow
 
-## Tahap 2: kualitas eksekusi
+Items about project flow, CMS conversion, crawling, and design tokens moved with those skills to the [deflow](https://github.com/cendysaputra/deflow) repository on 2026-11-01: Elementor V4 schema, WordPress block themes and `theme.json`, cache plugin conflicts, WooCommerce blocks, Statamic 6, Astro View Transitions, DTCG 2025.10 details, Style Dictionary and Terrazzo, crawl tools, multi-page snapshots, DESIGN.md patterns, BMAD and Kiro specs, screenshot-to-code tools, and conversion to Shopify, Webflow, and Vue or Nuxt.
 
-### Coding dan git
-- [ ] **P1** `antiai-code`: katalog tell slop di kode (komentar narasi, docblock generik, over-engineering, defensive overdose, test slop, hallucinated import). Sumber: Code Slop, aislop, arXiv 2605.13280, studi lain 2025 sampai 2026. Hasil: daftar entri Tell/Why/Fix siap tulis, contoh PHP/Laravel, JS, dan WordPress.
-- [ ] **P1** Label komentar (TODO/FIXME/HACK/NOTE/SECURITY/PERF): konvensi yang dipakai proyek besar, tool yang membacanya (todo-tree, eslint no-warning-comments, PHPCS), format owner dan issue.
-- [ ] **P2** Git: konvensi nama branch, push gate (husky, lefthook, pre-commit), commitlint, kebijakan trailer `Co-Authored-By` untuk commit buatan AI, pilihan default `Fix:` vs Conventional Commits untuk `antiai-commit`.
+## Stage 2: execution quality
 
-### Teks dan pesan
-- [ ] **P1** `lint-text.mjs` deterministik EN + ID: desain aturan, perbandingan dengan Vale, textlint, alex, proselint, write-good. Format konfigurasi, dukungan bahasa Indonesia, cara jadi pre-commit hook.
-- [ ] **P2** Pesan ke klien (WhatsApp, Slack, email singkat): pola slop, register Bapak/Ibu vs kamu, panjang per kanal, struktur update progres. Resolusi konflik dengan aturan "Register Mixing" di `antiai-copywriting-id`.
-- [ ] **P2** Kamus slop bahasa Indonesia lanjutan: cari studi atau korpus teks AI berbahasa Indonesia (paper ACL/arXiv, IndoNLP), daftar frasa terjemahan kaku dari pola Inggris.
-- [~] **P1** Dokumentasi anti-slop (README, docs teknis, docstring/PHPDoc/JSDoc, API reference, changelog, ADR, runbook, panduan handoff klien, docs untuk agent seperti AGENTS.md dan llms.txt, dokumentasi bahasa Indonesia sesuai EYD V). Perluasan skill `antiai-docs` yang sudah ada. Riset mode Research sedang berjalan (30 Okt 2026), hasil akan disimpan sebagai `2026-10-30-01-dokumentasi-anti-slop.md`.
+### Code and git
 
-### CMS dan konversi (verifikasi lanjutan)
-- [ ] **P1** Elementor V4: skema JSON widget atomic (heading, paragraph, button, image, svg) dari dokumentasi developer dan contoh ekspor, Variables/Classes impor massal, Interactions V4 vs GSAP, cara menambah GSAP/Lenis lewat Custom Code, performa.
-- [ ] **P1** WordPress block theme: perubahan `theme.json` v3 di WP 6.8 dan 6.9, block patterns, ACF Blocks (block.json v3), pemetaan token ke `theme.json`.
-- [ ] **P2** WordPress klasik: konflik plugin cache/optimasi JS (LiteSpeed Cache, Perfmatters, WP Rocket) dengan skrip `defer`, GSAP, dan transisi Swup/Barba. Pola reinit yang aman.
-- [ ] **P2** WooCommerce: ekstensibilitas Cart/Checkout block (Slot/Fill, Store API), kapan override template masih wajar, kompatibilitas HPOS untuk theme.
-- [ ] **P2** Statamic 6: lokasi definisi set Replicator/Bard, Laravel Boost guideline untuk Statamic, Antlers component tag.
-- [ ] **P2** Astro View Transitions: nama event lifecycle (`astro:page-load`, `astro:before-swap`) dan pola cleanup GSAP.
+- [ ] **P1** `weave-code`: catalog of code slop tells (narrating comments, generic docblocks, over-engineering, defensive overdose, test slop, hallucinated imports). Sources: Code Slop, aislop, arXiv 2605.13280, other 2025 to 2026 studies. Result: Tell/Why/Fix entries ready to write, with PHP and Laravel, JavaScript, and WordPress examples.
+- [ ] **P1** Comment labels (TODO, FIXME, HACK, NOTE, SECURITY, PERF): conventions in large projects, tools that read them (todo-tree, ESLint no-warning-comments, PHPCS), owner and issue formats.
+- [ ] **P2** Git: branch naming, push gates (husky, lefthook, pre-commit), commitlint, a policy for `Co-Authored-By` trailers on AI-written commits.
 
-### Crawl dan token
-- [ ] **P1** Format DTCG 2025.10 detail: daftar `colorSpace` resmi, apakah hex string diterima, tipe composite (typography, shadow, transition), validator resmi.
-- [ ] **P1** Style Dictionary v4/v5 dan Terrazzo: dukungan DTCG 2025.10, output ke Tailwind v4 `@theme`, CSS variables, `theme.json`.
-- [ ] **P2** Alat crawl yang belum diverifikasi: HTTrack, `wget --mirror`, SingleFile CLI, Crawl4AI, Jina Reader, Firecrawl branding, Project Wallace. Kemampuan untuk SPA, lazy load, font, dan batasannya.
-- [ ] **P2** Snapshot multi-halaman: strategi crawl same-origin, deduplikasi aset, batas ukuran.
-- [ ] **P2** Pola DESIGN.md (Google Stitch, Firecrawl, lainnya): struktur yang dipakai dan apa yang cocok untuk `antiai-flow`.
+### Text and messages
 
-### Flow dan metodologi
-- [ ] **P2** BMAD method, Kiro specs, Anthropic skill-creator, Impeccable workflow: artefak, gate, dan pelajaran untuk `antiai-flow`.
-- [ ] **P2** Screenshot-to-code dan sejenisnya (screenshot-to-code, v0, same.dev, Bolt, Builder.io Visual Copilot, Locofy): cara kerja, keterbatasan, prompt pattern yang bisa dipinjam.
+- [ ] **P2** Compare the `check` linter with Vale, textlint, alex, proselint, and write-good: rule coverage, Indonesian support, configuration format.
+- [ ] **P2** Messages to clients (WhatsApp, Slack, short email): slop patterns, Bapak/Ibu versus kamu, length per channel, progress update structure. Resolve the conflict with "Register Mixing" in `weave-copywriting-id`.
+- [ ] **P2** More Indonesian slop vocabulary: studies or corpora of AI-written Indonesian text (ACL and arXiv papers, IndoNLP), stiff phrases translated from English patterns.
+- [ ] **P3** English marketing copy: slop patterns in landing pages, headlines, and CTAs, and copywriting research sources.
 
-## Tahap 3: pembuktian dan skala
+## Stage 3: proof and scale
 
-- [ ] **P3** Metodologi eval skill: SkillsBench (arXiv 2610.08875), desain eval dengan dan tanpa skill untuk UI, copy, dan commit. Metrik yang bisa diotomasi.
-- [ ] **P3** `skills-ref` dan validator lain: cara pakai di CI, daftar skill smell dari arXiv 2607.01456 yang bisa dicek otomatis.
-- [ ] **P3** Copy marketing bahasa Inggris: pola slop landing page, headline, CTA, dan sumber riset copywriting.
-- [ ] **P3** Konversi ke Shopify OS 2.0, Webflow, Vue/Nuxt.
-- [ ] **P3** Uji lintas agent: perbedaan perilaku pemicuan skill di Claude Code, Codex, Cursor, Grok Build, Antigravity, OpenCode, Amp, Hermes.
-- [ ] **P3** MCP server untuk agentic-weave (crawl, lint, compare): spesifikasi MCP terbaru, contoh server sejenis.
-- [ ] **P3** Detail CLI `npx skills add` / skills.sh: flag, lockfile, update.
-- [ ] **P3** Agent yang belum terverifikasi: Zed, Junie (path global), Hermes (skill level proyek), Claude Code (baca `.agents/skills`?).
+- [ ] **P3** Skill evaluation: SkillsBench (arXiv 2610.08875), evals with and without the skill for UI, copy, and commits, metrics that can be automated.
+- [ ] **P3** `skills-ref` and other validators in CI; which skill smells from arXiv 2607.01456 can be checked automatically.
+- [ ] **P3** Cross-agent tests: how skill triggering differs in Claude Code, Codex, Cursor, Grok Build, Antigravity, OpenCode, Amp, and Hermes.
+- [ ] **P3** An MCP server for `check`: the current MCP specification and similar servers.
+- [ ] **P3** `npx skills add` and skills.sh details: flags, lockfile, updates.
+- [ ] **P3** Unverified agents: Zed, Junie (global path), Hermes (project-level skills), whether Claude Code reads `.agents/skills`.
 
-## Pemeliharaan berkala
+## Regular maintenance
 
-- [ ] Setiap 30 hari: cek ulang versi library di `skills/antiai-ui/references/libraries.md` dan path skill di matriks agent. Catat perubahan di file riset baru.
+- [ ] Every 30 days: recheck the skill paths in the agent matrix used by `bin/agentic-weave.mjs`, and record changes in a new research file.

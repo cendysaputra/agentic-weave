@@ -1,37 +1,30 @@
-# Riset agentic-weave
+# agentic-weave Research
 
-Folder ini menyimpan riset yang menjadi dasar pengembangan skill agentic-weave. Isinya bukan bagian dari skill yang dipasang (installer hanya menyalin `skills/`), jadi aman untuk tumbuh panjang.
+This folder holds the research behind the agentic-weave skills. None of it is installed with the skills (the installer only copies `skills/`), so it can grow long.
 
-> Catatan nama: repo ini dulu bernama `anti-ai`. Per 30 Oktober 2026 repo berganti nama menjadi `agentic-weave`, tapi nama folder skill (`antiai-*`), package npm (`anti-ai-skills`), dan installer (`bin/anti-ai.mjs`) belum diubah. File riset menyebut nama-nama itu apa adanya karena memang begitu kondisi repo saat riset ditulis.
+## How to read it
 
-## Cara membaca
+Start with the newest file. Facts that a skill relies on are copied into that skill's `references/` with a verification date; the research file keeps the full sources and the reasoning.
 
-Baca dari yang terbaru. File lama tetap disimpan sebagai jejak keputusan, dan setiap file yang sudah digantikan diberi catatan di bagian atasnya.
-
-| File | Isi | Status |
+| File | Contents | Status |
 |---|---|---|
-| [`2026-10-30-01-dokumentasi-anti-slop.md`](2026-10-30-01-dokumentasi-anti-slop.md) | Dokumentasi anti-slop: bukti (paket halusinasi, evaluasi AGENTS.md), Diátaxis, docstring, ADR, runbook, handoff klien, llms.txt, EYD V, Vale/markdownlint | Acuan untuk `antiai-docs` |
-| [`2026-10-29-04-tahap-1-deep.md`](2026-10-29-04-tahap-1-deep.md) | Tahap 1 mode Research: matriks 14 agent, AGENTS.md, plugin marketplace, riset skill smell, flow `.antiai/`, konversi WordPress/Elementor V4/Woo/Statamic, DTCG 2025.10, Tailwind v4, Playwright | **Acuan utama** |
-| [`2026-10-29-03-tahap-1-websearch.md`](2026-10-29-03-tahap-1-websearch.md) | Tahap 1 versi web search | Digantikan sebagian oleh 04 |
-| [`2026-10-29-02-gap-analysis.md`](2026-10-29-02-gap-analysis.md) | Review isi repo commit `ebe7cfe` dan daftar gap | Ada koreksi soal Cursor |
-| [`2026-10-29-01-riset-awal.md`](2026-10-29-01-riset-awal.md) | Riset awal anti-slop: UI, copy EN/ID, kode, commit, pesan, crawl, library, format skill | Latar belakang |
-| [`BACKLOG.md`](BACKLOG.md) | Antrean topik riset berikutnya | Diperbarui tiap sesi |
+| [`2026-10-30-01-anti-slop-documentation.md`](2026-10-30-01-anti-slop-documentation.md) | Anti-slop documentation: evidence (hallucinated packages, AGENTS.md evaluation), Diátaxis, docstrings, ADRs, runbooks, client handoff, llms.txt, EYD V, Vale and markdownlint | Applied in `weave-docs` and rules R-44 to R-48 |
+| [`2026-10-29-04-stage-1-deep.md`](2026-10-29-04-stage-1-deep.md) | Agent compatibility matrix, the agentskills.io specification, skill-smell research, AGENTS.md, Claude Code plugin marketplaces | Basis for the installer targets |
+| [`BACKLOG.md`](BACKLOG.md) | Queue of research topics | Updated each session |
 
-## Konvensi
+Earlier files (the initial cross-domain research, the gap analysis of commit `ebe7cfe`, and the first web-search version of stage 1) were superseded and removed on 2026-11-01. They are in git history at commit `dbda9c9`. Research on the project flow, CMS conversion, crawling, and design tokens now belongs to the [deflow](https://github.com/cendysaputra/deflow) repository.
 
-- **Nama file:** `YYYY-MM-DD-NN-<slug>.md`. NN adalah nomor urut di hari yang sama.
-- **Label klaim:** FAKTA (dengan sumber primer), REKOMENDASI (desain usulan), BELUM TERVERIFIKASI (jangan masuk skill sebelum dicek).
-- **Sumber:** setiap bagian mencantumkan URL. Utamakan dokumentasi resmi, paper, dan repo sumber.
-- **Tanggal verifikasi:** fakta soal tool dan agent cepat berubah, jadi tanggal di nama file adalah tanggal verifikasinya.
-- **Gaya:** Bahasa Indonesia, tanpa em dash (R-02), tanpa emoji dekoratif (R-04).
+## Conventions
 
-## Alur kerja riset
+- **File names:** `YYYY-MM-DD-NN-<slug>.md`, where NN is the sequence number for that day.
+- **Claim labels:** FACT (with a primary source), RECOMMENDATION (a proposed design), UNVERIFIED (do not put it in a skill before checking).
+- **Sources:** every section lists URLs. Prefer official documentation, papers, and source repositories.
+- **Verification date:** facts about tools and agents change quickly, so the date in the file name is the verification date.
+- **Style:** English, no em dashes (R-02), no decorative emoji (R-04).
 
-Riset dikerjakan Claude (manual atau lewat sesi terjadwal harian sekitar 30 menit), lalu dikirim sebagai file Markdown. Cendi yang memasukkan file ke repo dan melakukan push sendiri. Sesi riset tidak pernah mengubah `skills/`, `bin/`, atau file lain di luar `research/`.
+## From research to skill
 
-## Alur dari riset ke skill
-
-1. Topik dipilih dari `BACKLOG.md`.
-2. Hasil riset ditulis ke file baru di folder ini.
-3. Fakta yang sudah terverifikasi dipindah ke `skills/<nama>/references/` dengan tanggal verifikasi.
-4. Item backlog ditandai selesai dan menunjuk ke file hasilnya.
+1. Pick a topic from `BACKLOG.md`.
+2. Write the result to a new file in this folder.
+3. Copy verified facts into `skills/<name>/references/` with their verification date.
+4. Mark the backlog item done and point it at the result file.
