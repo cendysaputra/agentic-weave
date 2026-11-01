@@ -1,26 +1,28 @@
-# Panduan Mengelola Konten <Nama Situs>
+<!-- Write the guide in the client's language and keep every button and menu label exactly as it appears on their screen. -->
 
-Untuk: tim konten <klien>. Versi dashboard: <WordPress x.y, Elementor Pro x.y>.
-Screenshot diambil: <YYYY-MM-DD>.
+# Managing the Content of <Site Name>
 
-## Masuk ke dashboard
+For: <client>'s content team. Dashboard version: <WordPress x.y, Elementor Pro x.y>.
+Screenshots taken: <YYYY-MM-DD>.
 
-<Alamat login dan siapa yang memegang akun. Kata sandi tidak ditulis di sini.>
+## Logging in to the dashboard
 
-## Tugas yang sering
+<Login address and who holds the account. Passwords are not written here.>
 
-### <Nama tugas, misalnya: Mengganti foto banner beranda>
+## Common tasks
 
-1. <Langkah dengan label tombol persis seperti di layar>
+### <Task name, for example: Replacing the home page banner photo>
 
-## Jangan diubah
+1. <A step with the button label exactly as it appears on screen>
 
-<Halaman, template, dan field yang dipakai kode.>
+## Do not change
 
-## Kalau ada masalah
+<Pages, templates, and fields the code depends on.>
 
-<Kontak, dan info yang perlu dikirim: URL, screenshot, waktu kejadian.>
+## When something goes wrong
 
-## Glosarium
+<Who to contact, and what to send: the URL, a screenshot, the time it happened.>
 
-<Istilah yang muncul di dashboard dan artinya.>
+## Glossary
+
+<Terms that appear in the dashboard and what they mean.>
