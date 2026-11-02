@@ -87,7 +87,9 @@ if (!paths.length && !pr && Array.isArray(event.commits) && !event.deleted) {
     notes.push('The push payload did not list changed files, so no Markdown was checked. Set `paths` to check files on push.');
   }
 }
-const files = [...new Set(paths.flatMap((p) => collect(p, [])))];
+// Annotations need repository-relative paths with forward slashes, also on
+// Windows runners where path.join returns backslashes.
+const files = [...new Set(paths.flatMap((p) => collect(p, [])).map((f) => f.split(path.sep).join('/')))];
 for (const f of files) results.push({ target: f, file: f, issues: lintMarkdown(readFileSync(f, 'utf8'), { sapaan }) });
 
 // Annotations, then a job summary with the same score `npx agentic-weave check` prints.
